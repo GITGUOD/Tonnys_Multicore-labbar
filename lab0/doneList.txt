@@ -18,3 +18,13 @@ In VS Code's Extensions panel, search for 'WSL' (by Microsoft) and install it if
 Press Ctrl+Shift+P, run 'WSL: Reopen Folder in WSL'
 
 - Basically runs our computer or this folder will run on WSL
+
+to run makefile:
+    - make main
+
+We had issues as we have the folder on the windows side
+So we had to run: sed -i 's/\r$//' check-solution.sh
+
+Windows uses \r\n line endings, Unix uses just \n. The leftover \r confused bash (e.g. do\r instead of do), causing the errors. This strips the \rs so the shell can read it properly.
+
+Ok but anyways;, we are missing the tiny data test files.
