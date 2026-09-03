@@ -1,0 +1,20 @@
+Issues with this:
+
+#include errors detected. Please update your includePath. Syntax errors for this file will not be reported until included files are found.C/C++(1696)
+cannot open source file "assert.h". Please run the 'Select IntelliSense Configuration...' command to locate your system headers.C/C++(1696)
+
+Ctrl+Shift+P → C/C++: Select IntelliSense Configuration...
+
+sudo apt update && sudo apt install build-essential
+
+- This installs GCC, G++, make, and the standard C/C++ headers (including assert.h) all at once.
+
+Now we only have it on our WSL terminal:
+
+gcc --version
+
+In VS Code's Extensions panel, search for 'WSL' (by Microsoft) and install it if you don't already have it. This lets VS Code open and work directly inside your WSL filesystem. Already done
+
+Press Ctrl+Shift+P, run 'WSL: Reopen Folder in WSL'
+
+- Basically runs our computer or this folder will run on WSL
