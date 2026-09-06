@@ -27,4 +27,6 @@ So we had to run: sed -i 's/\r$//' check-solution.sh
 
 Windows uses \r\n line endings, Unix uses just \n. The leftover \r confused bash (e.g. do\r instead of do), causing the errors. This strips the \rs so the shell can read it properly.
 
-Ok but anyways;, we are missing the tiny data test files.
+Ok but anyways;, we are missing the tiny data test files. Its now resolved
+
+Next step is to understand forsete.c file and preflow.c file.

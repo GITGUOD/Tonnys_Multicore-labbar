@@ -2,15 +2,40 @@
  *
  */
 
-#include <assert.h>
-#include <ctype.h>
-#include <stdarg.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include <assert.h> //assert is used to check for conditions that should never happen. if the condition is false, the program will terminate with an error message.
+#include <ctype.h> //ctype.h is a header file in the C standard library that contains functions for testing and mapping characters. it is used here for the isdigit function, which checks if a character is a digit.
+#include <stdarg.h> // provides facilities for stepping through a list of function arguments of an unknown number and type. it is used here for the error function, which can take a variable number of arguments.
+#include <stdio.h> // provides input and output facilities. it is used here for functions like fprintf, getchar, and printf.
+#include <stdlib.h> // includes functions involving memory allocation, process control, conversions and others. it is used here for functions like malloc, calloc, and exit.
+#include <string.h> // provides functions for manipulating strings. it is used here for the strlen function.
+
+// Imports
 
 #define PRINT		0	/* enable/disable prints.	*/
 #define TIME		0	/* for timing on power.		*/
+
+/*
+A macro is simply a text substitution rule that the C preprocessor applies before the compiler sees your code. It’s not a function, not a variable — it’s a mechanical “find‑and‑replace” step that happens early in compilation.
+So in other words:
+	- A macro says:
+		“Whenever you see this name, replace it with this text.”
+		That’s all. No types, no runtime behavior — just textual expansion.
+*/
+
+// Definitions of constants and macros
+/*
+Those '#' lines are C preprocessor directives — instructions handled before the actual C code is compiled. They let you define constants, conditionally include code, and create macros.
+	- #define creates a macro — a text substitution performed by the C preprocessor.
+			- These define two constants, PRINT and TIME, both set to 0.
+			- Later, the preprocessor replaces every occurrence of PRINT with 0.
+		- This is often used to enable/disable features at compile time.
+
+	- #if PRINT / #else / #endif Means
+	- This is conditional compilation.
+		- If PRINT is non-zero (true), the code between #if PRINT and #else is included in the compilation.
+		- If PRINT is zero (false), the code between #else and #endif is included instead.
+		- This allows you to include or exclude debugging or logging code based on the value of PRINT.
+*/
 
 /* the funny do-while next clearly performs one iteration of the loop.
  * if you are really curious about why there is a loop, please check
@@ -26,7 +51,7 @@
 #define pr(...)		/* no effect at all */
 #endif
 
-#define MIN(a,b)	(((a)<=(b))?(a):(b))
+#define MIN(a,b)	(((a)<=(b))?(a):(b)) // this is a macro that returns the minimum of two values a and b. it uses the ternary operator to compare a and b, returning a if a is less than or equal to b, and b otherwise.
 
 /* introduce names for some structs. a struct is like a class, except
  * it cannot be extended and has no member methods, and everything is
