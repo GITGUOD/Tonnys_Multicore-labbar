@@ -75,11 +75,16 @@ struct xedge_t {
 	int		c;	/* capacity.			*/
 };
 
+/* >>> list_t: en enkel länkad lista, används som ADJACENSLISTA
+ *     för varje nod (dvs "vilka kanter är kopplade till mig?").
+ *     Varje nod (node_t) har en pekare "edge" till första elementet
+ *     i sin egen lista av list_t-noder. */
 struct list_t {
-	edge_t*		edge;
-	list_t*		next;
+	edge_t*		edge; /* >>> pekare till en kant (edge_t) i listan */
+	list_t*		next; /* >>> pekare till nästa element i listan, eller NULL om sista */
 };
 
+/* >>> node_t: en nod i grafen. */
 struct node_t {
 	int		h;	/* height.			*/
 	int		e;	/* excess flow.			*/
@@ -87,6 +92,7 @@ struct node_t {
 	node_t*		next;	/* with excess preflow.		*/
 };
 
+/* >>> edge_t: en kant i grafen. */
 struct edge_t {
 	node_t*		u;	/* one of the two nodes.	*/
 	node_t*		v;	/* the other. 			*/
@@ -127,15 +133,33 @@ struct graph_t {
  * 
  */
 
+
+ /* >>> Detta är en FUNKTIONSDEKLARATION (prototyp), inte en definition.
+ *     Den talar om för kompilatorn "denna funktion existerar, med denna
+ *     signatur", så att koden nedan (t.ex. i preflow()) kan anropa den
+ *     innan den faktiska definitionen dyker upp längre ner i filen.
+ *
+ *     #ifdef MAIN / #else / #endif betyder: beroende på om makrot MAIN
+ *     är definierat vid kompilering (via -DMAIN till gcc), används en
+ *     annan version av new_graph. Detta låter SAMMA fil användas både
+ *     som fristående program (main() läser från stdin) och som ett
+ *     "bibliotek" som anropas med redan inlästa kanter (xedge_t-arrayen).
+ */
 #ifdef MAIN
 static graph_t* new_graph(FILE* in, int n, int m);
 #else
 static graph_t* new_graph(int n, int m, int s, int t, xedge_t* e);
 #endif
 
+/* >>> "static" på en global variabel/funktion betyder att den bara är
+ *     synlig inom DENNA fil (.c-fil). Skyddar mot namnkonflikter om
+ *     flera .c-filer länkas ihop i samma program. */
 static char* progname;
 
 #if PRINT
+
+/* >>> Funktion som räknar ut ett nod-index utifrån en pekare, genom
+ *     pekar-aritmetik (v - g->v). Bara till för debug-utskrifter (PRINT). */
 
 static int id(graph_t* g, node_t* v)
 {
@@ -192,11 +216,11 @@ void error(const char* fmt, ...)
 	 *
 	 */
 
-	va_list		ap;
-	char		buf[BUFSIZ];
+	va_list		ap; /* >>> "ap" håller reda på var i argumentlistan vi är */
+	char		buf[BUFSIZ]; /* >>> lokal buffert (array) på stacken för att bygga felmeddelandet */
 
-	va_start(ap, fmt);
-	vsprintf(buf, fmt, ap);
+	va_start(ap, fmt); /* >>> initiera ap: börja läsa argument EFTER fmt */
+	vsprintf(buf, fmt, ap); /* >>> som sprintf, men tar en va_list istället för fasta argument */
 
 	if (progname != NULL)
 		fprintf(stderr, "%s: ", progname);
@@ -256,6 +280,8 @@ static void* xmalloc(size_t s)
 	return p;
 }
 
+/* >>> xcalloc = xmalloc + nollställning av minnet (memset).
+ *     n * s = totalt antal bytes (n element, s bytes vardera). */
 static void* xcalloc(size_t n, size_t s)
 {
 	void*		p;
@@ -280,6 +306,15 @@ static void* xcalloc(size_t n, size_t s)
 	return p;
 }
 
+/* ============================================================
+ * GRAFUPPBYGGNAD
+ * ============================================================
+ * >>> Lägger till en kant "e" FÖRST i nodens (u) adjacenslista.
+ *     Detta är standardmönstret för att lägga till i en länkad lista:
+ *     1. Allokera en ny länk (list_t)
+ *     2. Låt den nya länkens "next" peka på den GAMLA första länken
+ *     3. Uppdatera nodens "edge"-pekare till den NYA länken
+ */
 static void add_edge(node_t* u, edge_t* e)
 {
 	list_t*		p;
@@ -289,12 +324,18 @@ static void add_edge(node_t* u, edge_t* e)
 	 *
 	 */
 
-	p = xmalloc(sizeof(list_t));
-	p->edge = e;
-	p->next = u->edge;
-	u->edge = p;
+	p = xmalloc(sizeof(list_t)); /* >>> sizeof(list_t) = storleken i bytes av structen */
+	p->edge = e; /* >>> nya länken pekar på kanten e */
+	p->next = u->edge; /* >>> nya länken pekar på det som TIDIGARE var första länken */
+	u->edge = p; /* >>> noden pekar nu på den NYA länken som första */
 }
 
+/* >>> Kopplar ihop två noder u och v med kant e (kapacitet c).
+ *     Samma edge_t-objekt (e) läggs till i BÅDA nodernas adjacenslistor
+ *     — det är därför kommentaren säger "shared (same object)". Detta är
+ *     centralt: när push() ändrar e->f, syns det direkt oavsett vilken
+ *     nod man tittar från, eftersom det är SAMMA minne som delas via
+ *     pekaren, inte en kopia. */
 static void connect(node_t* u, node_t* v, int c, edge_t* e)
 {
 	/* connect two nodes by putting a shared (same object)
@@ -310,6 +351,16 @@ static void connect(node_t* u, node_t* v, int c, edge_t* e)
 	add_edge(v, e);
 }
 
+/* ============================================================
+ * "EXCESS"-LISTAN (hjälplista för algoritmen)
+ * ============================================================
+ * >>> Detta är en enkel länkad lista-implementation som HÄR ANVÄNDER
+ *     node_t.next som länk (inte list_t). Samma mönster som add_edge:
+ *     lägg till nytt element först i listan.
+ *
+ *     s (source) och t (sink) undantas medvetet — de hanteras speciellt
+ *     i algoritmen och ska aldrig "väljas" för push/relabel på samma sätt.
+ */
 static void enter_excess(graph_t* g, node_t* v)
 {
 	/* put v at the front of the list of nodes
@@ -327,6 +378,8 @@ static void enter_excess(graph_t* g, node_t* v)
 	}
 }
 
+/* >>> Tar bort och returnerar FÖRSTA noden i excess-listan (om någon finns).
+ *     Returnerar NULL (via v = g->excess om listan är tom) annars. */
 static node_t* leave_excess(graph_t* g)
 {
 	node_t*		v;
@@ -344,12 +397,27 @@ static node_t* leave_excess(graph_t* g)
 	return v;
 }
 
+/* ============================================================
+ * SJÄLVA ALGORITMEN: push, relabel, other
+ * ============================================================
+ * >>> push(): skickar flöde "d" från nod u till nod v längs kant e.
+ *     Detta är EN av de två grundoperationerna i preflow-push.
+ */
 static void push(graph_t* g, node_t* u, node_t* v, edge_t* e)
 {
 	int		d;	/* remaining capacity of the edge. */
 
 	pr("push from %d to %d: ", id(g, u), id(g, v));
 	pr("f = %d, c = %d, so ", e->f, e->c);
+
+	/* >>> Kanten är odirigerad i grafens struktur, men flödet f har
+	 *     en bestämd "positiv riktning" (från e->u till e->v).
+	 *     Om vi pushar i den riktningen (u == e->u): öka f, begränsat
+	 *     av kvarvarande kapacitet (c - f).
+	 *     Om vi pushar i MOTSATT riktning (u == e->v): minska f
+	 *     (kan bli negativt), begränsat av (c + f) — dvs vi "backar"
+	 *     eventuellt tidigare flöde plus kan använda upp till c till.
+	 */
 	
 	if (u == e->u) {
 		d = MIN(u->e, e->c - e->f);
@@ -361,10 +429,19 @@ static void push(graph_t* g, node_t* u, node_t* v, edge_t* e)
 
 	pr("pushing %d\n", d);
 
-	u->e -= d;
-	v->e += d;
+	u->e -= d; /* >>> u förlorar d i överskott */
+	v->e += d; /* >>> v vinner d i överskott */
 
 	/* the following are always true. */
+
+	/* >>> assert(): dessa villkor MÅSTE alltid stämma om algoritmen är
+	 *     korrekt implementerad. Om något av dem är falskt kraschar
+	 *     programmet direkt med ett tydligt felmeddelande — mycket
+	 *     användbart för att fånga logiska buggar tidigt.
+	 *     d >= 0        : man kan aldrig pusha en negativ mängd
+	 *     u->e >= 0     : en nod kan aldrig ha negativt överskott
+	 *     abs(e->f) <= e->c : flödet får aldrig överstiga kapaciteten
+	 */
 
 	assert(d >= 0);
 	assert(u->e >= 0);
@@ -378,6 +455,10 @@ static void push(graph_t* g, node_t* u, node_t* v, edge_t* e)
 	}
 
 	if (v->e == d) {
+		/* >>> v->e VAR 0 innan (annars hade v->e nu varit > d), och är nu
+		 *     d > 0 (om d > 0) -> v har PRECIS fått överskott och ska
+		 *     läggas till i excess-listan för första gången. */
+
 
 		/* since v has d excess now it had zero before and
 		 * can now push.
@@ -388,6 +469,8 @@ static void push(graph_t* g, node_t* u, node_t* v, edge_t* e)
 	}
 }
 
+/* >>> relabel(): höjer nodens höjd med 1. Den andra grundoperationen.
+ *     Görs när noden INTE kan pusha till någon granne (se xpreflow). */
 static void relabel(graph_t* g, node_t* u)
 {
 	u->h += 1;
@@ -397,6 +480,8 @@ static void relabel(graph_t* g, node_t* u)
 	enter_excess(g, u);
 }
 
+/* >>> Given en nod u och en kant e som u är kopplad till, returnera
+ *     "den ANDRA noden" på kanten (grannen). */
 static node_t* other(node_t* u, edge_t* e)
 {
 	if (u == e->u)
@@ -404,7 +489,11 @@ static node_t* other(node_t* u, edge_t* e)
 	else
 		return e->u;
 }
-	
+
+/* ============================================================
+ * HUVUDALGORITMEN
+ * ============================================================
+ */
 static int xpreflow(graph_t* g)
 {
 	node_t*		s;
@@ -415,9 +504,9 @@ static int xpreflow(graph_t* g)
 	int		b;
 
 	s = g->s;
-	s->h = g->n;
+	s->h = g->n; /* >>> källan får höjd = antal noder, garanterat högst i grafen */
 
-	p = s->edge;
+	p = s->edge; /* >>> p = första länken i källans adjacenslista */
 
 	/* start by pushing as much as possible (limited by
 	 * the edge capacity) from the source to its neighbors.
@@ -426,13 +515,20 @@ static int xpreflow(graph_t* g)
 
 	while (p != NULL) {
 		e = p->edge;
-		p = p->next;
+		p = p->next; /* >>> gå vidare i listan INNAN vi ev. muterar/använder e,
+		                 *     standardmönster vid iteration av länkad lista */
 
-		s->e += e->c;
+		s->e += e->c; /* >>> källan "later som" den redan har precis så mycket
+		                 *     överskott som behövs för att fylla denna kant helt */
 		push(g, s, other(s, e), e);
 	}
 	
 	/* then loop until only s and/or t have excess preflow. */
+
+	/* >>> Huvudloopen: så länge det finns NÅGON nod (förutom s, t) med
+	 *     överskott > 0, försök pusha eller relabla den.
+	 *     "(u = leave_excess(g)) != NULL" är samma idiom som i next_int:
+	 *     tilldelning OCH villkorskontroll i samma uttryck. */
 
 	while ((u = leave_excess(g)) != NULL) {
 
@@ -452,6 +548,16 @@ static int xpreflow(graph_t* g)
 		v = NULL;
 		p = u->edge;
 
+		/* >>> Gå igenom ALLA kanter från u och leta efter EN där vi
+		 *     kan pusha: villkoret är att u måste vara HÖGRE än
+		 *     grannen (u->h > v->h) OCH kanten inte redan är mättad
+		 *     i den riktningen (b * e->f < e->c).
+		 *
+		 *     "b" håller reda på RIKTNINGEN: +1 om u är kantens "u"-sida
+		 *     (flöde räknas positivt från u), -1 om u är kantens "v"-sida
+		 *     (flöde räknas negativt från u:s perspektiv).
+		 */
+
 		while (p != NULL) {
 			e = p->edge;
 			p = p->next;
@@ -465,21 +571,33 @@ static int xpreflow(graph_t* g)
 			}
 
 			if (u->h > v->h && b * e->f < e->c)
-				break;
+				break; /* >>> hittade en giltig granne att pusha till, avbryt loopen */
+
 			else
-				v = NULL;
+				v = NULL; /* >>> denna kant dög inte, återställ v och fortsätt leta */
 		}
 
+		/* >>> Kärnregeln i preflow-push:
+		 *     Om vi HITTADE en granne att pusha till -> pusha.
+		 *     Annars (ingen granne fungerade) -> höj u:s höjd (relabel)
+		 *     så att push kan bli möjligt i en framtida iteration. */
 		if (v != NULL)
 			push(g, u, v, e);
 		else
 			relabel(g, u);
 	}
 
-	return g->t->e;
+	return g->t->e; /* >>> när loopen är slut har sänken t sitt slutgiltiga flöde i e */
 }
 
 static void free_graph(graph_t* g);
+/* ============================================================
+ * PUBLIK ENTRY POINT (anropas utifrån, t.ex. från ett annat program/lab)
+ * ============================================================
+ * >>> Detta är funktionen andra delar av kursens kod anropar för att
+ *     köra hela algoritmen från början till slut: bygg graf, kör
+ *     algoritmen, städa upp minne, returnera resultatet (maxflödet).
+ */
 
 int preflow(int n, int m, int s, int t, xedge_t* e)
 {
@@ -502,6 +620,17 @@ int preflow(int n, int m, int s, int t, xedge_t* e)
 	return f;
 }
 
+/* ============================================================
+ * STÄDNING AV MINNE
+ * ============================================================
+ * >>> C har ingen "garbage collector" som Java — allt minne som
+ *     allokeras med malloc/calloc MÅSTE frigöras manuellt med free(),
+ *     annars läcker minnet (memory leak). free_graph gör detta
+ *     systematiskt: går igenom varje nods adjacenslista och frigör
+ *     varje list_t-länk, sedan frigör själva array-erna (v, e) och
+ *     till sist graf-structen (g) själv.
+ */
+
 static void free_graph(graph_t* g)
 {
 	int		i;
@@ -521,6 +650,10 @@ static void free_graph(graph_t* g)
 	free(g);
 }
 
+/* ============================================================
+ * BYGG GRAFEN FRÅN xedge_t-ARRAY (den icke-MAIN-varianten)
+ * ============================================================
+ */
 static graph_t* new_graph(int n, int m, int s, int t, xedge_t* e)
 {
 	graph_t*	g;
@@ -535,13 +668,22 @@ static graph_t* new_graph(int n, int m, int s, int t, xedge_t* e)
 
 	g->n = n;
 	g->m = m;
+	/* >>> Allokera ARRAYER (sammanhängande minnesblock) för n noder
+	 *     respektive m kanter, nollställda av xcalloc. */
 	
 	g->v = xcalloc(n, sizeof(node_t));
 	g->e = xcalloc(m, sizeof(edge_t));
+	/* >>> "&g->v[0]" = adressen till (dvs pekare till) det första
+	 *     elementet i array v. Källan antas alltid vara nod 0,
+	 *     sänken den sista noden (index n-1). */
 
 	g->s = &g->v[0];
 	g->t = &g->v[n-1];
 	g->excess = NULL;
+
+	/* >>> Bygg alla kanter utifrån xedge_t-arrayen "e" som skickades in.
+	 *     e[i].u / e[i].v är HELTALSINDEX (inte pekare), som här
+	 *     omvandlas till riktiga node_t*-pekare via &g->v[a] / &g->v[b]. */
 
 	for (i = 0; i < m; i += 1) {
 		a = e[i].u;
@@ -549,7 +691,8 @@ static graph_t* new_graph(int n, int m, int s, int t, xedge_t* e)
 		c = e[i].c;
 		u = &g->v[a];
 		v = &g->v[b];
-		connect(u, v, c, g->e+i);
+		connect(u, v, c, g->e+i); /* >>> "g->e+i" = pekar-aritmetik,
+		                             *     samma som &g->e[i] */
 	}
 
 	return g;
