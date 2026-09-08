@@ -163,6 +163,9 @@ discharge(Node, C, G, [I|Adj]) ->
 
 	true = (E > 0).
 
+% Denna metoden är basically nodens hela beteende
+% ör varje typ av meddelande jag kan få, vad ska jag göra med mitt nuvarande state,
+% och vad blir mitt nya state innan jag går och väntar på nästa meddelande
 node_loop(Node, C, G) ->
 
 	pr("~s ~p: node = ~p~n", [?FUNCTION_NAME,?LINE,Node]),
@@ -171,6 +174,13 @@ node_loop(Node, C, G) ->
 		{ C, hello } ->		pr("node ~p got hello~n", [Node]),
 						C ! { self(), hello },
 						node_loop(Node, C, G);
+		% My edit
+		{ C, start, G} -> % this is a tuple
+			#node{ e = E } = Node, % skapar en ny variabel E bunden till excess fältet i våran node-record
+			NewNode = case E > 0 of % här enligt vår logik, vill vi kolla på excess för att starta våran grej
+				true -> discharge(Node, C, G, Adj);
+				false -> Node
+			end,
 
 		Fel		->		erlang:exit(?LINE)
 	end.

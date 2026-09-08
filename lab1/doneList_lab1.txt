@@ -1,0 +1,53 @@
+requirements:
+Each node must be one actor, if you were to spawn N processes, each running node_loop.
+No node's logic runs inside some shared/global loop, each one has basically its own concurrent, isolated
+processes with its own state, I guess height, excess, adjacency list etc.
+
+We can only share an edge object between two nodes, no otehr info, so there shouldnt be some sort of
+information leak between actors.
+
+In other words: two nodes or ways can only know something about each other if they send messages to each one. Or via a shared edge object.
+
+No wake up polling from a controller.
+
+Message protocol
+
+*Initial*
+Alla noder har en initial state där de har egenskaperna height, excess, neighbour list och edge capacity
+Alla noder är oberoende och vid start state så kollar de alla sin egna excess om den är > 0. Anledningen till
+varför vi gör det är för att vi behöver skilja och veta vilken nod som ska börja först, eller lättare sagt
+vem som kan börja först. Källan är alltså den enda noden som initieras eftersom den har excess > 0.
+
+Därefter följer ett push meddelande:
+*Push*
+Vi skickar ut POST som heter push, där paylaoden har height (sändarens höjd), amount (hur mycket excess), From (vilken mottagare) till en random granne
+
+Ack
+Bekräftelse sändningar behövs för att bestämma korrekthet, vi vill inte att sändaren ska sänka sin excess utan att mottagaren bekräftar
+att excessen är mottagen. Om vi inte har någon sådan så skulle excessen bara försvinna. Om grannen rejectar oss, provar vi på med en annan granne.
+Dock så ska det inte gå att testa den gamla grannen. Det vi kan göra är att ha en ordningslista och slumpa den.
+
+Vårt villkor är att sändaren skickar ett förslag till mottagaren: Mottagaren kontrollerar vid mottagandet att h(sändare) = h(mottagare) + 1, och accepterar eller avvisar utifrån det
+Varför h(sändare) = h(mottagare) + 1, alltså att höjden bara är 1 steg mindre än sändaren. Varför? Jo vi kan bara skicka till en granne som står exakt ett steg lägre än dig (höjdvillkoret).
+
+Men vad händer om vi inte har noder som är 1 enhet lägre? Vi måste då höja våran höjd med en enhet. 
+Exempel är att man står på steg 3, grannarna med kvarvarande kapacitet står på steg 3, 4 och 5 (alla samma eller högre och man kan inte pusha till någon). Minsta bland dem är 3.
+Då sätter vi våran nya höjd till 3 + 1 = 4. Nu står du på steg 4, och grannen som stod på steg 3 är nu admissible för oss.
+Våran tanke är då att pusha → om alla avvisas → relabela → broadcasta → pusha igen → osv, tills excess = 0 eller inga fler grannar med kapacitet finns. Därefter när vi relabalar berättar vi till alla grannar att vi har relabalat.
+
+
+Slutligen behöver vi någon form av slut till systemet. Jag tänker att vi har någon controller som alla noder meddelar, när alla noder slutar medellar den så är systemet gone. Vi kanske har nån variabel som heter activeNodes som är en int typ.
+Vid excess <= 0 är den inte längre aktiv.
+
+Det va inte tillräcklig nog, och jag googlade lite: Activation Trees (Dijkstra-Scholten)
+
+The controller acts as the root of an environment. When a node activates another node by sending a message, a parent-child relationship is formed. When a node becomes idle and all its children have finished, it sends an acknowledgment back up to its parent. Once the controller receives acknowledgments from all its direct children, it knows the entire system is idle.
+
+Med andra ord: kontrollern aktiverar källan via en start knapp, källan pushar (aktiverar till A) som sedan pushar till B. När B är klar så skickar den upp till källan som en "ACK" och då terminerar systemet. A och B är children till föräldrarn. Varje nod kan ha sin egna förälder
+sänkan slut
+
+Dags för implementation:
+
+discharge
+
+control(G0) ->
