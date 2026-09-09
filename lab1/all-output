@@ -1,1 +1,2360 @@
-f = 77
+preflow push in erlang
+n = 10
+m = 30
+nodes = [{node,0,10,268,[29,26,11,6,2],true,false,undefined,[],undefined,0},
+         {node,1,0,0,[29,21,19,16,7],false,false,undefined,[],undefined,0},
+         {node,2,0,0,[20,19,15,14,9,8],false,false,undefined,[],undefined,0},
+         {node,3,0,0,[24,23,17,14,12,2],false,false,undefined,[],undefined,0},
+         {node,4,0,0,[27,11,9,5,3],false,false,undefined,[],undefined,0},
+         {node,5,0,0,[24,22,20,16,13,4],false,false,undefined,[],undefined,0},
+         {node,6,0,0,
+               [25,21,18,15,12,6,4,0],
+               false,false,undefined,[],undefined,0},
+         {node,7,0,0,
+               [28,27,25,22,17,10,8,7],
+               false,false,undefined,[],undefined,0},
+         {node,8,0,0,[28,26,18,5,1],false,false,undefined,[],undefined,0},
+         {node,9,0,0,[23,13,10,3,1,0],false,true,undefined,[],undefined,0}]
+edges = [{edge,6,9,81},
+         {edge,8,9,36},
+         {edge,0,3,26},
+         {edge,4,9,77},
+         {edge,5,6,65},
+         {edge,4,8,34},
+         {edge,0,6,36},
+         {edge,1,7,74},
+         {edge,2,7,50},
+         {edge,2,4,84},
+         {edge,7,9,63},
+         {edge,0,4,91},
+         {edge,3,6,46},
+         {edge,5,9,72},
+         {edge,2,3,57},
+         {edge,2,6,82},
+         {edge,1,5,91},
+         {edge,3,7,67},
+         {edge,6,8,44},
+         {edge,1,2,45},
+         {edge,2,5,56},
+         {edge,1,6,77},
+         {edge,5,7,29},
+         {edge,3,9,31},
+         {edge,3,5,63},
+         {edge,6,7,41},
+         {edge,0,8,83},
+         {edge,4,7,16},
+         {edge,7,8,71},
+         {edge,0,1,32}]
+node_actors = undefined
+so far got 0 hello
+node_loop 252: node = {node,0,10,268,
+                            [29,26,11,6,2],
+                            true,false,undefined,[],undefined,0}
+node_loop 252: node = {node,1,0,0,
+                            [29,21,19,16,7],
+                            false,false,undefined,[],undefined,0}
+node_loop 252: node = {node,2,0,0,
+                            [20,19,15,14,9,8],
+                            false,false,undefined,[],undefined,0}
+node_loop 252: node = {node,3,0,0,
+                            [24,23,17,14,12,2],
+                            false,false,undefined,[],undefined,0}
+node_loop 252: node = {node,4,0,0,
+                            [27,11,9,5,3],
+                            false,false,undefined,[],undefined,0}
+node_loop 252: node = {node,5,0,0,
+                            [24,22,20,16,13,4],
+                            false,false,undefined,[],undefined,0}
+node_loop 252: node = {node,6,0,0,
+                            [25,21,18,15,12,6,4,0],
+                            false,false,undefined,[],undefined,0}
+node_loop 252: node = {node,7,0,0,
+                            [28,27,25,22,17,10,8,7],
+                            false,false,undefined,[],undefined,0}
+node_loop 252: node = {node,8,0,0,
+                            [28,26,18,5,1],
+                            false,false,undefined,[],undefined,0}
+node_loop 252: node = {node,9,0,0,
+                            [23,13,10,3,1,0],
+                            false,true,undefined,[],undefined,0}
+node {node,0,10,268,[29,26,11,6,2],true,false,undefined,[],undefined,0} got hello
+node {node,1,0,0,[29,21,19,16,7],false,false,undefined,[],undefined,0} got hello
+node {node,2,0,0,[20,19,15,14,9,8],false,false,undefined,[],undefined,0} got hello
+node {node,3,0,0,[24,23,17,14,12,2],false,false,undefined,[],undefined,0} got hello
+node {node,4,0,0,[27,11,9,5,3],false,false,undefined,[],undefined,0} got hello
+node {node,5,0,0,[24,22,20,16,13,4],false,false,undefined,[],undefined,0} got hello
+node {node,6,0,0,[25,21,18,15,12,6,4,0],false,false,undefined,[],undefined,0} got hello
+node {node,7,0,0,[28,27,25,22,17,10,8,7],false,false,undefined,[],undefined,0} got hello
+node {node,8,0,0,[28,26,18,5,1],false,false,undefined,[],undefined,0} got hello
+node {node,9,0,0,[23,13,10,3,1,0],false,true,undefined,[],undefined,0} got hello
+node_loop 252: node = {node,0,10,268,
+                            [29,26,11,6,2],
+                            true,false,undefined,[],undefined,0}
+node_loop 252: node = {node,1,0,0,
+                            [29,21,19,16,7],
+                            false,false,undefined,[],undefined,0}
+got hello from <0.79.0>
+node_loop 252: node = {node,2,0,0,
+                            [20,19,15,14,9,8],
+                            false,false,undefined,[],undefined,0}
+node_loop 252: node = {node,3,0,0,
+                            [24,23,17,14,12,2],
+                            false,false,undefined,[],undefined,0}
+node_loop 252: node = {node,4,0,0,
+                            [27,11,9,5,3],
+                            false,false,undefined,[],undefined,0}
+node_loop 252: node = {node,5,0,0,
+                            [24,22,20,16,13,4],
+                            false,false,undefined,[],undefined,0}
+node_loop 252: node = {node,6,0,0,
+                            [25,21,18,15,12,6,4,0],
+                            false,false,undefined,[],undefined,0}
+node_loop 252: node = {node,7,0,0,
+                            [28,27,25,22,17,10,8,7],
+                            false,false,undefined,[],undefined,0}
+node_loop 252: node = {node,8,0,0,
+                            [28,26,18,5,1],
+                            false,false,undefined,[],undefined,0}
+node_loop 252: node = {node,9,0,0,
+                            [23,13,10,3,1,0],
+                            false,true,undefined,[],undefined,0}
+so far got 1 hello
+got hello from <0.80.0>
+so far got 2 hello
+got hello from <0.81.0>
+so far got 3 hello
+got hello from <0.82.0>
+so far got 4 hello
+got hello from <0.83.0>
+so far got 5 hello
+got hello from <0.84.0>
+so far got 6 hello
+got hello from <0.85.0>
+so far got 7 hello
+got hello from <0.86.0>
+so far got 8 hello
+got hello from <0.87.0>
+so far got 9 hello
+got hello from <0.88.0>
+all nodes said hello
+n = 10
+m = 30
+nodes = [{node,0,10,268,[29,26,11,6,2],true,false,undefined,[],undefined,0},
+         {node,1,0,0,[29,21,19,16,7],false,false,undefined,[],undefined,0},
+         {node,2,0,0,[20,19,15,14,9,8],false,false,undefined,[],undefined,0},
+         {node,3,0,0,[24,23,17,14,12,2],false,false,undefined,[],undefined,0},
+         {node,4,0,0,[27,11,9,5,3],false,false,undefined,[],undefined,0},
+         {node,5,0,0,[24,22,20,16,13,4],false,false,undefined,[],undefined,0},
+         {node,6,0,0,
+               [25,21,18,15,12,6,4,0],
+               false,false,undefined,[],undefined,0},
+         {node,7,0,0,
+               [28,27,25,22,17,10,8,7],
+               false,false,undefined,[],undefined,0},
+         {node,8,0,0,[28,26,18,5,1],false,false,undefined,[],undefined,0},
+         {node,9,0,0,[23,13,10,3,1,0],false,true,undefined,[],undefined,0}]
+edges = [{edge,6,9,81},
+         {edge,8,9,36},
+         {edge,0,3,26},
+         {edge,4,9,77},
+         {edge,5,6,65},
+         {edge,4,8,34},
+         {edge,0,6,36},
+         {edge,1,7,74},
+         {edge,2,7,50},
+         {edge,2,4,84},
+         {edge,7,9,63},
+         {edge,0,4,91},
+         {edge,3,6,46},
+         {edge,5,9,72},
+         {edge,2,3,57},
+         {edge,2,6,82},
+         {edge,1,5,91},
+         {edge,3,7,67},
+         {edge,6,8,44},
+         {edge,1,2,45},
+         {edge,2,5,56},
+         {edge,1,6,77},
+         {edge,5,7,29},
+         {edge,3,9,31},
+         {edge,3,5,63},
+         {edge,6,7,41},
+         {edge,0,8,83},
+         {edge,4,7,16},
+         {edge,7,8,71},
+         {edge,0,1,32}]
+node_actors = {array,10,0,undefined,
+                     {<0.79.0>,<0.80.0>,<0.81.0>,<0.82.0>,<0.83.0>,<0.84.0>,
+                      <0.85.0>,<0.86.0>,<0.87.0>,<0.88.0>}}
+node fick start, E = 0, Adj = [29,21,19,16,7]
+node fick start, E = 0, Adj = [20,19,15,14,9,8]
+node fick start, E = 0, Adj = [24,23,17,14,12,2]
+node fick start, E = 0, Adj = [25,21,18,15,12,6,4,0]
+node fick start, E = 0, Adj = [28,27,25,22,17,10,8,7]
+node fick start, E = 0, Adj = [27,11,9,5,3]
+node fick start, E = 268, Adj = [29,26,11,6,2]
+node fick start, E = 0, Adj = [24,22,20,16,13,4]
+node fick start, E = 0, Adj = [28,26,18,5,1]
+node_loop 252: node = {node,1,0,0,
+                            [29,21,19,16,7],
+                            false,false,undefined,[],undefined,0}
+node_loop 252: node = {node,2,0,0,
+                            [20,19,15,14,9,8],
+                            false,false,undefined,[],undefined,0}
+node_loop 252: node = {node,3,0,0,
+                            [24,23,17,14,12,2],
+                            false,false,undefined,[],undefined,0}
+node_loop 252: node = {node,4,0,0,
+                            [27,11,9,5,3],
+                            false,false,undefined,[],undefined,0}
+node_loop 252: node = {node,6,0,0,
+                            [25,21,18,15,12,6,4,0],
+                            false,false,undefined,[],undefined,0}
+node_loop 252: node = {node,7,0,0,
+                            [28,27,25,22,17,10,8,7],
+                            false,false,undefined,[],undefined,0}
+node_loop 252: node = {node,5,0,0,
+                            [24,22,20,16,13,4],
+                            false,false,undefined,[],undefined,0}
+I=29 [{29,0}]
+node_loop 252: node = {node,8,0,0,
+                            [28,26,18,5,1],
+                            false,false,undefined,[],undefined,0}
+I=29 f=0
+=============== available capacity on {edge,0,1,32} for 0 is 32
+I=29 [{29,0}]
+I=29 f=0
+=============== available capacity on {edge,0,1,32} for 0 is 32
+node_loop 252: node = {node,1,0,0,
+                            [29,21,19,16,7],
+                            false,false,undefined,[],undefined,0}
+node {node,0,10,268,[29,26,11,6,2],true,false,[29,26,11,6,2],[],undefined,0} rejected push_response from <0.80.0>, Amount = 0, NewE = 268
+I=26 [{26,0}]
+I=26 f=0
+=============== available capacity on {edge,0,8,83} for 0 is 83
+I=26 [{26,0}]
+I=26 f=0
+=============== available capacity on {edge,0,8,83} for 0 is 83
+node_loop 252: node = {node,8,0,0,
+                            [28,26,18,5,1],
+                            false,false,undefined,[],undefined,0}
+node {node,0,10,268,
+           [29,26,11,6,2],
+           true,false,
+           [26,11,6,2],
+           [{29,0}],
+           undefined,0} rejected push_response from <0.87.0>, Amount = 0, NewE = 268
+I=11 [{11,0}]
+I=11 f=0
+=============== available capacity on {edge,0,4,91} for 0 is 91
+I=11 [{11,0}]
+I=11 f=0
+=============== available capacity on {edge,0,4,91} for 0 is 91
+node_loop 252: node = {node,4,0,0,
+                            [27,11,9,5,3],
+                            false,false,undefined,[],undefined,0}
+node {node,0,10,268,
+           [29,26,11,6,2],
+           true,false,
+           [11,6,2],
+           [{26,0},{29,0}],
+           undefined,0} rejected push_response from <0.83.0>, Amount = 0, NewE = 268
+I=6 [{6,0}]
+I=6 f=0
+=============== available capacity on {edge,0,6,36} for 0 is 36
+I=6 [{6,0}]
+I=6 f=0
+=============== available capacity on {edge,0,6,36} for 0 is 36
+node_loop 252: node = {node,6,0,0,
+                            [25,21,18,15,12,6,4,0],
+                            false,false,undefined,[],undefined,0}
+node {node,0,10,268,
+           [29,26,11,6,2],
+           true,false,
+           [6,2],
+           [{11,0},{26,0},{29,0}],
+           undefined,0} rejected push_response from <0.85.0>, Amount = 0, NewE = 268
+I=2 [{2,0}]
+I=2 f=0
+=============== available capacity on {edge,0,3,26} for 0 is 26
+I=2 [{2,0}]
+I=2 f=0
+=============== available capacity on {edge,0,3,26} for 0 is 26
+node_loop 252: node = {node,3,0,0,
+                            [24,23,17,14,12,2],
+                            false,false,undefined,[],undefined,0}
+node {node,0,10,268,
+           [29,26,11,6,2],
+           true,false,
+           [2],
+           [{6,0},{11,0},{26,0},{29,0}],
+           undefined,0} rejected push_response from <0.82.0>, Amount = 0, NewE = 268
+I=29 [{29,0}]
+I=29 f=0
+=============== available capacity on {edge,0,1,32} for 0 is 32
+I=26 [{26,0}]
+I=26 f=0
+=============== available capacity on {edge,0,8,83} for 0 is 83
+I=11 [{11,0}]
+I=11 f=0
+=============== available capacity on {edge,0,4,91} for 0 is 91
+I=6 [{6,0}]
+I=6 f=0
+=============== available capacity on {edge,0,6,36} for 0 is 36
+I=2 [{2,0}]
+I=2 f=0
+=============== available capacity on {edge,0,3,26} for 0 is 26
+I=29 [{29,0}]
+I=29 f=0
+=============== available capacity on {edge,0,1,32} for 0 is 32
+I=29 [{29,0}]
+I=29 f=0
+=============== available capacity on {edge,0,1,32} for 0 is 32
+D = 32, F = 0
+I=29 [{29,32}]
+node {node,0,1,268,[29,26,11,6,2],true,false,[29,26,11,6,2],[],undefined,0} accepted push_response from <0.80.0>, Amount = 32, NewE = 236
+, NeighbourHeight = 0I=29 f=32
+PUSH ACK node 0: e 268 -> 236, newlyEngaged=true, outstanding 0 -> 1
+=============== available capacity on {edge,0,1,32} for 1 is 64
+I=26 [{26,0}]
+I=26 f=0
+=============== available capacity on {edge,0,8,83} for 0 is 83
+I=29 [{29,32}]
+I=26 [{26,0}]
+I=29 f=32
+I=26 f=0
+=============== available capacity on {edge,0,1,32} for 1 is 64
+=============== available capacity on {edge,0,8,83} for 0 is 83
+node {node,1,0,32,[29,21,19,16,7],false,false,[29,21,19,16,7],[],<0.79.0>,0} rejected push_response from <0.79.0>, Amount = 0, NewE = 32
+D = 83, F = 0
+I=21 [{21,0}]
+I=28 [{28,0}]
+node {node,0,1,236,[29,26,11,6,2],true,false,[26,11,6,2],[{29,0}],undefined,1} accepted push_response from <0.87.0>, Amount = 83, NewE = 153
+, NeighbourHeight = 0I=21 f=0
+I=28 f=0
+PUSH ACK node 0: e 236 -> 153, newlyEngaged=true, outstanding 1 -> 2
+=============== available capacity on {edge,1,6,77} for 1 is 77
+=============== available capacity on {edge,7,8,71} for 8 is 71
+I=11 [{11,0}]
+I=21 [{21,0}]
+I=28 [{28,0}]
+I=21 f=0
+I=11 f=0
+I=28 f=0
+=============== available capacity on {edge,1,6,77} for 1 is 77
+=============== available capacity on {edge,0,4,91} for 0 is 91
+=============== available capacity on {edge,7,8,71} for 8 is 71
+node_loop 252: node = {node,6,0,0,
+                            [25,21,18,15,12,6,4,0],
+                            false,false,undefined,[],undefined,0}
+node {node,1,0,32,
+           [29,21,19,16,7],
+           false,false,
+           [21,19,16,7],
+           [{29,1}],
+           <0.79.0>,0} rejected push_response from <0.85.0>, Amount = 0, NewE = 32
+I=11 [{11,0}]
+node_loop 252: node = {node,7,0,0,
+                            [28,27,25,22,17,10,8,7],
+                            false,false,undefined,[],undefined,0}
+node {node,8,0,83,[28,26,18,5,1],false,false,[28,26,18,5,1],[],<0.79.0>,0} rejected push_response from <0.86.0>, Amount = 0, NewE = 83
+I=19 [{19,0}]
+I=11 f=0
+I=26 [{26,83}]
+I=19 f=0
+=============== available capacity on {edge,0,4,91} for 0 is 91
+I=26 f=83
+=============== available capacity on {edge,1,2,45} for 1 is 45
+D = 91, F = 0
+=============== available capacity on {edge,0,8,83} for 8 is 166
+I=19 [{19,0}]
+I=27 [{27,0}]
+node {node,0,1,153,
+           [29,26,11,6,2],
+           true,false,
+           [11,6,2],
+           [{26,0},{29,0}],
+           undefined,2} accepted push_response from <0.83.0>, Amount = 91, NewE = 62
+, NeighbourHeight = 0I=19 f=0
+I=27 f=0
+PUSH ACK node 0: e 153 -> 62, newlyEngaged=true, outstanding 2 -> 3
+=============== available capacity on {edge,1,2,45} for 1 is 45
+=============== available capacity on {edge,4,7,16} for 4 is 16
+I=6 [{6,0}]
+node_loop 252: node = {node,2,0,0,
+                            [20,19,15,14,9,8],
+                            false,false,undefined,[],undefined,0}
+node {node,1,0,32,
+           [29,21,19,16,7],
+           false,false,
+           [19,16,7],
+           [{21,0},{29,1}],
+           <0.79.0>,0} rejected push_response from <0.81.0>, Amount = 0, NewE = 32
+I=27 [{27,0}]
+I=6 f=0
+I=16 [{16,0}]
+I=27 f=0
+=============== available capacity on {edge,0,6,36} for 0 is 36
+I=16 f=0
+=============== available capacity on {edge,4,7,16} for 4 is 16
+I=26 [{26,83}]
+=============== available capacity on {edge,1,5,91} for 1 is 91
+I=6 [{6,0}]
+node_loop 252: node = {node,7,0,0,
+                            [28,27,25,22,17,10,8,7],
+                            false,false,undefined,[],undefined,0}
+node {node,4,0,91,[27,11,9,5,3],false,false,[27,11,9,5,3],[],<0.79.0>,0} rejected push_response from <0.86.0>, Amount = 0, NewE = 91
+I=26 f=83
+I=16 [{16,0}]
+I=6 f=0
+I=11 [{11,91}]
+=============== available capacity on {edge,0,8,83} for 8 is 166
+I=16 f=0
+=============== available capacity on {edge,0,6,36} for 0 is 36
+I=11 f=91
+node {node,8,0,83,[28,26,18,5,1],false,false,[26,18,5,1],[{28,0}],<0.79.0>,0} rejected push_response from <0.79.0>, Amount = 0, NewE = 83
+=============== available capacity on {edge,1,5,91} for 1 is 91
+D = 36, F = 0
+=============== available capacity on {edge,0,4,91} for 4 is 182
+I=18 [{18,0}]
+node_loop 252: node = {node,5,0,0,
+                            [24,22,20,16,13,4],
+                            false,false,undefined,[],undefined,0}
+node {node,1,0,32,
+           [29,21,19,16,7],
+           false,false,
+           [16,7],
+           [{19,0},{21,0},{29,1}],
+           <0.79.0>,0} rejected push_response from <0.84.0>, Amount = 0, NewE = 32
+I=25 [{25,0}]
+node {node,0,1,62,
+           [29,26,11,6,2],
+           true,false,
+           [6,2],
+           [{11,0},{26,0},{29,0}],
+           undefined,3} accepted push_response from <0.85.0>, Amount = 36, NewE = 26
+, NeighbourHeight = 0I=18 f=0
+I=7 [{7,0}]
+I=25 f=0
+PUSH ACK node 0: e 62 -> 26, newlyEngaged=true, outstanding 3 -> 4
+=============== available capacity on {edge,6,8,44} for 8 is 44
+I=7 f=0
+=============== available capacity on {edge,6,7,41} for 6 is 41
+I=2 [{2,0}]
+=============== available capacity on {edge,1,7,74} for 1 is 74
+I=18 [{18,0}]
+I=25 [{25,0}]
+I=2 f=0
+I=18 f=0
+I=25 f=0
+=============== available capacity on {edge,0,3,26} for 0 is 26
+=============== available capacity on {edge,6,8,44} for 8 is 44
+=============== available capacity on {edge,6,7,41} for 6 is 41
+I=11 [{11,91}]
+I=2 [{2,0}]
+node {node,8,0,83,
+           [28,26,18,5,1],
+           false,false,
+           [18,5,1],
+           [{26,1},{28,0}],
+           <0.79.0>,0} rejected push_response from <0.85.0>, Amount = 0, NewE = 83
+node_loop 252: node = {node,7,0,0,
+                            [28,27,25,22,17,10,8,7],
+                            false,false,undefined,[],undefined,0}
+node {node,6,0,36,
+           [25,21,18,15,12,6,4,0],
+           false,false,
+           [25,21,18,15,12,6,4,0],
+           [],<0.79.0>,0} rejected push_response from <0.86.0>, Amount = 0, NewE = 36
+I=11 f=91
+I=2 f=0
+I=5 [{5,0}]
+I=7 [{7,0}]
+I=21 [{21,0}]
+=============== available capacity on {edge,0,4,91} for 4 is 182
+=============== available capacity on {edge,0,3,26} for 0 is 26
+I=5 f=0
+I=7 f=0
+I=21 f=0
+node {node,4,0,91,[27,11,9,5,3],false,false,[11,9,5,3],[{27,0}],<0.79.0>,0} rejected push_response from <0.79.0>, Amount = 0, NewE = 91
+D = 26, F = 0
+=============== available capacity on {edge,4,8,34} for 8 is 34
+=============== available capacity on {edge,1,7,74} for 1 is 74
+=============== available capacity on {edge,1,6,77} for 6 is 77
+I=9 [{9,0}]
+I=24 [{24,0}]
+node {node,0,1,26,
+           [29,26,11,6,2],
+           true,false,
+           [2],
+           [{6,0},{11,0},{26,0},{29,0}],
+           undefined,4} accepted push_response from <0.82.0>, Amount = 26, NewE = 0
+, NeighbourHeight = 0node_loop 252: node = {node,7,0,0,
+                            [28,27,25,22,17,10,8,7],
+                            false,false,undefined,[],undefined,0}
+node {node,1,0,32,
+           [29,21,19,16,7],
+           false,false,
+           [7],
+           [{16,0},{19,0},{21,0},{29,1}],
+           <0.79.0>,0} rejected push_response from <0.86.0>, Amount = 0, NewE = 32
+I=9 f=0
+I=24 f=0
+PUSH ACK node 0: e 26 -> 0, newlyEngaged=true, outstanding 4 -> 5
+I=29 [{29,32}]
+=============== available capacity on {edge,2,4,84} for 4 is 84
+=============== available capacity on {edge,3,5,63} for 3 is 63
+node_loop 252: node = {node,0,1,0,
+                            [29,26,11,6,2],
+                            true,false,[],
+                            [{2,0},{6,0},{11,0},{26,0},{29,0}],
+                            undefined,5}
+I=29 f=32
+I=5 [{5,0}]
+I=9 [{9,0}]
+I=24 [{24,0}]
+=============== available capacity on {edge,0,1,32} for 1 is 64
+I=5 f=0
+I=9 f=0
+I=24 f=0
+I=21 [{21,0}]
+=============== available capacity on {edge,4,8,34} for 8 is 34
+=============== available capacity on {edge,2,4,84} for 4 is 84
+=============== available capacity on {edge,3,5,63} for 3 is 63
+I=21 f=0
+node {node,8,0,83,
+           [28,26,18,5,1],
+           false,false,
+           [5,1],
+           [{18,0},{26,1},{28,0}],
+           <0.79.0>,0} rejected push_response from <0.83.0>, Amount = 0, NewE = 83
+node_loop 252: node = {node,2,0,0,
+                            [20,19,15,14,9,8],
+                            false,false,undefined,[],undefined,0}
+node {node,4,0,91,
+           [27,11,9,5,3],
+           false,false,
+           [9,5,3],
+           [{11,1},{27,0}],
+           <0.79.0>,0} rejected push_response from <0.81.0>, Amount = 0, NewE = 91
+node_loop 252: node = {node,5,0,0,
+                            [24,22,20,16,13,4],
+                            false,false,undefined,[],undefined,0}
+node {node,3,0,26,
+           [24,23,17,14,12,2],
+           false,false,
+           [24,23,17,14,12,2],
+           [],<0.79.0>,0} rejected push_response from <0.84.0>, Amount = 0, NewE = 26
+=============== available capacity on {edge,1,6,77} for 1 is 77
+I=1 [{1,0}]
+I=5 [{5,0}]
+I=23 [{23,0}]
+I=19 [{19,0}]
+I=1 f=0
+I=5 f=0
+I=23 f=0
+I=19 f=0
+=============== available capacity on {edge,8,9,36} for 8 is 36
+=============== available capacity on {edge,4,8,34} for 4 is 34
+=============== available capacity on {edge,3,9,31} for 3 is 31
+=============== available capacity on {edge,1,2,45} for 1 is 45
+I=1 [{1,0}]
+I=5 [{5,0}]
+I=16 [{16,0}]
+I=1 f=0
+I=5 f=0
+I=16 f=0
+=============== available capacity on {edge,8,9,36} for 8 is 36
+=============== available capacity on {edge,4,8,34} for 4 is 34
+=============== available capacity on {edge,1,5,91} for 1 is 91
+node_loop 252: node = {node,9,0,0,
+                            [23,13,10,3,1,0],
+                            false,true,undefined,[],undefined,0}
+node {node,8,0,83,
+           [28,26,18,5,1],
+           false,false,
+           [1],
+           [{5,0},{18,0},{26,1},{28,0}],
+           <0.79.0>,0} rejected push_response from <0.88.0>, Amount = 0, NewE = 83
+node {node,4,0,91,
+           [27,11,9,5,3],
+           false,false,
+           [5,3],
+           [{9,0},{11,1},{27,0}],
+           <0.79.0>,0} rejected push_response from <0.87.0>, Amount = 0, NewE = 91
+I=7 [{7,0}]
+I=23 [{23,0}]
+I=28 [{28,0}]
+I=3 [{3,0}]
+I=7 f=0
+I=23 f=0
+I=28 f=0
+I=3 f=0
+=============== available capacity on {edge,1,7,74} for 1 is 74
+=============== available capacity on {edge,3,9,31} for 3 is 31
+=============== available capacity on {edge,7,8,71} for 8 is 71
+=============== available capacity on {edge,4,9,77} for 4 is 77
+I=29 [{29,32}]
+node_loop 252: node = {node,9,0,0,
+                            [23,13,10,3,1,0],
+                            false,true,undefined,[],undefined,0}
+node {node,3,0,26,
+           [24,23,17,14,12,2],
+           false,false,
+           [23,17,14,12,2],
+           [{24,0}],
+           <0.79.0>,0} rejected push_response from <0.88.0>, Amount = 0, NewE = 26
+I=26 [{26,83}]
+I=29 f=32
+I=3 [{3,0}]
+I=17 [{17,0}]
+I=26 f=83
+=============== available capacity on {edge,0,1,32} for 1 is 64
+I=3 f=0
+I=17 f=0
+=============== available capacity on {edge,0,8,83} for 8 is 166
+I=21 [{21,0}]
+I=29 [{29,32}]
+=============== available capacity on {edge,4,9,77} for 4 is 77
+=============== available capacity on {edge,3,7,67} for 3 is 67
+I=18 [{18,0}]
+I=21 f=0
+I=29 f=32
+node_loop 252: node = {node,9,0,0,
+                            [23,13,10,3,1,0],
+                            false,true,undefined,[],undefined,0}
+node {node,4,0,91,
+           [27,11,9,5,3],
+           false,false,
+           [3],
+           [{5,0},{9,0},{11,1},{27,0}],
+           <0.79.0>,0} rejected push_response from <0.88.0>, Amount = 0, NewE = 91
+I=17 [{17,0}]
+I=18 f=0
+=============== available capacity on {edge,1,6,77} for 6 is 77
+=============== available capacity on {edge,0,1,32} for 1 is 64
+I=27 [{27,0}]
+I=17 f=0
+=============== available capacity on {edge,6,8,44} for 8 is 44
+node {node,6,0,36,
+           [25,21,18,15,12,6,4,0],
+           false,false,
+           [21,18,15,12,6,4,0],
+           [{25,0}],
+           <0.79.0>,0} rejected push_response from <0.80.0>, Amount = 0, NewE = 36
+node_loop 252: node = {node,0,1,0,
+                            [29,26,11,6,2],
+                            true,false,[],
+                            [{2,0},{6,0},{11,0},{26,0},{29,0}],
+                            undefined,5}
+node {node,1,1,32,[29,21,19,16,7],false,false,[29,21,19,16,7],[],<0.79.0>,0} rejected push_response from <0.79.0>, Amount = 0, NewE = 32
+I=27 f=0
+=============== available capacity on {edge,3,7,67} for 3 is 67
+I=5 [{5,0}]
+I=18 [{18,0}]
+I=21 [{21,0}]
+=============== available capacity on {edge,4,7,16} for 4 is 16
+node_loop 252: node = {node,7,0,0,
+                            [28,27,25,22,17,10,8,7],
+                            false,false,undefined,[],undefined,0}
+node {node,3,0,26,
+           [24,23,17,14,12,2],
+           false,false,
+           [17,14,12,2],
+           [{23,0},{24,0}],
+           <0.79.0>,0} rejected push_response from <0.86.0>, Amount = 0, NewE = 26
+I=5 f=0
+I=18 f=0
+I=21 f=0
+I=11 [{11,91}]
+I=14 [{14,0}]
+=============== available capacity on {edge,4,8,34} for 8 is 34
+=============== available capacity on {edge,6,8,44} for 6 is 44
+=============== available capacity on {edge,1,6,77} for 1 is 77
+I=11 f=91
+I=14 f=0
+I=1 [{1,0}]
+I=21 [{21,0}]
+=============== available capacity on {edge,0,4,91} for 4 is 182
+=============== available capacity on {edge,2,3,57} for 3 is 57
+I=1 f=0
+I=21 f=0
+I=9 [{9,0}]
+I=14 [{14,0}]
+=============== available capacity on {edge,8,9,36} for 8 is 36
+=============== available capacity on {edge,1,6,77} for 1 is 77
+I=9 f=0
+I=14 f=0
+I=28 [{28,0}]
+D = 32, F = 0
+=============== available capacity on {edge,2,4,84} for 4 is 84
+=============== available capacity on {edge,2,3,57} for 3 is 57
+I=28 f=0
+node {node,1,1,32,
+           [29,21,19,16,7],
+           false,false,
+           [21,19,16,7],
+           [{29,1}],
+           <0.79.0>,0} accepted push_response from <0.85.0>, Amount = 32, NewE = 0
+, NeighbourHeight = 0I=5 [{5,0}]
+node_loop 252: node = {node,2,0,0,
+                            [20,19,15,14,9,8],
+                            false,false,undefined,[],undefined,0}
+node {node,3,0,26,
+           [24,23,17,14,12,2],
+           false,false,
+           [14,12,2],
+           [{17,0},{23,0},{24,0}],
+           <0.79.0>,0} rejected push_response from <0.81.0>, Amount = 0, NewE = 26
+=============== available capacity on {edge,7,8,71} for 8 is 71
+PUSH ACK node 1: e 32 -> 0, newlyEngaged=false, outstanding 0 -> 0
+I=5 f=0
+I=12 [{12,0}]
+I=18 [{18,0}]
+I=28 [{28,0}]
+NODE 1 FINISHED -> ACK parent <0.79.0>
+=============== available capacity on {edge,4,8,34} for 4 is 34
+I=12 f=0
+I=18 f=0
+I=28 f=0
+node_loop 252: node = {node,1,1,0,
+                            [29,21,19,16,7],
+                            false,false,
+                            [19,16,7],
+                            [{21,0},{29,1}],
+                            undefined,0}
+TERM ACK node 0: outstanding 5 -> 4, e=0
+I=3 [{3,0}]
+=============== available capacity on {edge,3,6,46} for 3 is 46
+=============== available capacity on {edge,6,8,44} for 6 is 44
+=============== available capacity on {edge,7,8,71} for 8 is 71
+node_loop 252: node = {node,0,1,0,
+                            [29,26,11,6,2],
+                            true,false,[],
+                            [{2,0},{6,0},{11,0},{26,0},{29,0}],
+                            undefined,4}
+I=3 f=0
+I=12 [{12,0}]
+D = 71, F = 0
+=============== available capacity on {edge,4,9,77} for 4 is 77
+I=12 f=0
+I=28 [{28,-71}]
+node {node,8,1,83,[28,26,18,5,1],false,false,[28,26,18,5,1],[],<0.79.0>,0} accepted push_response from <0.86.0>, Amount = 71, NewE = 12
+, NeighbourHeight = 0I=27 [{27,0}]
+=============== available capacity on {edge,3,6,46} for 3 is 46
+I=28 f=-71
+PUSH ACK node 8: e 83 -> 12, newlyEngaged=true, outstanding 0 -> 1
+I=27 f=0
+node {node,6,0,68,
+           [25,21,18,15,12,6,4,0],
+           false,false,
+           [18,15,12,6,4,0],
+           [{21,1},{25,0}],
+           <0.79.0>,0} rejected push_response from <0.87.0>, Amount = 0, NewE = 68
+node {node,3,0,26,
+           [24,23,17,14,12,2],
+           false,false,
+           [12,2],
+           [{14,0},{17,0},{23,0},{24,0}],
+           <0.79.0>,0} rejected push_response from <0.85.0>, Amount = 0, NewE = 26
+=============== available capacity on {edge,7,8,71} for 7 is 142
+I=26 [{26,83}]
+=============== available capacity on {edge,4,7,16} for 4 is 16
+I=15 [{15,0}]
+I=2 [{2,26}]
+I=26 f=83
+I=27 [{27,0}]
+I=15 f=0
+I=2 f=26
+=============== available capacity on {edge,0,8,83} for 8 is 166
+I=27 f=0
+=============== available capacity on {edge,2,6,82} for 6 is 82
+=============== available capacity on {edge,0,3,26} for 3 is 52
+I=28 [{28,-71}]
+I=26 [{26,83}]
+=============== available capacity on {edge,4,7,16} for 4 is 16
+I=28 f=-71
+I=26 f=83
+D = 16, F = 0
+I=15 [{15,0}]
+=============== available capacity on {edge,7,8,71} for 7 is 142
+=============== available capacity on {edge,0,8,83} for 8 is 166
+node {node,4,1,91,[27,11,9,5,3],false,false,[27,11,9,5,3],[],<0.79.0>,0} accepted push_response from <0.86.0>, Amount = 16, NewE = 75
+, NeighbourHeight = 0I=15 f=0
+node_loop 252: node = {node,0,1,0,
+                            [29,26,11,6,2],
+                            true,false,[],
+                            [{2,0},{6,0},{11,0},{26,0},{29,0}],
+                            undefined,4}
+node {node,7,0,87,
+           [28,27,25,22,17,10,8,7],
+           false,false,
+           [28,27,25,22,17,10,8,7],
+           [],<0.87.0>,0} rejected push_response from <0.87.0>, Amount = 0, NewE = 87
+node {node,8,1,12,[28,26,18,5,1],false,false,[26,18,5,1],[{28,0}],<0.79.0>,1} rejected push_response from <0.79.0>, Amount = 0, NewE = 12
+PUSH ACK node 4: e 91 -> 75, newlyEngaged=false, outstanding 0 -> 0
+=============== available capacity on {edge,2,6,82} for 6 is 82
+I=2 [{2,26}]
+I=27 [{27,16}]
+I=18 [{18,0}]
+I=11 [{11,91}]
+node_loop 252: node = {node,2,0,0,
+                            [20,19,15,14,9,8],
+                            false,false,undefined,[],undefined,0}
+I=2 f=26
+I=27 f=16
+I=18 f=0
+I=11 f=91
+node {node,6,0,68,
+           [25,21,18,15,12,6,4,0],
+           false,false,
+           [15,12,6,4,0],
+           [{18,1},{21,1},{25,0}],
+           <0.79.0>,0} rejected push_response from <0.81.0>, Amount = 0, NewE = 68
+=============== available capacity on {edge,0,3,26} for 3 is 52
+=============== available capacity on {edge,4,7,16} for 7 is 32
+=============== available capacity on {edge,6,8,44} for 8 is 44
+=============== available capacity on {edge,0,4,91} for 4 is 182
+I=12 [{12,0}]
+node_loop 252: node = {node,0,1,0,
+                            [29,26,11,6,2],
+                            true,false,[],
+                            [{2,0},{6,0},{11,0},{26,0},{29,0}],
+                            undefined,4}
+node {node,3,0,26,
+           [24,23,17,14,12,2],
+           false,false,
+           [2],
+           [{12,0},{14,0},{17,0},{23,0},{24,0}],
+           <0.79.0>,0} rejected push_response from <0.79.0>, Amount = 0, NewE = 26
+I=27 [{27,16}]
+I=12 f=0
+I=11 [{11,91}]
+I=24 [{24,0}]
+I=27 f=16
+=============== available capacity on {edge,3,6,46} for 6 is 46
+I=11 f=91
+I=24 f=0
+=============== available capacity on {edge,4,7,16} for 7 is 32
+I=18 [{18,0}]
+=============== available capacity on {edge,0,4,91} for 4 is 182
+=============== available capacity on {edge,3,5,63} for 3 is 63
+node {node,7,0,87,
+           [28,27,25,22,17,10,8,7],
+           false,false,
+           [27,25,22,17,10,8,7],
+           [{28,1}],
+           <0.87.0>,0} rejected push_response from <0.83.0>, Amount = 0, NewE = 87
+I=18 f=0
+node_loop 252: node = {node,0,1,0,
+                            [29,26,11,6,2],
+                            true,false,[],
+                            [{2,0},{6,0},{11,0},{26,0},{29,0}],
+                            undefined,4}
+node {node,4,1,75,[27,11,9,5,3],false,false,[11,9,5,3],[{27,0}],<0.79.0>,0} rejected push_response from <0.79.0>, Amount = 0, NewE = 75
+I=23 [{23,0}]
+I=25 [{25,0}]
+=============== available capacity on {edge,6,8,44} for 8 is 44
+I=9 [{9,0}]
+I=23 f=0
+I=25 f=0
+D = 12, F = 0
+I=9 f=0
+=============== available capacity on {edge,3,9,31} for 3 is 31
+=============== available capacity on {edge,6,7,41} for 7 is 41
+node {node,8,1,12,
+           [28,26,18,5,1],
+           false,false,
+           [18,5,1],
+           [{26,1},{28,0}],
+           <0.79.0>,1} accepted push_response from <0.85.0>, Amount = 12, NewE = 0
+, NeighbourHeight = 0=============== available capacity on {edge,2,4,84} for 4 is 84
+I=17 [{17,0}]
+I=25 [{25,0}]
+PUSH ACK node 8: e 12 -> 0, newlyEngaged=false, outstanding 1 -> 1
+I=9 [{9,0}]
+I=17 f=0
+I=25 f=0
+node_loop 252: node = {node,8,1,0,
+                            [28,26,18,5,1],
+                            false,false,
+                            [5,1],
+                            [{18,0},{26,1},{28,0}],
+                            <0.79.0>,1}
+I=9 f=0
+=============== available capacity on {edge,3,7,67} for 3 is 67
+=============== available capacity on {edge,6,7,41} for 7 is 41
+=============== available capacity on {edge,2,4,84} for 4 is 84
+I=14 [{14,0}]
+node {node,7,0,87,
+           [28,27,25,22,17,10,8,7],
+           false,false,
+           [25,22,17,10,8,7],
+           [{27,1},{28,1}],
+           <0.87.0>,0} rejected push_response from <0.85.0>, Amount = 0, NewE = 87
+D = 75, F = 0
+I=14 f=0
+I=22 [{22,0}]
+I=20 [{20,0}]
+node {node,4,1,75,
+           [27,11,9,5,3],
+           false,false,
+           [9,5,3],
+           [{11,1},{27,0}],
+           <0.79.0>,0} accepted push_response from <0.81.0>, Amount = 75, NewE = 0
+, NeighbourHeight = 0=============== available capacity on {edge,2,3,57} for 3 is 57
+I=22 f=0
+I=20 f=0
+PUSH ACK node 4: e 75 -> 0, newlyEngaged=true, outstanding 0 -> 1
+I=12 [{12,0}]
+=============== available capacity on {edge,5,7,29} for 7 is 29
+=============== available capacity on {edge,2,5,56} for 2 is 56
+node_loop 252: node = {node,4,1,0,
+                            [27,11,9,5,3],
+                            false,false,
+                            [5,3],
+                            [{9,0},{11,1},{27,0}],
+                            <0.79.0>,1}
+I=12 f=0
+I=22 [{22,0}]
+=============== available capacity on {edge,3,6,46} for 3 is 46
+I=22 f=0
+I=2 [{2,26}]
+=============== available capacity on {edge,5,7,29} for 7 is 29
+I=2 f=26
+node_loop 252: node = {node,5,0,0,
+                            [24,22,20,16,13,4],
+                            false,false,undefined,[],undefined,0}
+=============== available capacity on {edge,0,3,26} for 3 is 52
+node {node,7,0,87,
+           [28,27,25,22,17,10,8,7],
+           false,false,
+           [22,17,10,8,7],
+           [{25,0},{27,1},{28,1}],
+           <0.87.0>,0} rejected push_response from <0.84.0>, Amount = 0, NewE = 87
+I=20 [{20,0}]
+I=24 [{24,0}]
+I=17 [{17,0}]
+I=20 f=0
+I=24 f=0
+I=17 f=0
+=============== available capacity on {edge,2,5,56} for 2 is 56
+=============== available capacity on {edge,3,5,63} for 3 is 63
+=============== available capacity on {edge,3,7,67} for 7 is 67
+I=12 [{12,0}]
+node_loop 252: node = {node,5,0,0,
+                            [24,22,20,16,13,4],
+                            false,false,undefined,[],undefined,0}
+node {node,2,0,75,
+           [20,19,15,14,9,8],
+           false,false,
+           [20,19,15,14,9,8],
+           [],<0.83.0>,0} rejected push_response from <0.84.0>, Amount = 0, NewE = 75
+I=24 [{24,0}]
+I=12 f=0
+I=19 [{19,0}]
+I=24 f=0
+=============== available capacity on {edge,3,6,46} for 6 is 46
+I=19 f=0
+=============== available capacity on {edge,3,5,63} for 3 is 63
+I=17 [{17,0}]
+node {node,6,0,80,
+           [25,21,18,15,12,6,4,0],
+           false,false,
+           [12,6,4,0],
+           [{15,0},{18,1},{21,1},{25,0}],
+           <0.79.0>,0} rejected push_response from <0.82.0>, Amount = 0, NewE = 80
+=============== available capacity on {edge,1,2,45} for 2 is 45
+D = 26, F = 0
+I=17 f=0
+I=6 [{6,36}]
+I=19 [{19,0}]
+I=24 [{24,26}]
+=============== available capacity on {edge,3,7,67} for 7 is 67
+I=6 f=36
+I=19 f=0
+I=24 f=26
+node {node,3,1,26,
+           [24,23,17,14,12,2],
+           false,false,
+           [24,23,17,14,12,2],
+           [],<0.79.0>,0} accepted push_response from <0.84.0>, Amount = 26, NewE = 0
+, NeighbourHeight = 0=============== available capacity on {edge,0,6,36} for 6 is 72
+=============== available capacity on {edge,1,2,45} for 2 is 45
+=============== available capacity on {edge,3,5,63} for 5 is 89
+node {node,7,0,87,
+           [28,27,25,22,17,10,8,7],
+           false,false,
+           [17,10,8,7],
+           [{22,0},{25,0},{27,1},{28,1}],
+           <0.87.0>,0} rejected push_response from <0.82.0>, Amount = 0, NewE = 87
+PUSH ACK node 3: e 26 -> 0, newlyEngaged=true, outstanding 0 -> 1
+node_loop 252: node = {node,1,1,0,
+                            [29,21,19,16,7],
+                            false,false,
+                            [19,16,7],
+                            [{21,0},{29,1}],
+                            undefined,0}
+I=6 [{6,36}]
+node {node,2,0,75,
+           [20,19,15,14,9,8],
+           false,false,
+           [19,15,14,9,8],
+           [{20,0}],
+           <0.83.0>,0} rejected push_response from <0.80.0>, Amount = 0, NewE = 75
+node_loop 252: node = {node,3,1,0,
+                            [24,23,17,14,12,2],
+                            false,false,
+                            [23,17,14,12,2],
+                            [{24,0}],
+                            <0.79.0>,1}
+I=10 [{10,0}]
+I=6 f=36
+I=15 [{15,0}]
+I=24 [{24,26}]
+I=10 f=0
+=============== available capacity on {edge,0,6,36} for 6 is 72
+I=15 f=0
+I=24 f=26
+=============== available capacity on {edge,7,9,63} for 7 is 63
+node_loop 252: node = {node,0,1,0,
+                            [29,26,11,6,2],
+                            true,false,[],
+                            [{2,0},{6,0},{11,0},{26,0},{29,0}],
+                            undefined,4}
+node {node,6,0,80,
+           [25,21,18,15,12,6,4,0],
+           false,false,
+           [6,4,0],
+           [{12,1},{15,0},{18,1},{21,1},{25,0}],
+           <0.79.0>,0} rejected push_response from <0.79.0>, Amount = 0, NewE = 80
+=============== available capacity on {edge,2,6,82} for 2 is 82
+=============== available capacity on {edge,3,5,63} for 5 is 89
+I=10 [{10,0}]
+I=4 [{4,0}]
+node_loop 252: node = {node,3,1,0,
+                            [24,23,17,14,12,2],
+                            false,false,
+                            [23,17,14,12,2],
+                            [{24,0}],
+                            <0.79.0>,1}
+node {node,5,0,26,
+           [24,22,20,16,13,4],
+           false,false,
+           [24,22,20,16,13,4],
+           [],<0.82.0>,0} rejected push_response from <0.82.0>, Amount = 0, NewE = 26
+I=10 f=0
+I=4 f=0
+I=22 [{22,0}]
+=============== available capacity on {edge,7,9,63} for 7 is 63
+=============== available capacity on {edge,5,6,65} for 6 is 65
+I=22 f=0
+node_loop 252: node = {node,9,0,0,
+                            [23,13,10,3,1,0],
+                            false,true,undefined,[],undefined,0}
+node {node,7,0,87,
+           [28,27,25,22,17,10,8,7],
+           false,false,
+           [10,8,7],
+           [{17,1},{22,0},{25,0},{27,1},{28,1}],
+           <0.87.0>,0} rejected push_response from <0.88.0>, Amount = 0, NewE = 87
+I=15 [{15,0}]
+=============== available capacity on {edge,5,7,29} for 5 is 29
+I=8 [{8,0}]
+I=15 f=0
+I=4 [{4,0}]
+I=8 f=0
+=============== available capacity on {edge,2,6,82} for 2 is 82
+I=4 f=0
+=============== available capacity on {edge,2,7,50} for 7 is 50
+node {node,2,0,75,
+           [20,19,15,14,9,8],
+           false,false,
+           [15,14,9,8],
+           [{19,1},{20,0}],
+           <0.83.0>,0} rejected push_response from <0.85.0>, Amount = 0, NewE = 75
+=============== available capacity on {edge,5,6,65} for 6 is 65
+I=22 [{22,0}]
+I=14 [{14,0}]
+node {node,6,0,80,
+           [25,21,18,15,12,6,4,0],
+           false,false,
+           [4,0],
+           [{6,1},{12,1},{15,0},{18,1},{21,1},{25,0}],
+           <0.79.0>,0} rejected push_response from <0.84.0>, Amount = 0, NewE = 80
+I=22 f=0
+I=14 f=0
+I=0 [{0,0}]
+=============== available capacity on {edge,5,7,29} for 5 is 29
+=============== available capacity on {edge,2,3,57} for 2 is 57
+I=0 f=0
+node {node,5,0,26,
+           [24,22,20,16,13,4],
+           false,false,
+           [22,20,16,13,4],
+           [{24,1}],
+           <0.82.0>,0} rejected push_response from <0.86.0>, Amount = 0, NewE = 26
+I=8 [{8,0}]
+I=14 [{14,0}]
+=============== available capacity on {edge,6,9,81} for 6 is 81
+I=20 [{20,0}]
+I=8 f=0
+I=14 f=0
+I=0 [{0,0}]
+I=20 f=0
+=============== available capacity on {edge,2,7,50} for 7 is 50
+=============== available capacity on {edge,2,3,57} for 2 is 57
+I=0 f=0
+=============== available capacity on {edge,2,5,56} for 5 is 56
+node {node,7,0,87,
+           [28,27,25,22,17,10,8,7],
+           false,false,
+           [8,7],
+           [{10,0},{17,1},{22,0},{25,0},{27,1},{28,1}],
+           <0.87.0>,0} rejected push_response from <0.81.0>, Amount = 0, NewE = 87
+node_loop 252: node = {node,3,1,0,
+                            [24,23,17,14,12,2],
+                            false,false,
+                            [23,17,14,12,2],
+                            [{24,0}],
+                            <0.79.0>,1}
+node {node,2,0,75,
+           [20,19,15,14,9,8],
+           false,false,
+           [14,9,8],
+           [{15,0},{19,1},{20,0}],
+           <0.83.0>,0} rejected push_response from <0.82.0>, Amount = 0, NewE = 75
+=============== available capacity on {edge,6,9,81} for 6 is 81
+I=7 [{7,0}]
+I=9 [{9,-75}]
+node_loop 252: node = {node,9,0,0,
+                            [23,13,10,3,1,0],
+                            false,true,undefined,[],undefined,0}
+node {node,6,0,80,
+           [25,21,18,15,12,6,4,0],
+           false,false,
+           [0],
+           [{4,0},{6,1},{12,1},{15,0},{18,1},{21,1},{25,0}],
+           <0.79.0>,0} rejected push_response from <0.88.0>, Amount = 0, NewE = 80
+I=7 f=0
+I=9 f=-75
+I=25 [{25,0}]
+=============== available capacity on {edge,1,7,74} for 7 is 74
+=============== available capacity on {edge,2,4,84} for 2 is 159
+I=25 f=0
+I=7 [{7,0}]
+I=20 [{20,0}]
+I=9 [{9,-75}]
+=============== available capacity on {edge,6,7,41} for 6 is 41
+I=7 f=0
+I=20 f=0
+I=9 f=-75
+I=21 [{21,32}]
+=============== available capacity on {edge,1,7,74} for 7 is 74
+=============== available capacity on {edge,2,5,56} for 5 is 56
+=============== available capacity on {edge,2,4,84} for 2 is 159
+I=21 f=32
+node_loop 252: node = {node,1,1,0,
+                            [29,21,19,16,7],
+                            false,false,
+                            [19,16,7],
+                            [{21,0},{29,1}],
+                            undefined,0}
+node {node,7,0,87,
+           [28,27,25,22,17,10,8,7],
+           false,false,
+           [7],
+           [{8,0},{10,0},{17,1},{22,0},{25,0},{27,1},{28,1}],
+           <0.87.0>,0} rejected push_response from <0.80.0>, Amount = 0, NewE = 87
+node {node,5,0,26,
+           [24,22,20,16,13,4],
+           false,false,
+           [20,16,13,4],
+           [{22,0},{24,1}],
+           <0.82.0>,0} rejected push_response from <0.81.0>, Amount = 0, NewE = 26
+node_loop 252: node = {node,4,1,0,
+                            [27,11,9,5,3],
+                            false,false,
+                            [5,3],
+                            [{9,0},{11,1},{27,0}],
+                            <0.79.0>,1}
+node {node,2,0,75,
+           [20,19,15,14,9,8],
+           false,false,"\t\b",
+           [{14,1},{15,0},{19,1},{20,0}],
+           <0.83.0>,0} rejected push_response from <0.83.0>, Amount = 0, NewE = 75
+=============== available capacity on {edge,1,6,77} for 6 is 109
+I=28 [{28,-71}]
+I=16 [{16,0}]
+I=8 [{8,0}]
+I=18 [{18,-12}]
+I=28 f=-71
+I=16 f=0
+I=8 f=0
+I=18 f=-12
+=============== available capacity on {edge,7,8,71} for 7 is 142
+=============== available capacity on {edge,1,5,91} for 5 is 91
+=============== available capacity on {edge,2,7,50} for 2 is 50
+=============== available capacity on {edge,6,8,44} for 6 is 56
+I=27 [{27,16}]
+I=16 [{16,0}]
+I=15 [{15,0}]
+I=27 f=16
+I=16 f=0
+I=15 f=0
+=============== available capacity on {edge,4,7,16} for 7 is 32
+=============== available capacity on {edge,1,5,91} for 5 is 91
+=============== available capacity on {edge,2,6,82} for 6 is 82
+I=25 [{25,0}]
+node_loop 252: node = {node,1,1,0,
+                            [29,21,19,16,7],
+                            false,false,
+                            [19,16,7],
+                            [{21,0},{29,1}],
+                            undefined,0}
+node {node,5,0,26,
+           [24,22,20,16,13,4],
+           false,false,
+           [16,13,4],
+           [{20,0},{22,0},{24,1}],
+           <0.82.0>,0} rejected push_response from <0.80.0>, Amount = 0, NewE = 26
+I=12 [{12,0}]
+I=25 f=0
+I=13 [{13,0}]
+I=12 f=0
+=============== available capacity on {edge,6,7,41} for 7 is 41
+I=13 f=0
+=============== available capacity on {edge,3,6,46} for 6 is 46
+I=22 [{22,0}]
+=============== available capacity on {edge,5,9,72} for 5 is 72
+I=6 [{6,36}]
+I=22 f=0
+I=13 [{13,0}]
+I=6 f=36
+=============== available capacity on {edge,5,7,29} for 7 is 29
+I=13 f=0
+=============== available capacity on {edge,0,6,36} for 6 is 72
+I=17 [{17,0}]
+=============== available capacity on {edge,5,9,72} for 5 is 72
+I=4 [{4,0}]
+I=17 f=0
+node_loop 252: node = {node,9,0,0,
+                            [23,13,10,3,1,0],
+                            false,true,undefined,[],undefined,0}
+node {node,5,0,26,
+           [24,22,20,16,13,4],
+           false,false,
+           [13,4],
+           [{16,1},{20,0},{22,0},{24,1}],
+           <0.82.0>,0} rejected push_response from <0.88.0>, Amount = 0, NewE = 26
+I=4 f=0
+=============== available capacity on {edge,3,7,67} for 7 is 67
+I=4 [{4,0}]
+=============== available capacity on {edge,5,6,65} for 6 is 65
+I=10 [{10,0}]
+I=4 f=0
+I=0 [{0,0}]
+I=10 f=0
+=============== available capacity on {edge,5,6,65} for 5 is 65
+I=0 f=0
+=============== available capacity on {edge,7,9,63} for 7 is 63
+=============== available capacity on {edge,6,9,81} for 6 is 81
+I=8 [{8,0}]
+I=25 [{25,0}]
+I=8 f=0
+I=25 f=0
+=============== available capacity on {edge,2,7,50} for 7 is 50
+=============== available capacity on {edge,6,7,41} for 6 is 41
+I=7 [{7,0}]
+I=4 [{4,0}]
+I=7 f=0
+I=4 f=0
+=============== available capacity on {edge,1,7,74} for 7 is 74
+=============== available capacity on {edge,5,6,65} for 5 is 65
+I=28 [{28,-71}]
+node {node,5,0,26,
+           [24,22,20,16,13,4],
+           false,false,
+           [4],
+           [{13,0},{16,1},{20,0},{22,0},{24,1}],
+           <0.82.0>,0} rejected push_response from <0.85.0>, Amount = 0, NewE = 26
+I=28 f=-71
+I=24 [{24,26}]
+=============== available capacity on {edge,7,8,71} for 7 is 142
+I=24 f=26
+I=8 [{8,0}]
+I=28 [{28,-71}]
+=============== available capacity on {edge,3,5,63} for 5 is 89
+I=8 f=0
+I=28 f=-71
+I=22 [{22,0}]
+=============== available capacity on {edge,2,7,50} for 2 is 50
+=============== available capacity on {edge,7,8,71} for 7 is 142
+I=22 f=0
+I=25 [{25,0}]
+node {node,2,0,75,
+           [20,19,15,14,9,8],
+           false,false,"\b",
+           [{9,1},{14,1},{15,0},{19,1},{20,0}],
+           <0.83.0>,0} rejected push_response from <0.86.0>, Amount = 0, NewE = 75
+node_loop 252: node = {node,8,1,0,
+                            [28,26,18,5,1],
+                            false,false,
+                            [5,1],
+                            [{18,0},{26,1},{28,0}],
+                            <0.79.0>,1}
+=============== available capacity on {edge,5,7,29} for 5 is 29
+I=25 f=0
+I=20 [{20,0}]
+I=20 [{20,0}]
+=============== available capacity on {edge,6,7,41} for 6 is 41
+I=20 f=0
+I=20 f=0
+node {node,7,1,87,
+           [28,27,25,22,17,10,8,7],
+           false,false,
+           [28,27,25,22,17,10,8,7],
+           [],<0.87.0>,0} rejected push_response from <0.87.0>, Amount = 0, NewE = 87
+node {node,6,1,80,
+           [25,21,18,15,12,6,4,0],
+           false,false,
+           [25,21,18,15,12,6,4,0],
+           [],<0.79.0>,0} rejected push_response from <0.86.0>, Amount = 0, NewE = 80
+=============== available capacity on {edge,2,5,56} for 2 is 56
+=============== available capacity on {edge,2,5,56} for 5 is 56
+I=27 [{27,16}]
+I=21 [{21,32}]
+I=19 [{19,0}]
+I=16 [{16,0}]
+I=27 f=16
+I=21 f=32
+I=19 f=0
+I=16 f=0
+=============== available capacity on {edge,4,7,16} for 7 is 32
+=============== available capacity on {edge,1,6,77} for 6 is 109
+=============== available capacity on {edge,1,2,45} for 2 is 45
+=============== available capacity on {edge,1,5,91} for 5 is 91
+I=27 [{27,16}]
+I=21 [{21,32}]
+I=15 [{15,0}]
+I=13 [{13,0}]
+I=27 f=16
+I=21 f=32
+I=15 f=0
+I=13 f=0
+=============== available capacity on {edge,4,7,16} for 7 is 32
+=============== available capacity on {edge,1,6,77} for 6 is 109
+=============== available capacity on {edge,2,6,82} for 2 is 82
+=============== available capacity on {edge,5,9,72} for 5 is 72
+node_loop 252: node = {node,4,1,0,
+                            [27,11,9,5,3],
+                            false,false,
+                            [5,3],
+                            [{9,0},{11,1},{27,0}],
+                            <0.79.0>,1}
+node {node,7,1,87,
+           [28,27,25,22,17,10,8,7],
+           false,false,
+           [27,25,22,17,10,8,7],
+           [{28,1}],
+           <0.87.0>,0} rejected push_response from <0.83.0>, Amount = 0, NewE = 87
+node_loop 252: node = {node,1,1,0,
+                            [29,21,19,16,7],
+                            false,false,
+                            [19,16,7],
+                            [{21,0},{29,1}],
+                            undefined,0}
+I=14 [{14,0}]
+node {node,6,1,80,
+           [25,21,18,15,12,6,4,0],
+           false,false,
+           [21,18,15,12,6,4,0],
+           [{25,1}],
+           <0.79.0>,0} rejected push_response from <0.80.0>, Amount = 0, NewE = 80
+I=4 [{4,0}]
+I=25 [{25,0}]
+I=14 f=0
+I=18 [{18,-12}]
+I=4 f=0
+I=25 f=0
+=============== available capacity on {edge,2,3,57} for 2 is 57
+I=18 f=-12
+=============== available capacity on {edge,5,6,65} for 5 is 65
+=============== available capacity on {edge,6,7,41} for 7 is 41
+I=9 [{9,-75}]
+=============== available capacity on {edge,6,8,44} for 6 is 56
+I=24 [{24,26}]
+I=9 f=-75
+I=25 [{25,0}]
+I=18 [{18,-12}]
+I=24 f=26
+=============== available capacity on {edge,2,4,84} for 2 is 159
+I=25 f=0
+I=18 f=-12
+=============== available capacity on {edge,3,5,63} for 5 is 89
+I=8 [{8,0}]
+=============== available capacity on {edge,6,7,41} for 7 is 41
+=============== available capacity on {edge,6,8,44} for 6 is 56
+I=24 [{24,26}]
+I=8 f=0
+node {node,7,1,87,
+           [28,27,25,22,17,10,8,7],
+           false,false,
+           [25,22,17,10,8,7],
+           [{27,1},{28,1}],
+           <0.87.0>,0} rejected push_response from <0.85.0>, Amount = 0, NewE = 87
+node_loop 252: node = {node,8,1,0,
+                            [28,26,18,5,1],
+                            false,false,
+                            [5,1],
+                            [{18,0},{26,1},{28,0}],
+                            <0.79.0>,1}
+node {node,6,1,80,
+           [25,21,18,15,12,6,4,0],
+           false,false,
+           [18,15,12,6,4,0],
+           [{21,1},{25,1}],
+           <0.79.0>,0} rejected push_response from <0.87.0>, Amount = 0, NewE = 80
+I=24 f=26
+=============== available capacity on {edge,2,7,50} for 2 is 50
+I=22 [{22,0}]
+I=15 [{15,0}]
+=============== available capacity on {edge,3,5,63} for 5 is 89
+I=20 [{20,0}]
+I=22 f=0
+I=15 f=0
+node_loop 252: node = {node,3,1,0,
+                            [24,23,17,14,12,2],
+                            false,false,
+                            [23,17,14,12,2],
+                            [{24,0}],
+                            <0.79.0>,1}
+I=20 f=0
+=============== available capacity on {edge,5,7,29} for 7 is 29
+=============== available capacity on {edge,2,6,82} for 6 is 82
+node {node,5,1,26,
+           [24,22,20,16,13,4],
+           false,false,
+           [24,22,20,16,13,4],
+           [],<0.82.0>,0} rejected push_response from <0.82.0>, Amount = 0, NewE = 26
+=============== available capacity on {edge,2,5,56} for 2 is 56
+I=22 [{22,0}]
+I=15 [{15,0}]
+I=22 f=0
+I=15 f=0
+=============== available capacity on {edge,5,7,29} for 5 is 29
+=============== available capacity on {edge,2,6,82} for 6 is 82
+I=22 [{22,0}]
+I=22 [{22,0}]
+node {node,6,1,80,
+           [25,21,18,15,12,6,4,0],
+           false,false,
+           [15,12,6,4,0],
+           [{18,1},{21,1},{25,1}],
+           <0.79.0>,0} rejected push_response from <0.81.0>, Amount = 0, NewE = 80
+I=22 f=0
+I=22 f=0
+I=12 [{12,0}]
+=============== available capacity on {edge,5,7,29} for 7 is 29
+=============== available capacity on {edge,5,7,29} for 5 is 29
+I=12 f=0
+I=20 [{20,0}]
+node {node,7,1,87,
+           [28,27,25,22,17,10,8,7],
+           false,false,
+           [22,17,10,8,7],
+           [{25,1},{27,1},{28,1}],
+           <0.87.0>,0} rejected push_response from <0.84.0>, Amount = 0, NewE = 87
+=============== available capacity on {edge,3,6,46} for 6 is 46
+I=20 f=0
+I=17 [{17,0}]
+I=12 [{12,0}]
+=============== available capacity on {edge,2,5,56} for 2 is 56
+I=17 f=0
+I=12 f=0
+node {node,5,1,26,
+           [24,22,20,16,13,4],
+           false,false,
+           [22,20,16,13,4],
+           [{24,1}],
+           <0.82.0>,0} rejected push_response from <0.86.0>, Amount = 0, NewE = 26
+node {node,2,1,75,
+           [20,19,15,14,9,8],
+           false,false,
+           [20,19,15,14,9,8],
+           [],<0.83.0>,0} rejected push_response from <0.84.0>, Amount = 0, NewE = 75
+=============== available capacity on {edge,3,7,67} for 7 is 67
+=============== available capacity on {edge,3,6,46} for 6 is 46
+I=20 [{20,0}]
+I=19 [{19,0}]
+node_loop 252: node = {node,3,1,0,
+                            [24,23,17,14,12,2],
+                            false,false,
+                            [23,17,14,12,2],
+                            [{24,0}],
+                            <0.79.0>,1}
+node {node,6,1,80,
+           [25,21,18,15,12,6,4,0],
+           false,false,
+           [12,6,4,0],
+           [{15,1},{18,1},{21,1},{25,1}],
+           <0.79.0>,0} rejected push_response from <0.82.0>, Amount = 0, NewE = 80
+I=20 f=0
+I=19 f=0
+I=17 [{17,0}]
+I=6 [{6,36}]
+=============== available capacity on {edge,2,5,56} for 5 is 56
+=============== available capacity on {edge,1,2,45} for 2 is 45
+I=17 f=0
+I=6 f=36
+I=20 [{20,0}]
+I=19 [{19,0}]
+=============== available capacity on {edge,3,7,67} for 7 is 67
+=============== available capacity on {edge,0,6,36} for 6 is 72
+I=20 f=0
+I=19 f=0
+node_loop 252: node = {node,3,1,0,
+                            [24,23,17,14,12,2],
+                            false,false,
+                            [23,17,14,12,2],
+                            [{24,0}],
+                            <0.79.0>,1}
+node {node,7,1,87,
+           [28,27,25,22,17,10,8,7],
+           false,false,
+           [17,10,8,7],
+           [{22,1},{25,1},{27,1},{28,1}],
+           <0.87.0>,0} rejected push_response from <0.82.0>, Amount = 0, NewE = 87
+I=6 [{6,36}]
+=============== available capacity on {edge,2,5,56} for 5 is 56
+=============== available capacity on {edge,1,2,45} for 2 is 45
+I=10 [{10,0}]
+I=6 f=36
+node {node,5,1,26,
+           [24,22,20,16,13,4],
+           false,false,
+           [20,16,13,4],
+           [{22,1},{24,1}],
+           <0.82.0>,0} rejected push_response from <0.81.0>, Amount = 0, NewE = 26
+node_loop 252: node = {node,1,1,0,
+                            [29,21,19,16,7],
+                            false,false,
+                            [19,16,7],
+                            [{21,0},{29,1}],
+                            undefined,0}
+node {node,2,1,75,
+           [20,19,15,14,9,8],
+           false,false,
+           [19,15,14,9,8],
+           [{20,1}],
+           <0.83.0>,0} rejected push_response from <0.80.0>, Amount = 0, NewE = 75
+I=10 f=0
+=============== available capacity on {edge,0,6,36} for 6 is 72
+I=16 [{16,0}]
+I=15 [{15,0}]
+=============== available capacity on {edge,7,9,63} for 7 is 63
+node_loop 252: node = {node,0,1,0,
+                            [29,26,11,6,2],
+                            true,false,[],
+                            [{2,0},{6,0},{11,0},{26,0},{29,0}],
+                            undefined,4}
+node {node,6,1,80,
+           [25,21,18,15,12,6,4,0],
+           false,false,
+           [6,4,0],
+           [{12,1},{15,1},{18,1},{21,1},{25,1}],
+           <0.79.0>,0} rejected push_response from <0.79.0>, Amount = 0, NewE = 80
+I=16 f=0
+I=15 f=0
+I=10 [{10,0}]
+I=4 [{4,0}]
+=============== available capacity on {edge,1,5,91} for 5 is 91
+=============== available capacity on {edge,2,6,82} for 2 is 82
+I=10 f=0
+I=4 f=0
+I=16 [{16,0}]
+=============== available capacity on {edge,7,9,63} for 7 is 63
+=============== available capacity on {edge,5,6,65} for 6 is 65
+I=16 f=0
+D = 63, F = 0
+I=15 [{15,0}]
+I=4 [{4,0}]
+=============== available capacity on {edge,1,5,91} for 5 is 91
+node_loop 252: node = {node,9,0,63,
+                            [23,13,10,3,1,0],
+                            false,true,undefined,[],undefined,0}
+node {node,7,1,87,
+           [28,27,25,22,17,10,8,7],
+           false,false,
+           [10,8,7],
+           [{17,1},{22,1},{25,1},{27,1},{28,1}],
+           <0.87.0>,0} accepted push_response from <0.88.0>, Amount = 63, NewE = 24
+, NeighbourHeight = 0I=15 f=0
+I=4 f=0
+node_loop 252: node = {node,1,1,0,
+                            [29,21,19,16,7],
+                            false,false,
+                            [19,16,7],
+                            [{21,0},{29,1}],
+                            undefined,0}
+PUSH ACK node 7: e 87 -> 24, newlyEngaged=true, outstanding 0 -> 1
+=============== available capacity on {edge,2,6,82} for 2 is 82
+=============== available capacity on {edge,5,6,65} for 6 is 65
+I=8 [{8,0}]
+node {node,2,1,75,
+           [20,19,15,14,9,8],
+           false,false,
+           [15,14,9,8],
+           [{19,1},{20,1}],
+           <0.83.0>,0} rejected push_response from <0.85.0>, Amount = 0, NewE = 75
+node {node,5,1,26,
+           [24,22,20,16,13,4],
+           false,false,
+           [16,13,4],
+           [{20,1},{22,1},{24,1}],
+           <0.82.0>,0} rejected push_response from <0.80.0>, Amount = 0, NewE = 26
+node {node,6,1,80,
+           [25,21,18,15,12,6,4,0],
+           false,false,
+           [4,0],
+           [{6,1},{12,1},{15,1},{18,1},{21,1},{25,1}],
+           <0.79.0>,0} rejected push_response from <0.84.0>, Amount = 0, NewE = 80
+I=8 f=0
+I=14 [{14,0}]
+I=13 [{13,0}]
+I=0 [{0,0}]
+=============== available capacity on {edge,2,7,50} for 7 is 50
+I=14 f=0
+I=13 f=0
+I=0 f=0
+=============== available capacity on {edge,2,3,57} for 2 is 57
+=============== available capacity on {edge,5,9,72} for 5 is 72
+=============== available capacity on {edge,6,9,81} for 6 is 81
+I=8 [{8,0}]
+I=14 [{14,0}]
+I=13 [{13,0}]
+I=8 f=0
+I=14 f=0
+I=13 f=0
+=============== available capacity on {edge,2,7,50} for 7 is 50
+=============== available capacity on {edge,2,3,57} for 2 is 57
+=============== available capacity on {edge,5,9,72} for 5 is 72
+node {node,7,1,24,
+           [28,27,25,22,17,10,8,7],
+           false,false,
+           [8,7],
+           [{10,0},{17,1},{22,1},{25,1},{27,1},{28,1}],
+           <0.87.0>,1} rejected push_response from <0.81.0>, Amount = 0, NewE = 24
+node_loop 252: node = {node,3,1,0,
+                            [24,23,17,14,12,2],
+                            false,false,
+                            [23,17,14,12,2],
+                            [{24,0}],
+                            <0.79.0>,1}
+node {node,2,1,75,
+           [20,19,15,14,9,8],
+           false,false,
+           [14,9,8],
+           [{15,1},{19,1},{20,1}],
+           <0.83.0>,0} rejected push_response from <0.82.0>, Amount = 0, NewE = 75
+D = 26, F = 0
+I=7 [{7,0}]
+I=9 [{9,-75}]
+node_loop 252: node = {node,9,0,89,
+                            [23,13,10,3,1,0],
+                            false,true,undefined,[],undefined,0}
+node {node,5,1,26,
+           [24,22,20,16,13,4],
+           false,false,
+           [13,4],
+           [{16,1},{20,1},{22,1},{24,1}],
+           <0.82.0>,0} accepted push_response from <0.88.0>, Amount = 26, NewE = 0
+, NeighbourHeight = 0I=7 f=0
+I=9 f=-75
+I=0 [{0,0}]
+PUSH ACK node 5: e 26 -> 0, newlyEngaged=true, outstanding 0 -> 1
+=============== available capacity on {edge,1,7,74} for 7 is 74
+=============== available capacity on {edge,2,4,84} for 2 is 159
+I=0 f=0
+node_loop 252: node = {node,5,1,0,
+                            [24,22,20,16,13,4],
+                            false,false,
+                            [4],
+                            [{13,0},{16,1},{20,1},{22,1},{24,1}],
+                            <0.82.0>,1}
+I=7 [{7,0}]
+I=9 [{9,-75}]
+=============== available capacity on {edge,6,9,81} for 6 is 81
+TERM ACK node 5: outstanding 1 -> 0, e=0
+I=7 f=0
+I=9 f=-75
+D = 80, F = 0
+NODE 5 FINISHED -> ACK parent <0.82.0>
+=============== available capacity on {edge,1,7,74} for 7 is 74
+=============== available capacity on {edge,2,4,84} for 2 is 159
+node_loop 252: node = {node,9,0,169,
+                            [23,13,10,3,1,0],
+                            false,true,undefined,[],undefined,0}
+node {node,6,1,80,
+           [25,21,18,15,12,6,4,0],
+           false,false,
+           [0],
+           [{4,1},{6,1},{12,1},{15,1},{18,1},{21,1},{25,1}],
+           <0.79.0>,0} accepted push_response from <0.88.0>, Amount = 80, NewE = 0
+, NeighbourHeight = 0node_loop 252: node = {node,5,1,0,
+                            [24,22,20,16,13,4],
+                            false,false,
+                            [4],
+                            [{13,0},{16,1},{20,1},{22,1},{24,1}],
+                            undefined,0}
+TERM ACK node 3: outstanding 1 -> 0, e=0
+node_loop 252: node = {node,1,1,0,
+                            [29,21,19,16,7],
+                            false,false,
+                            [19,16,7],
+                            [{21,0},{29,1}],
+                            undefined,0}
+node {node,7,1,24,
+           [28,27,25,22,17,10,8,7],
+           false,false,
+           [7],
+           [{8,1},{10,0},{17,1},{22,1},{25,1},{27,1},{28,1}],
+           <0.87.0>,1} rejected push_response from <0.80.0>, Amount = 0, NewE = 24
+node_loop 252: node = {node,4,1,0,
+                            [27,11,9,5,3],
+                            false,false,
+                            [5,3],
+                            [{9,0},{11,1},{27,0}],
+                            <0.79.0>,1}
+node {node,2,1,75,
+           [20,19,15,14,9,8],
+           false,false,"\t\b",
+           [{14,1},{15,1},{19,1},{20,1}],
+           <0.83.0>,0} rejected push_response from <0.83.0>, Amount = 0, NewE = 75
+PUSH ACK node 6: e 80 -> 0, newlyEngaged=true, outstanding 0 -> 1
+NODE 3 FINISHED -> ACK parent <0.79.0>
+I=28 [{28,-71}]
+I=8 [{8,0}]
+node_loop 252: node = {node,6,1,0,
+                            [25,21,18,15,12,6,4,0],
+                            false,false,[],
+                            [{0,0},
+                             {4,1},
+                             {6,1},
+                             {12,1},
+                             {15,1},
+                             {18,1},
+                             {21,1},
+                             {25,1}],
+                            <0.79.0>,1}
+node_loop 252: node = {node,3,1,0,
+                            [24,23,17,14,12,2],
+                            false,false,
+                            [23,17,14,12,2],
+                            [{24,0}],
+                            undefined,0}
+TERM ACK node 0: outstanding 4 -> 3, e=0
+I=28 f=-71
+I=8 f=0
+TERM ACK node 6: outstanding 1 -> 0, e=0
+node_loop 252: node = {node,0,1,0,
+                            [29,26,11,6,2],
+                            true,false,[],
+                            [{2,0},{6,0},{11,0},{26,0},{29,0}],
+                            undefined,3}
+=============== available capacity on {edge,7,8,71} for 7 is 142
+=============== available capacity on {edge,2,7,50} for 2 is 50
+NODE 6 FINISHED -> ACK parent <0.79.0>
+I=27 [{27,16}]
+node_loop 252: node = {node,6,1,0,
+                            [25,21,18,15,12,6,4,0],
+                            false,false,[],
+                            [{0,0},
+                             {4,1},
+                             {6,1},
+                             {12,1},
+                             {15,1},
+                             {18,1},
+                             {21,1},
+                             {25,1}],
+                            undefined,0}
+TERM ACK node 0: outstanding 3 -> 2, e=0
+I=27 f=16
+node_loop 252: node = {node,0,1,0,
+                            [29,26,11,6,2],
+                            true,false,[],
+                            [{2,0},{6,0},{11,0},{26,0},{29,0}],
+                            undefined,2}
+=============== available capacity on {edge,4,7,16} for 7 is 32
+I=25 [{25,0}]
+I=25 f=0
+=============== available capacity on {edge,6,7,41} for 7 is 41
+I=22 [{22,0}]
+I=22 f=0
+=============== available capacity on {edge,5,7,29} for 7 is 29
+I=17 [{17,0}]
+I=17 f=0
+=============== available capacity on {edge,3,7,67} for 7 is 67
+I=10 [{10,63}]
+I=10 f=63
+=============== available capacity on {edge,7,9,63} for 7 is 0
+I=8 [{8,0}]
+I=8 f=0
+=============== available capacity on {edge,2,7,50} for 7 is 50
+I=7 [{7,0}]
+I=7 f=0
+=============== available capacity on {edge,1,7,74} for 7 is 74
+I=28 [{28,-71}]
+I=28 f=-71
+=============== available capacity on {edge,7,8,71} for 7 is 142
+I=8 [{8,0}]
+I=28 [{28,-71}]
+I=8 f=0
+I=28 f=-71
+=============== available capacity on {edge,7,8,71} for 7 is 142
+=============== available capacity on {edge,2,7,50} for 2 is 50
+D = 24, F = -71
+node {node,2,1,75,
+           [20,19,15,14,9,8],
+           false,false,"\b",
+           [{9,1},{14,1},{15,1},{19,1},{20,1}],
+           <0.83.0>,0} rejected push_response from <0.86.0>, Amount = 0, NewE = 75
+I=28 [{28,-47}]
+node {node,7,2,24,
+           [28,27,25,22,17,10,8,7],
+           false,false,
+           [28,27,25,22,17,10,8,7],
+           [],<0.87.0>,1} accepted push_response from <0.87.0>, Amount = 24, NewE = 0
+, NeighbourHeight = 1I=20 [{20,0}]
+I=28 f=-47
+PUSH ACK node 7: e 24 -> 0, newlyEngaged=false, outstanding 1 -> 1
+I=20 f=0
+=============== available capacity on {edge,7,8,71} for 8 is 24
+node_loop 252: node = {node,7,2,0,
+                            [28,27,25,22,17,10,8,7],
+                            false,false,
+                            [27,25,22,17,10,8,7],
+                            [{28,1}],
+                            <0.87.0>,1}
+=============== available capacity on {edge,2,5,56} for 2 is 56
+TERM ACK node 7: outstanding 1 -> 0, e=0
+I=19 [{19,0}]
+NODE 7 FINISHED -> ACK parent <0.87.0>
+I=19 f=0
+node_loop 252: node = {node,7,2,0,
+                            [28,27,25,22,17,10,8,7],
+                            false,false,
+                            [27,25,22,17,10,8,7],
+                            [{28,1}],
+                            undefined,0}
+=============== available capacity on {edge,1,2,45} for 2 is 45
+I=28 [{28,-47}]
+I=15 [{15,0}]
+I=28 f=-47
+I=15 f=0
+=============== available capacity on {edge,7,8,71} for 8 is 24
+=============== available capacity on {edge,2,6,82} for 2 is 82
+node_loop 252: node = {node,7,2,0,
+                            [28,27,25,22,17,10,8,7],
+                            false,false,
+                            [27,25,22,17,10,8,7],
+                            [{28,1}],
+                            undefined,0}
+node {node,8,1,24,[28,26,18,5,1],false,false,[28,26,18,5,1],[],<0.79.0>,1} rejected push_response from <0.86.0>, Amount = 0, NewE = 24
+I=14 [{14,0}]
+I=26 [{26,83}]
+I=14 f=0
+I=26 f=83
+=============== available capacity on {edge,2,3,57} for 2 is 57
+=============== available capacity on {edge,0,8,83} for 8 is 166
+I=9 [{9,-75}]
+I=26 [{26,83}]
+I=9 f=-75
+I=26 f=83
+=============== available capacity on {edge,2,4,84} for 2 is 159
+=============== available capacity on {edge,0,8,83} for 8 is 166
+I=8 [{8,0}]
+node_loop 252: node = {node,0,1,0,
+                            [29,26,11,6,2],
+                            true,false,[],
+                            [{2,0},{6,0},{11,0},{26,0},{29,0}],
+                            undefined,2}
+node {node,8,1,24,[28,26,18,5,1],false,false,[26,18,5,1],[{28,2}],<0.79.0>,1} rejected push_response from <0.79.0>, Amount = 0, NewE = 24
+I=8 f=0
+I=18 [{18,-12}]
+=============== available capacity on {edge,2,7,50} for 2 is 50
+I=20 [{20,0}]
+I=18 f=-12
+I=20 f=0
+=============== available capacity on {edge,6,8,44} for 8 is 32
+=============== available capacity on {edge,2,5,56} for 2 is 56
+I=18 [{18,-12}]
+I=18 f=-12
+I=20 [{20,0}]
+=============== available capacity on {edge,6,8,44} for 8 is 32
+I=20 f=0
+node_loop 252: node = {node,6,1,0,
+                            [25,21,18,15,12,6,4,0],
+                            false,false,[],
+                            [{0,0},
+                             {4,1},
+                             {6,1},
+                             {12,1},
+                             {15,1},
+                             {18,1},
+                             {21,1},
+                             {25,1}],
+                            undefined,0}
+node {node,8,1,24,
+           [28,26,18,5,1],
+           false,false,
+           [18,5,1],
+           [{26,1},{28,2}],
+           <0.79.0>,1} rejected push_response from <0.85.0>, Amount = 0, NewE = 24
+=============== available capacity on {edge,2,5,56} for 2 is 56
+I=5 [{5,0}]
+D = 56, F = 0
+I=5 f=0
+I=24 [{24,26}]
+node {node,2,2,75,
+           [20,19,15,14,9,8],
+           false,false,
+           [20,19,15,14,9,8],
+           [],<0.83.0>,0} accepted push_response from <0.84.0>, Amount = 56, NewE = 19
+, NeighbourHeight = 1=============== available capacity on {edge,4,8,34} for 8 is 34
+I=24 f=26
+PUSH ACK node 2: e 75 -> 19, newlyEngaged=true, outstanding 0 -> 1
+I=5 [{5,0}]
+=============== available capacity on {edge,3,5,63} for 5 is 89
+I=19 [{19,0}]
+I=5 f=0
+I=24 [{24,26}]
+I=19 f=0
+=============== available capacity on {edge,4,8,34} for 8 is 34
+I=24 f=26
+=============== available capacity on {edge,1,2,45} for 2 is 45
+node_loop 252: node = {node,4,1,0,
+                            [27,11,9,5,3],
+                            false,false,
+                            [5,3],
+                            [{9,0},{11,1},{27,0}],
+                            <0.79.0>,1}
+node {node,8,1,24,
+           [28,26,18,5,1],
+           false,false,
+           [5,1],
+           [{18,1},{26,1},{28,2}],
+           <0.79.0>,1} rejected push_response from <0.83.0>, Amount = 0, NewE = 24
+=============== available capacity on {edge,3,5,63} for 5 is 89
+I=19 [{19,0}]
+I=1 [{1,0}]
+node_loop 252: node = {node,3,1,0,
+                            [24,23,17,14,12,2],
+                            false,false,
+                            [23,17,14,12,2],
+                            [{24,0}],
+                            undefined,0}
+node {node,5,1,56,
+           [24,22,20,16,13,4],
+           false,false,
+           [24,22,20,16,13,4],
+           [],<0.81.0>,0} rejected push_response from <0.82.0>, Amount = 0, NewE = 56
+I=19 f=0
+I=1 f=0
+I=22 [{22,0}]
+=============== available capacity on {edge,1,2,45} for 2 is 45
+=============== available capacity on {edge,8,9,36} for 8 is 36
+I=22 f=0
+D = 19, F = 0
+I=1 [{1,0}]
+=============== available capacity on {edge,5,7,29} for 5 is 29
+I=29 [{29,32}]
+node {node,2,2,19,
+           [20,19,15,14,9,8],
+           false,false,
+           [19,15,14,9,8],
+           [{20,1}],
+           <0.83.0>,1} accepted push_response from <0.80.0>, Amount = 19, NewE = 0
+, NeighbourHeight = 1I=1 f=0
+I=22 [{22,0}]
+I=29 f=32
+PUSH ACK node 2: e 19 -> 0, newlyEngaged=true, outstanding 1 -> 2
+=============== available capacity on {edge,8,9,36} for 8 is 36
+I=22 f=0
+=============== available capacity on {edge,0,1,32} for 1 is 64
+node_loop 252: node = {node,2,2,0,
+                            [20,19,15,14,9,8],
+                            false,false,
+                            [15,14,9,8],
+                            [{19,1},{20,1}],
+                            <0.83.0>,2}
+D = 24, F = 0
+=============== available capacity on {edge,5,7,29} for 5 is 29
+I=29 [{29,32}]
+node_loop 252: node = {node,9,0,193,
+                            [23,13,10,3,1,0],
+                            false,true,undefined,[],undefined,0}
+node {node,8,1,24,
+           [28,26,18,5,1],
+           false,false,
+           [1],
+           [{5,1},{18,1},{26,1},{28,2}],
+           <0.79.0>,1} accepted push_response from <0.88.0>, Amount = 24, NewE = 0
+, NeighbourHeight = 0node_loop 252: node = {node,7,2,0,
+                            [28,27,25,22,17,10,8,7],
+                            false,false,
+                            [27,25,22,17,10,8,7],
+                            [{28,1}],
+                            undefined,0}
+node {node,5,1,56,
+           [24,22,20,16,13,4],
+           false,false,
+           [22,20,16,13,4],
+           [{24,1}],
+           <0.81.0>,0} rejected push_response from <0.86.0>, Amount = 0, NewE = 56
+I=29 f=32
+PUSH ACK node 8: e 24 -> 0, newlyEngaged=true, outstanding 1 -> 2
+I=20 [{20,56}]
+=============== available capacity on {edge,0,1,32} for 1 is 64
+node_loop 252: node = {node,8,1,0,
+                            [28,26,18,5,1],
+                            false,false,[],
+                            [{1,0},{5,1},{18,1},{26,1},{28,2}],
+                            <0.79.0>,2}
+I=20 f=56
+node_loop 252: node = {node,0,1,0,
+                            [29,26,11,6,2],
+                            true,false,[],
+                            [{2,0},{6,0},{11,0},{26,0},{29,0}],
+                            undefined,2}
+node {node,1,1,19,[29,21,19,16,7],false,false,[29,21,19,16,7],[],<0.81.0>,0} rejected push_response from <0.79.0>, Amount = 0, NewE = 19
+TERM ACK node 8: outstanding 2 -> 1, e=0
+=============== available capacity on {edge,2,5,56} for 5 is 112
+I=21 [{21,32}]
+node_loop 252: node = {node,8,1,0,
+                            [28,26,18,5,1],
+                            false,false,[],
+                            [{1,0},{5,1},{18,1},{26,1},{28,2}],
+                            <0.79.0>,1}
+I=20 [{20,56}]
+I=21 f=32
+TERM ACK node 8: outstanding 1 -> 0, e=0
+I=20 f=56
+=============== available capacity on {edge,1,6,77} for 1 is 45
+NODE 8 FINISHED -> ACK parent <0.79.0>
+=============== available capacity on {edge,2,5,56} for 5 is 112
+I=21 [{21,32}]
+node_loop 252: node = {node,8,1,0,
+                            [28,26,18,5,1],
+                            false,false,[],
+                            [{1,0},{5,1},{18,1},{26,1},{28,2}],
+                            undefined,0}
+TERM ACK node 0: outstanding 2 -> 1, e=0
+node_loop 252: node = {node,2,2,0,
+                            [20,19,15,14,9,8],
+                            false,false,
+                            [15,14,9,8],
+                            [{19,1},{20,1}],
+                            <0.83.0>,2}
+node {node,5,1,56,
+           [24,22,20,16,13,4],
+           false,false,
+           [20,16,13,4],
+           [{22,2},{24,1}],
+           <0.81.0>,0} rejected push_response from <0.81.0>, Amount = 0, NewE = 56
+I=21 f=32
+node_loop 252: node = {node,0,1,0,
+                            [29,26,11,6,2],
+                            true,false,[],
+                            [{2,0},{6,0},{11,0},{26,0},{29,0}],
+                            undefined,1}
+I=16 [{16,0}]
+=============== available capacity on {edge,1,6,77} for 1 is 45
+I=16 f=0
+node_loop 252: node = {node,6,1,0,
+                            [25,21,18,15,12,6,4,0],
+                            false,false,[],
+                            [{0,0},
+                             {4,1},
+                             {6,1},
+                             {12,1},
+                             {15,1},
+                             {18,1},
+                             {21,1},
+                             {25,1}],
+                            undefined,0}
+node {node,1,1,19,
+           [29,21,19,16,7],
+           false,false,
+           [21,19,16,7],
+           [{29,1}],
+           <0.81.0>,0} rejected push_response from <0.85.0>, Amount = 0, NewE = 19
+=============== available capacity on {edge,1,5,91} for 5 is 91
+I=19 [{19,-19}]
+I=19 f=-19
+=============== available capacity on {edge,1,2,45} for 1 is 64
+I=16 [{16,0}]
+I=19 [{19,-19}]
+I=16 f=0
+I=19 f=-19
+=============== available capacity on {edge,1,5,91} for 5 is 91
+=============== available capacity on {edge,1,2,45} for 1 is 64
+node {node,5,1,56,
+           [24,22,20,16,13,4],
+           false,false,
+           [16,13,4],
+           [{20,2},{22,2},{24,1}],
+           <0.81.0>,0} rejected push_response from <0.80.0>, Amount = 0, NewE = 56
+node_loop 252: node = {node,2,2,0,
+                            [20,19,15,14,9,8],
+                            false,false,
+                            [15,14,9,8],
+                            [{19,1},{20,1}],
+                            <0.83.0>,2}
+node {node,1,1,19,
+           [29,21,19,16,7],
+           false,false,
+           [19,16,7],
+           [{21,1},{29,1}],
+           <0.81.0>,0} rejected push_response from <0.81.0>, Amount = 0, NewE = 19
+I=13 [{13,26}]
+I=16 [{16,0}]
+I=13 f=26
+I=16 f=0
+=============== available capacity on {edge,5,9,72} for 5 is 46
+=============== available capacity on {edge,1,5,91} for 1 is 91
+I=13 [{13,26}]
+I=13 f=26
+I=16 [{16,0}]
+=============== available capacity on {edge,5,9,72} for 5 is 46
+I=16 f=0
+D = 46, F = 26
+=============== available capacity on {edge,1,5,91} for 1 is 91
+node_loop 252: node = {node,9,0,239,
+                            [23,13,10,3,1,0],
+                            false,true,undefined,[],undefined,0}
+node {node,5,1,56,
+           [24,22,20,16,13,4],
+           false,false,
+           [13,4],
+           [{16,1},{20,2},{22,2},{24,1}],
+           <0.81.0>,0} accepted push_response from <0.88.0>, Amount = 46, NewE = 10
+, NeighbourHeight = 0node {node,1,1,19,
+           [29,21,19,16,7],
+           false,false,
+           [16,7],
+           [{19,2},{21,1},{29,1}],
+           <0.81.0>,0} rejected push_response from <0.84.0>, Amount = 0, NewE = 19
+PUSH ACK node 5: e 56 -> 10, newlyEngaged=true, outstanding 0 -> 1
+I=7 [{7,0}]
+I=4 [{4,0}]
+I=7 f=0
+I=4 f=0
+=============== available capacity on {edge,1,7,74} for 1 is 74
+=============== available capacity on {edge,5,6,65} for 5 is 65
+I=7 [{7,0}]
+I=4 [{4,0}]
+I=7 f=0
+I=4 f=0
+=============== available capacity on {edge,1,7,74} for 1 is 74
+=============== available capacity on {edge,5,6,65} for 5 is 65
+node_loop 252: node = {node,7,2,0,
+                            [28,27,25,22,17,10,8,7],
+                            false,false,
+                            [27,25,22,17,10,8,7],
+                            [{28,1}],
+                            undefined,0}
+node {node,1,1,19,
+           [29,21,19,16,7],
+           false,false,
+           [7],
+           [{16,1},{19,2},{21,1},{29,1}],
+           <0.81.0>,0} rejected push_response from <0.86.0>, Amount = 0, NewE = 19
+node_loop 252: node = {node,6,1,0,
+                            [25,21,18,15,12,6,4,0],
+                            false,false,[],
+                            [{0,0},
+                             {4,1},
+                             {6,1},
+                             {12,1},
+                             {15,1},
+                             {18,1},
+                             {21,1},
+                             {25,1}],
+                            undefined,0}
+node {node,5,1,10,
+           [24,22,20,16,13,4],
+           false,false,
+           [4],
+           [{13,0},{16,1},{20,2},{22,2},{24,1}],
+           <0.81.0>,1} rejected push_response from <0.85.0>, Amount = 0, NewE = 10
+I=29 [{29,32}]
+I=24 [{24,26}]
+I=29 f=32
+I=24 f=26
+=============== available capacity on {edge,0,1,32} for 1 is 64
+=============== available capacity on {edge,3,5,63} for 5 is 89
+I=21 [{21,32}]
+I=22 [{22,0}]
+I=21 f=32
+I=22 f=0
+=============== available capacity on {edge,1,6,77} for 1 is 45
+=============== available capacity on {edge,5,7,29} for 5 is 29
+I=19 [{19,-19}]
+I=20 [{20,56}]
+I=19 f=-19
+I=20 f=56
+=============== available capacity on {edge,1,2,45} for 1 is 64
+=============== available capacity on {edge,2,5,56} for 5 is 112
+I=16 [{16,0}]
+I=16 [{16,0}]
+I=16 f=0
+I=16 f=0
+=============== available capacity on {edge,1,5,91} for 1 is 91
+=============== available capacity on {edge,1,5,91} for 5 is 91
+I=7 [{7,0}]
+I=13 [{13,72}]
+I=7 f=0
+I=13 f=72
+=============== available capacity on {edge,1,7,74} for 1 is 74
+=============== available capacity on {edge,5,9,72} for 5 is 0
+I=29 [{29,32}]
+I=4 [{4,0}]
+I=29 f=32
+I=4 f=0
+=============== available capacity on {edge,0,1,32} for 1 is 64
+=============== available capacity on {edge,5,6,65} for 5 is 65
+I=29 [{29,32}]
+I=24 [{24,26}]
+I=29 f=32
+I=24 f=26
+=============== available capacity on {edge,0,1,32} for 1 is 64
+=============== available capacity on {edge,3,5,63} for 5 is 89
+D = 19, F = 32
+I=24 [{24,26}]
+node_loop 252: node = {node,0,1,19,
+                            [29,26,11,6,2],
+                            true,false,[],
+                            [{2,0},{6,0},{11,0},{26,0},{29,0}],
+                            undefined,1}
+node {node,1,2,19,[29,21,19,16,7],false,false,[29,21,19,16,7],[],<0.81.0>,0} accepted push_response from <0.79.0>, Amount = 19, NewE = 0
+, NeighbourHeight = 1I=24 f=26
+PUSH ACK node 1: e 19 -> 0, newlyEngaged=false, outstanding 0 -> 0
+=============== available capacity on {edge,3,5,63} for 5 is 89
+NODE 1 FINISHED -> ACK parent <0.81.0>
+D = 10, F = 26
+node_loop 252: node = {node,1,2,0,
+                            [29,21,19,16,7],
+                            false,false,
+                            [21,19,16,7],
+                            [{29,1}],
+                            undefined,0}
+I=24 [{24,16}]
+TERM ACK node 2: outstanding 2 -> 1, e=0
+node {node,5,2,10,
+           [24,22,20,16,13,4],
+           false,false,
+           [24,22,20,16,13,4],
+           [],<0.81.0>,1} accepted push_response from <0.82.0>, Amount = 10, NewE = 0
+, NeighbourHeight = 1I=24 f=16
+node_loop 252: node = {node,2,2,0,
+                            [20,19,15,14,9,8],
+                            false,false,
+                            [15,14,9,8],
+                            [{19,1},{20,1}],
+                            <0.83.0>,1}
+PUSH ACK node 5: e 10 -> 0, newlyEngaged=true, outstanding 1 -> 2
+=============== available capacity on {edge,3,5,63} for 3 is 47
+node_loop 252: node = {node,5,2,0,
+                            [24,22,20,16,13,4],
+                            false,false,
+                            [22,20,16,13,4],
+                            [{24,1}],
+                            <0.81.0>,2}
+TERM ACK node 5: outstanding 2 -> 1, e=0
+node_loop 252: node = {node,5,2,0,
+                            [24,22,20,16,13,4],
+                            false,false,
+                            [22,20,16,13,4],
+                            [{24,1}],
+                            <0.81.0>,1}
+I=24 [{24,16}]
+I=24 f=16
+=============== available capacity on {edge,3,5,63} for 3 is 47
+node {node,3,1,10,
+           [24,23,17,14,12,2],
+           false,false,
+           [24,23,17,14,12,2],
+           [],<0.84.0>,0} rejected push_response from <0.84.0>, Amount = 0, NewE = 10
+node_loop 252: node = {node,5,2,0,
+                            [24,22,20,16,13,4],
+                            false,false,
+                            [22,20,16,13,4],
+                            [{24,1}],
+                            <0.81.0>,1}
+I=23 [{23,0}]
+I=23 f=0
+=============== available capacity on {edge,3,9,31} for 3 is 31
+I=23 [{23,0}]
+I=23 f=0
+=============== available capacity on {edge,3,9,31} for 3 is 31
+D = 10, F = 0
+node_loop 252: node = {node,9,0,249,
+                            [23,13,10,3,1,0],
+                            false,true,undefined,[],undefined,0}
+node {node,3,1,10,
+           [24,23,17,14,12,2],
+           false,false,
+           [23,17,14,12,2],
+           [{24,2}],
+           <0.84.0>,0} accepted push_response from <0.88.0>, Amount = 10, NewE = 0
+, NeighbourHeight = 0PUSH ACK node 3: e 10 -> 0, newlyEngaged=true, outstanding 0 -> 1
+node_loop 252: node = {node,3,1,0,
+                            [24,23,17,14,12,2],
+                            false,false,
+                            [17,14,12,2],
+                            [{23,0},{24,2}],
+                            <0.84.0>,1}
+TERM ACK node 3: outstanding 1 -> 0, e=0
+NODE 3 FINISHED -> ACK parent <0.84.0>
+node_loop 252: node = {node,3,1,0,
+                            [24,23,17,14,12,2],
+                            false,false,
+                            [17,14,12,2],
+                            [{23,0},{24,2}],
+                            undefined,0}
+TERM ACK node 5: outstanding 1 -> 0, e=0
+NODE 5 FINISHED -> ACK parent <0.81.0>
+node_loop 252: node = {node,5,2,0,
+                            [24,22,20,16,13,4],
+                            false,false,
+                            [22,20,16,13,4],
+                            [{24,1}],
+                            undefined,0}
+TERM ACK node 2: outstanding 1 -> 0, e=0
+NODE 2 FINISHED -> ACK parent <0.83.0>
+node_loop 252: node = {node,2,2,0,
+                            [20,19,15,14,9,8],
+                            false,false,
+                            [15,14,9,8],
+                            [{19,1},{20,1}],
+                            undefined,0}
+TERM ACK node 4: outstanding 1 -> 0, e=0
+NODE 4 FINISHED -> ACK parent <0.79.0>
+node_loop 252: node = {node,4,1,0,
+                            [27,11,9,5,3],
+                            false,false,
+                            [5,3],
+                            [{9,0},{11,1},{27,0}],
+                            undefined,0}
+TERM ACK node 0: outstanding 1 -> 0, e=19
+SOURCE 0 COMPUTATION FINISHED
+node_loop 252: node = {node,0,1,19,
+                            [29,26,11,6,2],
+                            true,false,[],
+                            [{2,0},{6,0},{11,0},{26,0},{29,0}],
+                            undefined,0}
+node_loop 252: node = {node,9,0,249,
+                            [23,13,10,3,1,0],
+                            false,true,undefined,[],undefined,0}
+f = 249

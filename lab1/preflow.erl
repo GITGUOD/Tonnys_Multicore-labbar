@@ -2,7 +2,7 @@
 -export([preflow/0, node_loop/3]).
 
 % set to 1 for debugging output
--define(PRINT, 0).
+-define(PRINT, 1).
 
 % preflow-push for undirected graph using actors.
 %
@@ -152,10 +152,12 @@ update_flow(G, I, U, D ) ->
 		UU -> ets:insert(Flows, {I,F+D});
 		VV -> ets:insert(Flows, {I,F-D})
 	end.
-	
+
+% Här börjar våran riktig implementation
+
 % discharge tries to push but never waits.
 % discharge(Node, C, G, []) -> Node; Old version of discharge, now we want to keep track of pending nodes to push to
-discharge(#node{pending = [], e = 0} = Node, _C, _G) -> 
+discharge(#node{e = 0} = Node, _C, _G) -> 
 	% io:format("DISCHARGE FINISHED for node ~p (index ~p)~n", [Node, Node#node.i]),
 	Node; % if pending är tom så slutar vi discharging
 
@@ -213,6 +215,9 @@ await_push_response(Node, C, G, Neighbour, I, Rest) ->
 							true  -> Node#node.outstanding + 1;
 							false -> Node#node.outstanding
 						end,
+					pr("PUSH ACK node ~p: e ~p -> ~p, newlyEngaged=~p, outstanding ~p -> ~p~n",
+					[Node#node.i, E, NewE, NewlyEngaged,
+						Node#node.outstanding, NewOutstanding]),
 						
 					NewUpdatedNode = Node#node{e = NewE, pending = Rest, neighbour_heights = NewNeighbourHeights, outstanding = NewOutstanding}, % returnerar en ny version av Node med uppdaterad excess
 					discharge(NewUpdatedNode, C, G);
@@ -252,20 +257,45 @@ node_loop(Node, C, G) ->
 						node_loop(Node, C, G);
 		% Syntax skäl: Order måste vara samma som i discharge, dvs vi skickar push_request med U, I, Amount, Height.
 		{ Sender, push_request, U, I, Amount, Height} -> % Mottagaren tar vi emot push request från en granne.
-			#node{adj = Adj, sink = Sink} = Node, % hämtar ut mottagarens index, height och excess från node record
+			#node{adj = Adj, sink = Sink, source = Source} = Node, % hämtar ut mottagarens index, height och excess från node record
 			{NewNode, _AcceptedAmount} = handle_push_request(Node, G, Sender, U, I, Amount, Height),
-			case Sink of
-				true ->
-					node_loop(NewNode, C, G);
-				false ->
+			case {Source, Sink} of
+				{true, false} ->
+					% Returned excess reached the source.
+					% Source does not discharge it again.
+					TerminationNode = potentiallyFinished(NewNode, C),
+					node_loop(TerminationNode, C, G);
+
+				{false, true} ->
+					FinishedSink = finish_sink(NewNode),
+					node_loop(FinishedSink, C, G);
+				{false, false} ->
 					case NewNode#node.e > 0 of  % check NewNode's excess, not the old E
 						true ->
 							ActiveNode = NewNode#node{pending = Adj, neighbour_heights = []}, % reset pending list to all edges and clear neighbour_heights for a fresh start
-							discharge(ActiveNode, C, G);
+							FinishedNode = discharge(ActiveNode, C, G),
+							TerminationNode = potentiallyFinished(FinishedNode, C),
+							node_loop(TerminationNode, C, G);
 						false ->
 							node_loop(NewNode, C, G)
 					end
 			end;
+
+		{_Child, termination_ack} ->
+			pr("TERM ACK node ~p: outstanding ~p -> ~p, e=~p~n",
+			[Node#node.i,
+			Node#node.outstanding,
+			Node#node.outstanding - 1,
+			Node#node.e]),
+			NewOutstanding = Node#node.outstanding - 1,
+
+			UpdatedNode = Node#node{
+				outstanding = NewOutstanding
+			},
+
+			TerminationNode = potentiallyFinished(UpdatedNode, C),
+
+			node_loop(TerminationNode, C, G);
 
 		% Sender ! { self(), push_response, Admissible, AcceptedAmount } -> % skickar svar till grannen om jag accepterade pushen eller inte
 
@@ -279,7 +309,9 @@ node_loop(Node, C, G) ->
 						discharge(SendingNode, C, NewG);
 				false -> Node
 			end,
-			node_loop(NewNode, C, NewG);
+			TerminationNode = potentiallyFinished(NewNode, C),
+
+			node_loop(TerminationNode, C, NewG);
 
 		{Sender, get_excess} ->
             #node{e = E} = Node,
@@ -324,6 +356,28 @@ update_neighbour_height(NeighbourHeights, I, NeighbourHeight) ->
     Without = lists:keydelete(I, 1, NeighbourHeights),
     [{I, NeighbourHeight} | Without].
 
+% its ok that e > 0 because flow that cannot reach the sink may return to the source.
+potentiallyFinished(#node{i = I, source = true, outstanding = 0} = Node, C) ->
+    pr("SOURCE ~p COMPUTATION FINISHED~n", [I]),
+	C ! {self(), computation_finished},
+	Node;
+
+potentiallyFinished(#node{i = I, e = 0, outstanding = 0, parent = Parent} = Node, _C) when Parent =/= undefined ->
+    pr("NODE ~p FINISHED -> ACK parent ~p~n", [I, Parent]),
+	Parent ! {self(), termination_ack},
+    Node#node{parent = undefined};
+
+potentiallyFinished(Node, _C) ->
+    Node.
+
+finish_sink(#node{parent = Parent} = Node) when Parent =/= undefined ->
+
+    Parent ! {self(), termination_ack},
+    Node#node{parent = undefined};
+
+finish_sink(Node) ->
+    Node.
+
 % Helper for deciding which node to start with
 set_source_excess(G) ->
 	% Först måste vi hämta källnoden och dess excess, samt adj lista.
@@ -338,20 +392,20 @@ set_source_excess(G) ->
 
 % Helper method for pushing
 handle_push_request(Node, G, Sender, U, I, Amount, Height) ->
-    #node{i = MyIndex, h = MyHeight, e = E, sink = Sink, parent = Parent} = Node,
+    #node{i = MyIndex, h = MyHeight, e = E, sink = Sink, parent = Parent, source = Source} = Node,
 
-    ReceiverCapacity =  available_capacity(G, MyIndex, I),
+    ReceiverCapacity =  available_capacity(G, U, I),
     AcceptedAmount = min(Amount, ReceiverCapacity), 
 
 	% Vi måste bestämma om vi kan acceptera pushen baserat på höjden på grannen och vår egen höjd.
-    Admissible = (MyHeight == Height - 1),
+    Admissible = (MyHeight == Height - 1) andalso (AcceptedAmount > 0),
 
     case Admissible of
         true ->
             NewE = E + AcceptedAmount,
 
 			% Om vi har en activation edge, vi vill sätta parent till den noden som skickade pushen. Om vi inte har en activation edge, vi behåller vår nuvarande parent.
-			NewlyEngaged = (Parent == undefined),
+			NewlyEngaged = (Parent == undefined) andalso (Source == false),
 
 			NewParent =
 				case NewlyEngaged of
@@ -365,7 +419,7 @@ handle_push_request(Node, G, Sender, U, I, Amount, Height) ->
             Sender ! { self(), push_response, true, AcceptedAmount, MyHeight, NewlyEngaged },
             {NewNode, AcceptedAmount};
         false ->
-            Sender ! { self(), push_response, false, 0, MyHeight },
+            Sender ! { self(), push_response, false, 0, MyHeight, false },
             {Node, 0}
     end.
 
@@ -419,8 +473,13 @@ control(G0) ->
 	% decide when to print result and where to find it (either excess of sink or abs(excess of source))
 	% good idea to enter a control_loop waiting for messages...
 	% Fråga sink-aktorn om dess excess
-	timer:sleep(50000),
-    T ! {self(), get_excess},
+	% timer:sleep(1000),
+	receive
+		{S, computation_finished} ->
+			T ! {self(), get_excess}
+	end,
+
+    % T ! {self(), get_excess},
 
     receive
         {T, Excess} ->
