@@ -73,3 +73,48 @@ cd /root följt av rm -rf lab1
 cp -r /mnt/c/Users/tonny/OneDrive/Documents/MulticoreProgramming/Tonnys_Multicore-labbar/lab1 /root/lab1
 
 cp -r /mnt/c/Users/tonny/OneDrive/Documents/MulticoreProgramming/Tonnys_Multicore-labbar/data /root/data % Detta behövs inte
+
+Whats missing:
+
+node_loop has no clause to receive a push_request at all — so right now, if node A sends a push to node B, B just crashes (falls into the catch-all Fel -> erlang:exit(?LINE) clause), since there's no matching receive pattern for it.
+No reply/ack mechanism, so excess is never actually transferred correctly — the sender's discharge doesn't reduce its own excess or call update_flow at all currently; it just sends a message and forgets.
+No relabeling logic.
+No termination detection (Dijkstra-Scholten tree).
+
+
+Old and useful code:
+
+{ Sender, push_response, Admissible } -> % Vad mottagaren gör; här tar vi emot svar från en granne om vår push request blev accepterad eller inte
+			#node{i = U, e = E, pending = Pending} = Node, % hämtar min egen index och excess samt pending listan
+			pr("node ~p got push_response from ~p, Admissible = ~p, E = ~p, Pending = ~p~n", [Node, Sender, Admissible, E, Pending]),
+			UpdatedNode = case Admissible of
+				true -> % om grannen accepterade pushen
+					% här måste vi uppdatera flödet i grafen och minska min excess med det jag skickade
+					% vi måste veta hur mycket vi skickade, vilket vi kan få från pending listan, dvs den första kanten i listan
+					[I|Rest] = Pending, % tar ut första kanten från pending listan
+					Edge = edge(G, I), % hämtar kanten från grafen
+					V = other(U, Edge), % hämtar grannens index
+					Capacity = available_capacity(G, U, I), % hämtar tillgänglig kapacitet på kanten
+					Amount = min(E, Capacity), % hur mycket vi kan pusha är min av excess och tillgänglig kapacitet
+					pr("node ~p pushing ~p to ~p on edge ~p~n", [Node, Amount, V, Edge]),
+					update_flow(G, I, U, Amount), % uppdaterar flödet i grafen med det jag skickade
+					NewE = E - Amount, % uppdaterar min excess med det jag skickade
+					pr("node ~p updated flow on edge ~p, NewE = ~p~n", [Node, Edge, NewE]),
+					Node#node{e = NewE, pending = Rest}; % returnerar en ny version av Node med uppdaterad excess och pending listan utan den kanten vi just skickade på
+				false -> % om grannen inte accepterade pushen
+					pr("node ~p push_request to ~p was rejected, E = ~p, Pending = ~p~n", [Node, Sender, E, Pending]),
+					Node % returnerar samma Node utan ändringar
+			end,
+			node_loop(UpdatedNode, C, G); % går tillbaka till att vänta på nästa meddelande med uppdaterad Node
+
+
+relabel(#node{i = U, h = H, adj = Adj} = Node, G) ->
+    % 1. Hitta alla grannar med residualkapacitet > 0
+
+    % 2. Plocka ut deras höjder
+
+    % 3. Om listan är tom → returnera Node
+
+    % 4. Annars → NewH = MinHeight + 1
+
+    % 5. Returnera Node#node{h = NewH}.

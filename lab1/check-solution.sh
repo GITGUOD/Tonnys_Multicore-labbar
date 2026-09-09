@@ -5,7 +5,8 @@ do
 	echo $x
 	pre=${x%.in}
 	ans=$pre.ans
-	$* < $x > all-output
+	# $* < $x > all-output
+	bash "$(dirname "$0")/run.sh" < "$x" > all-output
 	grep '^f =' all-output | sed 's/f = //' > out
 	if diff $ans out
 	then
