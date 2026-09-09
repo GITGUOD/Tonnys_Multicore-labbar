@@ -118,3 +118,84 @@ relabel(#node{i = U, h = H, adj = Adj} = Node, G) ->
     % 4. Annars → NewH = MinHeight + 1
 
     % 5. Returnera Node#node{h = NewH}.
+
+    Actor structure                    good
+One node = one actor               good
+Local excess/height state          good
+Live neighbour-height messaging    good
+Can receive while awaiting ACK     good improvement
+
+Flow accounting                    currently wrong: double update // DOne
+Zero-excess handling               needs fixing // Done
+Zero-capacity handling             needs fixing //Done
+Relabel observation lifecycle      needs cleanup // Done
+Termination detection              still missing // Nästa steg
+
+
+Termination:
+
+Controller acts as the environment/root and starts Source.
+
+When an inactive node becomes active because it receives accepted
+work from another actor, it becomes causally dependent on that sender.
+
+A node may only report completion when:
+1. its own local work is finished, and
+2. all work it delegated to children has been acknowledged.
+
+Completion ACKs propagate upward:
+
+B -> A -> Source -> Controller
+
+When the controller receives completion from Source, the entire
+diffusing computation has terminated.
+
+Termination:
+
+Controller acts as the environment/root and starts Source.
+
+When an inactive node becomes active because it receives accepted
+work from another actor, it becomes causally dependent on that sender.
+
+A node may only report completion when:
+1. its own local work is finished, and
+2. all work it delegated to children has been acknowledged.
+
+Completion ACKs propagate upward:
+
+B -> A -> Source -> Controller
+
+When the controller receives completion from Source, the entire
+diffusing computation has terminated.
+
+new states
+
+-record(node, {
+    ...
+    active = false,
+    parent = undefined,
+    outstanding = 0
+}).
+
+active
+    Am I currently doing local work?
+
+We dont need this as we can only check if E > 0
+
+parent
+    Which actor caused my current activation?
+
+outstanding
+    How much work have I delegated that has not yet been acknowledged?
+
+SO Then the completion condition becomes conceptually:
+
+e == 0
+AND
+outstanding == 0
+
+ordinary node
+    -> send termination ACK to parent
+
+source
+    -> tell controller computation is finished
