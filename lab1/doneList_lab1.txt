@@ -20,7 +20,7 @@ vem som kan börja först. Källan är alltså den enda noden som initieras efte
 
 Därefter följer ett push meddelande:
 *Push*
-Vi skickar ut POST som heter push, där paylaoden har height (sändarens höjd), amount (hur mycket excess), From (vilken mottagare) till en random granne
+Vi skickar ut POST som heter push, där paylaoden har height (sändarens höjd), amount (hur mycket excess), From (vilken sändtare) till en random granne
 
 Ack
 Bekräftelse sändningar behövs för att bestämma korrekthet, vi vill inte att sändaren ska sänka sin excess utan att mottagaren bekräftar
@@ -46,8 +46,30 @@ The controller acts as the root of an environment. When a node activates another
 Med andra ord: kontrollern aktiverar källan via en start knapp, källan pushar (aktiverar till A) som sedan pushar till B. När B är klar så skickar den upp till källan som en "ACK" och då terminerar systemet. A och B är children till föräldrarn. Varje nod kan ha sin egna förälder
 sänkan slut
 
-Dags för implementation:
+Vi började implementationen med att implementera node_loop eftersom det är den som ligger i grunden för hur noderna aktiveras och hur deras state fungerar.
 
-discharge
+Det vi har byggt är nu att starten börjar för noder med excess > 0 om det är sant. Annars gör noden ingenting.
 
-control(G0) ->
+Här:
+Om E > 0 är falskt (alla andra noder, som ännu inte har någon excess): gör ingenting — låt NewNode bara bli samma Node som redan fanns, oförändrad.
+
+Vi behöver ett nytt attribut, pending, som håller en lista av återstående kant-index att pröva under den pågående discharge-omgången. Den sätts (till en kopia av adj, eventuellt slumpad) när en nod upptäcker att den har excess och ska börja pusha.
+Varje gång ett push-förslag skickas till en granne (via kant-index I), tas det kant-indexet bort ur pending, oavsett om svaret sen blir accept eller reject, så att nästa försök vet vilka kanter som återstår
+
+Laddade ner Erlang på vscode extensions
+#node{pending = [I|Rest]} är ett mönster, en beskrivning av "hur Node måste se ut för att det här ska matcha.", i vårt fall vill vi att pending ska vara en kopia av adj där elementen krymper
+
+Nu byggde vi set_source_node(G)
+där vi satte vilken som som är källan
+
+Vi hade problem att runna för att vi försökte köra utifrån windows med wsl,
+för att runna måste vi gå in på våran WSL och köra därifrån
+
+Om vi vill köra på WSL/linux miljö, gå in på ubuntu, sök upp lab1 och skriv code .
+
+om vi vill rensa:
+cd /root följt av rm -rf lab1
+
+cp -r /mnt/c/Users/tonny/OneDrive/Documents/MulticoreProgramming/Tonnys_Multicore-labbar/lab1 /root/lab1
+
+cp -r /mnt/c/Users/tonny/OneDrive/Documents/MulticoreProgramming/Tonnys_Multicore-labbar/data /root/data % Detta behövs inte

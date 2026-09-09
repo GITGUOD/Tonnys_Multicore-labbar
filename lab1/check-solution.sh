@@ -1,4 +1,4 @@
-#/bin/bash
+#!/bin/bash
 
 for x in ../data/tiny/*.in ../data/railwayplanning/*/*.in
 do

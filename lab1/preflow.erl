@@ -19,7 +19,7 @@
 
 -record(edge, { u, v, c }).
 
--record(node, { i, h, e, adj, source, sink }).	
+-record(node, { i, h, e, adj, source, sink, pending }).	
 
 % i:		index and only used for printing to see which node it is
 % h:		height
@@ -99,6 +99,7 @@ edge_capacity(G, I) ->
 	#edge{ c = C } = E,
 	C.
 
+% get the actor for node U from the graph G
 node_actor(G, U) ->
 	#graph{node_actors = Node_actors } = G,
 	array:get(U, Node_actors).
@@ -153,15 +154,32 @@ update_flow(G, I, U, D ) ->
 	end.
 	
 % discharge tries to push but never waits.
-discharge(Node, C, G, []) -> Node;
+% discharge(Node, C, G, []) -> Node; Old version of discharge, now we want to keep track of pending nodes to push to
+discharge(#node{pending = []} = Node, C, G) -> Node; % if pending är tom så slutar vi discharging
 
-discharge(Node, C, G, [I|Adj]) ->
+% discharge(Node, C, G, [I|Adj]) ->
+discharge(#node{pending = [I|Rest]} = Node, C, G) -> % pending is a list of edges to push to, we take the first one and try to push excess along it
 	
-	#node{i = U, e = E } = Node,
+	#node{i = U, e = E, h = Height} = Node, % variabelnamnet måste alltid börja med en stor bokstav
+	% här plockar vi ut noderna U och E från Node recordet, dvs index och excess.
 
-	% do push here...
+	%hämtar edge:
+	Edge = edge(G, I),
 
-	true = (E > 0).
+	%hämtar grannens index:
+	V = other(U, Edge),
+
+	%hämta tillgänglig kapacity
+	Capacity = available_capacity(G, U, I),
+
+	Amount = min(E, Capacity), % hur mycket vi kan pusha är min av excess och tillgänglig kapacitet
+
+	Neighbour = node_actor(G, V), % hämtar grannens actor
+
+	Neighbour ! { self(), push_request, U, I, Amount, Height}, % skickar push meddelande till grannen
+
+	UpdatedNode = Node#node{ pending = Rest }, % uppdaterar pending listan med resten av kanterna som vi inte har försökt pusha till än
+	UpdatedNode.
 
 % Denna metoden är basically nodens hela beteende
 % ör varje typ av meddelande jag kan få, vad ska jag göra med mitt nuvarande state,
@@ -176,14 +194,28 @@ node_loop(Node, C, G) ->
 						node_loop(Node, C, G);
 		% My edit
 		{ C, start, G} -> % this is a tuple
-			#node{ e = E } = Node, % skapar en ny variabel E bunden till excess fältet i våran node-record
+			#node{ e = E, adj = Adj} = Node, % Läser ur en befintlig node och hämtar variablerna e, adj etc dvs de är bunden till excess fältet i våran node-record
+			pr("node fick start, E = ~p, Adj = ~p~n", [E, Adj]),
 			NewNode = case E > 0 of % här enligt vår logik, vill vi kolla på excess för att starta våran grej
-				true -> discharge(Node, C, G, Adj);
+				true -> SendingNode = Node#node{ pending = Adj }, % ny version av node som sätter pending till hela adj listan för att markera starten på processen
+						discharge(SendingNode, C, G);
 				false -> Node
 			end,
+			node_loop(NewNode, C, G); 
 
 		Fel		->		erlang:exit(?LINE)
 	end.
+
+set_source_excess(G) ->
+	% Först måste vi hämta källnoden och dess excess, samt adj lista.
+	#graph{nodes = Nodes} = G,
+	SourceNode = array:get(0, Nodes),
+	#node{adj = Adj} = SourceNode,
+	% Sätter excess till summan av kapaciteterna på alla kanter som går ut från source
+	TotalCapacity = lists:sum([edge_capacity(G, I) || I <- Adj]),
+	UpdatedSourceNode = SourceNode#node{e = TotalCapacity},
+	UpdatedNodes = array:set(0, UpdatedSourceNode, Nodes),
+	G#graph{nodes = UpdatedNodes}.
 
 start_node_actor(G, N, N) -> G;
 
@@ -246,6 +278,7 @@ preflow() ->
 	Nodes0 = make_nodes(N),
 	E0 = make_edges(M),
 	G0 = read_graph(N, M, Nodes0, E0),
-	print(G0),
+	G1 = set_source_excess(G0),
+	print(G1),
 
-	control(G0).
+	control(G1).
