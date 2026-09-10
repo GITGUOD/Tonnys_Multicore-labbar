@@ -66,3 +66,26 @@ så basically de skickas med i varje request så att varje nod får veta om sina
 
 pending är basically den listan som de ska pusha sina push requests till:
     mer exakt pending är listan över vilka edges/grannar som återstår att testa i den aktuella discharge-rundan.
+
+
+Viktiga grejer:
+
+
+en nod som skickar en push request och inväntar en push response kan ju ta emot många andra push requests. Blir det ingen sync fel då om noden inväntar response uppdaterar sin state?
+
+Erlang‑processer är single‑threaded
+En process kör exakt ett meddelande i taget.
+
+Det betyder:
+
+noden kan ta emot många push_requests via sin rekursion
+
+men den hanterar dem en i taget
+
+och den uppdaterar sitt state i en strikt sekvens
+
+Det finns ingen parallell exekvering inuti en nod.
+
+Alltså: ingen race condition.
+
+Den har bara 1 node actor.

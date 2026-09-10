@@ -279,7 +279,7 @@ node_loop(Node, C, G) ->
 					end
 			end;
 
-		{_Child, termination_ack} ->
+		{_Child, termination_ack} -> % När ett barn skickar ett termination ack så minskar vi antalet aktiva barn till föräldrarna
 			pr("TERM ACK node ~p: outstanactiveChildrending ~p -> ~p, e=~p~n", [Node#node.i, Node#node.activeChildren, Node#node.activeChildren - 1, Node#node.e]),
 			NewActiveChildren = Node#node.activeChildren - 1,
 

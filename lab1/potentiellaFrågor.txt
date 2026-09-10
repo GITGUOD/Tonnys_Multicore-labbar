@@ -1,0 +1,197 @@
+## 1. **Vad är syftet med preflow‑push‑algoritmen?**
+Syftet är att beräkna **maxflödet** från en källa till en sink i ett nätverk.  
+Preflow‑push skiljer sig från klassisk maxflow genom att:
+
+- tillåta **excess** i noder (mer inflöde än utflöde)
+- använda **lokala operationer** (push och relabel)
+- inte behöva hitta hela augmenting paths
+
+Det gör algoritmen snabb och lokal — perfekt för en actor‑modell.
+
+## 2. **Varför behöver varje nod ha en height?**
+Height är en **potentialsfunktion** som styr riktningen på flödet.  
+En push är admissible om:
+
+h(u) = h(v) + 1
+
+
+Det gör att flödet alltid rör sig “nedåt” mot sinken och förhindrar cykler.
+
+---
+
+## 3. **Vad betyder excess i din implementation?**
+Excess är mängden flöde som noden har tagit emot men ännu inte skickat vidare.  
+
+#node{e = Excess}
+
+En nod är **aktiv** när excess > 0.
+
+---
+
+## 4. **Hur bestämmer du om en push är admissible?**
+I `handle_push_request`:
+
+Admissible = (SenderIsSource orelse MyHeight == Height - 1)
+             andalso (AcceptedAmount > 0)
+
+Alltså:
+
+- residualkapacitet måste finnas  
+- height‑villkoret måste vara uppfyllt  
+- eller så är avsändaren källan
+
+---
+
+## 5. **Varför använder du en ETS‑tabell för flöden?**
+För att flödet är **globalt delat state** mellan alla nod‑aktörer.  
+ETS ger:
+
+- atomiska uppdateringar  
+- snabb åtkomst  
+- ingen kopiering mellan processer  
+- ingen risk för race conditions (en nod uppdaterar en edge åt gången)
+
+
+## 6. **Vad gör pending‑listan och varför behövs den?**
+Pending är nodens “todo‑lista” över vilka edges den ska försöka pusha på.
+
+Vid discharge:
+
+- pending = alla adj‑edges  
+- noden testar dem en efter en  
+- om ingen fungerar → relabel → pending fylls på igen
+
+Det är en lokal arbetslista.
+
+
+## 7. **Hur fungerar await_push_response i detalj?**
+Det är en **mini‑event‑loop** som:
+
+1. väntar på push_response från en specifik granne  
+2. men hanterar andra push_requests under tiden  
+3. uppdaterar nodens state atomiskt  
+4. återgår till vänteläge med det nya state
+
+Det är helt icke‑blockerande.
+
+## 8. **Varför kan noden ta emot andra push_requests medan den väntar?**
+För att Erlang‑processer är **single‑threaded**:
+
+- de hanterar ett meddelande i taget  
+- men de kan ta emot hur många som helst  
+- varje meddelande hanteras sekventiellt och atomiskt
+
+Det finns ingen parallell exekvering → inga race conditions.
+
+
+## 9. **Vad händer om en nod får excess men ingen granne är admissible?**
+Den kör:
+
+Relabeled = relabeling(Node, G)
+
+Relabeling höjer nodens height så att minst en granne blir admissible.
+
+## 10. **Hur fungerar relabeling i din implementation?**
+
+1. letar efter grannar med residualkapacitet  
+2. tar minsta height bland dem  
+3. sätter nodens height = minHeight + 1
+
+Det är exakt enligt algoritmen.
+
+
+## 11. **Varför nollställer du neighbour_heights vid varje discharge?**
+För att height‑information kan vara **gammal**.  
+Du vill alltid ha färska värden för relabeling.
+
+
+## 12. **Vad är skillnaden mellan parent och activeChildren?**
+
+- **parent** = vem aktiverade noden (för termination‑logik)  
+- **activeChildren** = hur många barn som noden väntar på ack från
+
+Termination sker när:
+
+e = 0 AND activeChildren = 0
+
+## 13. **Hur undviker du race conditions när flera push_requests kommer samtidigt?**
+
+- Erlang‑processer hanterar ett meddelande i taget  
+- ETS‑uppdateringar är atomiska  
+- varje push är en separat operation  
+- ingen delad mutable state i processerna
+
+Det är matematiskt säkert.
+
+
+## 14. **Varför är det korrekt att noden uppdaterar sitt state medan den väntar på push_response?**
+
+För att preflow‑push är **asynkron**:
+
+- noden kan få excess från flera håll  
+- height kan ändras innan push_response kommer  
+- parent kan ändras innan push_response kommer  
+
+## 15. **Hur fungerar termination‑logiken i din kod?**
+
+En nod är klar när:
+
+```
+excess = 0 AND activeChildren = 0
+```
+
+Då skickar den:
+
+Parent ! termination_ack
+
+Källan är klar när:
+
+source.activeChildren = 0
+
+
+## 16. **Varför kan en nod bli aktiverad flera gånger?**
+
+För att flöde kan komma från olika grannar vid olika tidpunkter.  
+Preflow‑push är inte en BFS — det är lokala operationer som sker när de behövs.
+
+
+## 17. **Hur säkerställer du att flödet alltid är korrekt i ETS‑tabellen?**
+
+- varje push uppdaterar ETS atomiskt  
+- push från u→v ökar flödet  
+- push från v→u minskar flödet  
+- inga två processer uppdaterar samma edge samtidigt
+
+
+## 18. **Hur vet du att algoritmen terminerar?**
+
+För att:
+
+- height ökar monotoniskt  
+- height är begränsad av antal noder  
+- varje push minskar excess  
+- termination‑ack kedjan tömmer alla grenar  
+- source avslutar när alla barn är klara
+
+
+## 19. **Vad skulle hända om await_push_response inte hanterade andra requests?**
+
+Du skulle få:
+
+- deadlocks  
+- förlorade push_requests  
+- felaktiga heights  
+- felaktig termination  
+- algoritmen skulle aldrig bli klar
+
+
+## 20. **Varför är actor‑modellen lämplig för preflow‑push?**
+
+För att preflow‑push är:
+
+- lokalt  
+- asynkront  
+- event‑drivet  
+- bygger på små oberoende operationer  
+- perfekt för message passing
+
