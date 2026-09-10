@@ -1,0 +1,68 @@
+Questions
+1. If you use a controller, how can it know that no node is active? If you don’t,
+how do the actors agree on terminating the algorithm?
+- Googlade och fick upp Dijkstra-Scholten som en av lösningarna vilket jag tog inspiration från.
+- Så basically vad vi gör då att vi har två olika attribut inlagda, parent och outstanding
+    - parent attributet används för att hålla koll på vilken nod som gör vad. Så om A skickar en push request till B så blir A parent till B. B är då dess child
+    - När det händer så incrementar vi outstanding med +1 som någon form av action.
+När både outstanding är 0 och parents inte har några barn än, samt att excessen är 0 så kan systemet skicka en computation request till controllern för att avgöra att allt är klart.
+
+2. How do you ensure messages to the controller do not arrive out-of-order
+and therefore could confuse e.g. a controller?
+- Vi har en activation tree via parent och child. Och på så sätt kan controller checka att outstanding är 0 innan vi skickar ut en computation_finished request.
+
+3. How many push messages can a node have in progress concurrently in
+your solution? (one is OK)
+- Bara en, dock kan den fortfarande ta emot andra push requests
+
+4. How do you ensure that a node never gets a negative excess preflow?
+(except possibly for the source depending on how you implement it)
+- Vi har alltid en kontroll på att ta det minsta mellan kapaciteten och vad för excess vi har. Slutligen subtraheras ingen excess förens ett ack har kommit fram. Förutom
+    detta har vi en variabel som håller koll på hur mycket vi har accepterat och på så sätt så kan vi aldrig få en negativ excess flow.
+
+5. Explain your source code.
+starta vid:
+
+Programmet startar vid *preflow* där vi skapar en graf, dess noder och sinken och källan. 
+
+Vi skapar en hjälp metod för att identifiera källan.
+
+Till en början så startas källan eftersom den har excess > 0. Den börjar då discharga.
+Vid discharge to iterarar den genom sin pendinglista som är en lista av grannarna. Därefter så gör den en push request till nästa nod där den ger information såsom dess höjd, excess etc.
+
+Mottagaren kollar då sen om det går att få tag på push requesten. Om den accepterar så uppdaterar den sin excess och flöde accepted, den uppdaterar sedan sitt flöde och excess, höjd, samt skickar tillbaka ett bekräftelse till sändaren. Sändaren minskar bara sin excess om den blir accepterad
+
+Om det inte går, så relabla den genom att hitta noderna med lägst höjd och +ar höjden.
+
+Slutligen har vi då speciella cases med sinkan och källan. Returnerad excess till källan blir absorberad medan excess som kommer fram till sinkan blir resutlatet av maxflödes resultatet.
+
+Slutligen använder vi av oss en termination logik inspirerad av som sagt tidigare. När kraven är uppfyllda så skickar vi en computation_finish request till controlern för att avsluta programmet. 
+
+6. Did you find a way to improve the performance of your program over the
+first correct version?
+- Att vi inte behöver skicka en push request om excess är 0, då blir programmet långsammare bara
+- actors kan ta emot andra noders requests medan de väntar på sin request.
+
+7. For which types of applications would you consider using Erlang and why
+- Communication heavy services där varje användare är en nod. En användare kan endast skriva till en annan nod men kan ta emot flera messeges.
+
+Lite begrepp:
+
+neighbour_heights är basically ett sätt och hålla koll på grannarnas current heights eller kända vid relabling och för varje push.
+så basically de skickas med i varje request så att varje nod får veta om sina grannar
+
+    implementationen skickar sender sin egen Height i push_request, och receiver skickar sin NeighbourHeight tillbaka i push_response.
+
+    Så varje nod lär sig grannarnas höjder genom meddelandena och sparar dem i neighbour_heights.
+
+    Flödet är alltså ungefär:
+        A skickar push_request med A:s height
+        B kan då se A:s height
+
+        B svarar push_response med B:s height
+        A sparar B:s height i neighbour_heights
+
+    Så ja: varje nod bygger upp sin lokala bild av grannarnas senaste kända heights genom request/respo
+
+pending är basically den listan som de ska pusha sina push requests till:
+    mer exakt pending är listan över vilka edges/grannar som återstår att testa i den aktuella discharge-rundan.

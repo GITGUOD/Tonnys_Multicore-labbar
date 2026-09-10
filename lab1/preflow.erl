@@ -167,10 +167,11 @@ discharge(#node{pending = [], e = E, adj = Adj} = Node, C, G) when E > 0 ->
 	Restart = Relabaled#node{pending = Adj, neighbour_heights = []}, % Töm pending listan eftersom vi har nya edges nu när vi har relabalat to all edges
 	discharge(Restart, C, G); % Sedan kör vi discharge igen
 
-% Slutligen om våra villkor ovan gäller
+% Slutligen om vi har en pendinglista
 discharge(#node{pending = [I|Rest]} = Node, C, G) ->
+	% Pushar till grannen om vi har kapacitet
 	
-	#node{i = U, e = E, h = Height} = Node,
+	#node{i = U, e = E, h = Height} = Node, % hämtar våra variabler via pattern matching
 
 	%hämtar edge, G är grafen och I är kanten, U är sändaren
 	Edge = edge(G, I),
@@ -207,9 +208,10 @@ await_push_response(Node, C, G, Neighbour, I, Rest) ->
 					NewE = E - AcceptedAmount, % Uppdaterar sin grannes excess med det som accepterades
 					% ange höjden på grannen i listan med grannars höjder
 					NewNeighbourHeights = update_neighbour_height(Node#node.neighbour_heights, I, NeighbourHeight), % uppdaterar listan med grannars höjder
-					% updatera flödet i grafen
-					% update_flow(G, I, U, AcceptedAmount), % uppdaterar flödet i grafen
+					
 					pr("node ~p accepted push_response from ~p, Amount = ~p, NewE = ~p~n, NeighbourHeight = ~p", [Node, Neighbour, AcceptedAmount, NewE, NeighbourHeight]),
+					
+					% Ökar outstanding vilket är aktiviteten eller så sagt: obesvarade push-förfrågningar
 					NewOutstanding =
 						case NewlyEngaged of
 							true  -> Node#node.outstanding + 1;
@@ -223,24 +225,18 @@ await_push_response(Node, C, G, Neighbour, I, Rest) ->
 					discharge(NewUpdatedNode, C, G);
 				false -> % om grannen inte accepterar
 					pr("node ~p rejected push_response from ~p, Amount = ~p, NewE = ~p~n", [Node, Neighbour, AcceptedAmount, E]),
-					% Vi behöver relabela noden eftersom vi inte kunde pusha till grannen och kunde ej hitta någon annan granne
-					% Rebaled = relabeling(Node, G), % vi relabelar noden innan vi börjar pusha
-					% Problem, vi vet inte om alla grannar inte funkar efter 1 rejection
-					% ange höjden på grannen i listan med grannars höjder
+					
 					NewNeighbourHeights = update_neighbour_height(Node#node.neighbour_heights, I, NeighbourHeight), % uppdaterar listan med grannars höjder
 
-					% Vi behöver uppdatera pending listan med resten av kanterna som vi inte har försökt pusha till än
 					UpdatedNode = Node#node{ pending = Rest, neighbour_heights = NewNeighbourHeights }, % uppdaterar pending listan med resten av kanterna som vi inte har försökt pusha till än
 
-					discharge(UpdatedNode, C, G) % vi försöker pusha igen med den relabelade noden
+					discharge(UpdatedNode, C, G)
 			end;
 		{OtherSender, push_request, OtherU, OtherI, OtherAmount, OtherHeight} ->
-        	{NewNode, _Accepted} = handle_push_request(Node, G, OtherSender, OtherU, OtherI, OtherAmount, OtherHeight),
+        	{NewNode, _Accepted} = handle_push_request(Node, G, OtherSender, OtherU, OtherI, OtherAmount, OtherHeight), % Vi vill kunna hantera om vi har andra requests, då anropar vi rekursivt eftersom vi vill göra likadant med nästa request
 			await_push_response(NewNode, C, G, Neighbour, I, Rest)
 	end.
 
-	% UpdatedNode = Node#node{ pending = Rest }, % uppdaterar pending listan med resten av kanterna som vi inte har försökt pusha till än
-	% UpdatedNode.
 
 % Denna metoden är basically nodens hela beteende
 % ör varje typ av meddelande jag kan få, vad ska jag göra med mitt nuvarande state,
@@ -255,24 +251,25 @@ node_loop(Node, C, G) ->
 		{ C, hello } ->		pr("node ~p got hello~n", [Node]),
 						C ! { self(), hello },
 						node_loop(Node, C, G);
-		% Syntax skäl: Order måste vara samma som i discharge, dvs vi skickar push_request med U, I, Amount, Height.
+		
 		{ Sender, push_request, U, I, Amount, Height} -> % Mottagaren tar vi emot push request från en granne.
 			#node{adj = Adj, sink = Sink, source = Source} = Node, % hämtar ut mottagarens index, height och excess från node record
-			{NewNode, _AcceptedAmount} = handle_push_request(Node, G, Sender, U, I, Amount, Height),
+			{NewNode, _AcceptedAmount} = handle_push_request(Node, G, Sender, U, I, Amount, Height), % Hanterar mottagar push request
 			case {Source, Sink} of
 				{true, false} ->
-					% Returned excess reached the source.
-					% Source does not discharge it again.
+					% Om returned excess har kommit fram till källan så behöver vi inte discharga den igen eftersom det går inte mer
+
 					TerminationNode = potentiallyFinished(NewNode, C),
 					node_loop(TerminationNode, C, G);
 
 				{false, true} ->
+					% Om vi är framme vid sinken så behöver vi inte discharga mer, vi vill kolla om vi är klara via termination check
 					FinishedSink = finish_sink(NewNode),
 					node_loop(FinishedSink, C, G);
 				{false, false} ->
-					case NewNode#node.e > 0 of  % check NewNode's excess, not the old E
+					case NewNode#node.e > 0 of  % Om vi inte är framme i någon av källan eller sinken, testar vi receiverns/current nodes excess
 						true ->
-							ActiveNode = NewNode#node{pending = Adj, neighbour_heights = []}, % reset pending list to all edges and clear neighbour_heights for a fresh start
+							ActiveNode = NewNode#node{pending = Adj, neighbour_heights = []}, % nollställ pending list till alla edges and rensa neighbour_heights för att refresha processen då vi är på en ny nod
 							FinishedNode = discharge(ActiveNode, C, G),
 							TerminationNode = potentiallyFinished(FinishedNode, C),
 							node_loop(TerminationNode, C, G);
@@ -282,11 +279,7 @@ node_loop(Node, C, G) ->
 			end;
 
 		{_Child, termination_ack} ->
-			pr("TERM ACK node ~p: outstanding ~p -> ~p, e=~p~n",
-			[Node#node.i,
-			Node#node.outstanding,
-			Node#node.outstanding - 1,
-			Node#node.e]),
+			pr("TERM ACK node ~p: outstanding ~p -> ~p, e=~p~n", [Node#node.i, Node#node.outstanding, Node#node.outstanding - 1, Node#node.e]),
 			NewOutstanding = Node#node.outstanding - 1,
 
 			UpdatedNode = Node#node{
@@ -297,10 +290,7 @@ node_loop(Node, C, G) ->
 
 			node_loop(TerminationNode, C, G);
 
-		% Sender ! { self(), push_response, Admissible, AcceptedAmount } -> % skickar svar till grannen om jag accepterade pushen eller inte
 
-		% My edit
-		% this is a tuple
 		{ Sender, start, NewG} ->	
 			#node{ e = E, adj = Adj} = Node, % Läser ur en befintlig node och hämtar variablerna e, adj etc dvs de är bunden till excess fältet i våran node-record
 			pr("node fick start, E = ~p, Adj = ~p~n", [E, Adj]),
@@ -313,6 +303,7 @@ node_loop(Node, C, G) ->
 
 			node_loop(TerminationNode, C, NewG);
 
+		% den svarar tillbaka till Sender, men det är ett svar med excess-värdet
 		{Sender, get_excess} ->
             #node{e = E} = Node,
             Sender ! {self(), E},
@@ -335,13 +326,15 @@ relabeling(#node{h = H, e = E, i = U, adj = Adj} = Node, G) ->
 					V = other(U, Edge),
 					Capacity = available_capacity(G, U, I),
 					if	Capacity > 0 -> % Om det finns tillgänglig kapacitet på kanten
-							case lists:keyfind(I, 1, Node#node.neighbour_heights) of
-								{I, NeighbourHeight} -> [NeighbourHeight | Acc];
-								false -> Acc  % no live info for this edge yet
+							FoundHeight = lists:keyfind(I, 1, Node#node.neighbour_heights), % Letar efter information om kanten I i neighbour_heights
+							case FoundHeight of
+								{I, NeighbourHeight} -> [NeighbourHeight | Acc]; % Om den finns, hämta grannens height och packa in den i listan
+								false -> Acc % Annars är listan tom eftersom acc inte hittar nästa ellement
 							end;
-						true -> Acc % Annars, ignorera denna granne
+						true -> Acc % Annars, om inget annat matchar, ignorera denna granne, true är som else i en if sats i erlang
 					end
-				end, [], Adj),
+				end, [], Adj), % default värden
+
 			% Om det finns några grannar med tillgänglig kapacitet
 			case NeighbourHeights of
 				[] -> Node; % Om det inte finns några grannar med tillgänglig kapacitet, returnera samma Node utan ändringar
@@ -352,24 +345,35 @@ relabeling(#node{h = H, e = E, i = U, adj = Adj} = Node, G) ->
 			end
 	end.
 
+% Uppdaterar den sparade höjden för grannen som nås via edge I.
+% Tar först bort eventuell gammal höjd och lägger sedan in den nya.
 update_neighbour_height(NeighbourHeights, I, NeighbourHeight) ->
     Without = lists:keydelete(I, 1, NeighbourHeights),
     [{I, NeighbourHeight} | Without].
 
-% its ok that e > 0 because flow that cannot reach the sink may return to the source.
+% Source kan vara färdig även om e > 0.
+% Excess som inte kan nå sinken kan returneras till source.
+% När source inte längre har något outstanding arbete är computation klar.
 potentiallyFinished(#node{i = I, source = true, outstanding = 0} = Node, C) ->
     pr("SOURCE ~p COMPUTATION FINISHED~n", [I]),
-	C ! {self(), computation_finished},
+	C ! {self(), computation_finished}, % skicka ett meddelande till processen C.
 	Node;
 
+% En vanlig nod är färdig när dess eget excess är 0 och den inte
+% längre väntar på något arbete från sina children.
+% Då skickar den termination_ack till sin parent.
 potentiallyFinished(#node{i = I, e = 0, outstanding = 0, parent = Parent} = Node, _C) when Parent =/= undefined ->
     pr("NODE ~p FINISHED -> ACK parent ~p~n", [I, Parent]),
 	Parent ! {self(), termination_ack},
     Node#node{parent = undefined};
 
+% Termination-villkoren är inte uppfyllda ännu, behåll noden oförändrad.
 potentiallyFinished(Node, _C) ->
     Node.
 
+% Sink är en terminal nod och behöver aldrig discharga sitt excess.
+% Om sink har blivit aktiverad av en parent kan den därför direkt
+% skicka tillbaka ett termination_ack för den grenen.
 finish_sink(#node{parent = Parent} = Node) when Parent =/= undefined ->
 
     Parent ! {self(), termination_ack},
@@ -378,7 +382,7 @@ finish_sink(#node{parent = Parent} = Node) when Parent =/= undefined ->
 finish_sink(Node) ->
     Node.
 
-% Helper for deciding which node to start with
+% Hjöälpfunktion för att bestämma källan
 set_source_excess(G) ->
 	% Först måste vi hämta källnoden och dess excess, samt adj lista.
 	#graph{nodes = Nodes} = G,
@@ -390,21 +394,21 @@ set_source_excess(G) ->
 	UpdatedNodes = array:set(0, UpdatedSourceNode, Nodes),
 	G#graph{nodes = UpdatedNodes}.
 
-% Helper method for pushing
+% Handle_push_requests 
 handle_push_request(Node, G, Sender, U, I, Amount, Height) ->
     #node{i = MyIndex, h = MyHeight, e = E, sink = Sink, parent = Parent, source = Source} = Node,
 
+	% Kollar hur mycket kapacaitet den kan ta emot
     ReceiverCapacity =  available_capacity(G, U, I),
     AcceptedAmount = min(Amount, ReceiverCapacity), 
 
-	% Initial push should be from source, so we can accept it even if our height is not one less than the sender's height.
 	SenderIsSource = (U == 0),
-	% Vi måste bestämma om vi kan acceptera pushen baserat på höjden på grannen och vår egen höjd.
+	% Kollar om vi kan pusha, om antingen vi får från källan eller om höjden är rätt, samt om vi kan acceptera 
     Admissible = (SenderIsSource orelse MyHeight == Height - 1) andalso (AcceptedAmount > 0),
 
     case Admissible of
         true ->
-            NewE = E + AcceptedAmount,
+            NewE = E + AcceptedAmount, % Addera ihop både excessen, från den egna och från den ankommande
 
 			% Om vi har en activation edge, vi vill sätta parent till den noden som skickade pushen. Om vi inte har en activation edge, vi behåller vår nuvarande parent.
 			NewlyEngaged = (Parent == undefined) andalso (Source == false),
@@ -415,14 +419,14 @@ handle_push_request(Node, G, Sender, U, I, Amount, Height) ->
 					false -> Parent
 				end,
 			
-			update_flow(G, I, U, AcceptedAmount),
+			update_flow(G, I, U, AcceptedAmount), % Uppdatera flödesgrafen med de nya excesses
 
-            NewNode = Node#node{e = NewE, parent = NewParent},
+            NewNode = Node#node{e = NewE, parent = NewParent}, 
             Sender ! { self(), push_response, true, AcceptedAmount, MyHeight, NewlyEngaged },
-            {NewNode, AcceptedAmount};
+            {NewNode, AcceptedAmount}; % skicka ett ACK tillbaka över dess status till sändaren
         false ->
             Sender ! { self(), push_response, false, 0, MyHeight, false },
-            {Node, 0}
+            {Node, 0} % Skickar tillbaka att vi har ej tagit emot något
     end.
 
 start_node_actor(G, N, N) -> G;
@@ -493,8 +497,14 @@ control(G0) ->
             io:format("f = ~p~n", [Excess])
     end.
 
+% Om vi har grafen redan är stardad är det ok
 sync_start_others(_G1, N, N) -> ok;
 
+% Rekursiv funktion som startar och synkroniserar ALLA noder i grafen, en i taget,
+% i ordningen I, I+1, I+2, ..., N-1.
+% Syftet är att säkerställa att varje nod-aktör är igång och redo INNAN
+% preflow-push-algoritmen sätter igång på riktigt (annars kan meddelanden
+% skickas till processer som inte ens finns än).
 sync_start_others(G1, I, N) ->
 	A = node_actor(G1, I),
 	A ! { self(), start, G1 },

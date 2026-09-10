@@ -201,3 +201,11 @@ source
     -> tell controller computation is finished
 
 time ./run.sh < ../data/railwayplanning/secret/3large.in
+
+jag fick:
+
+[57443.543174] oom-kill:constraint=CONSTRAINT_NONE,nodemask=(null),cpuset=/,mems_allowed=0,global_oom,task_memcg=/init.scope,task=beam.smp,pid=34454,uid=0
+[57443.545565] Out of memory: Killed process 34454 (beam.smp) total-vm:13431428kB, anon-rss:6432004kB, file-rss:12kB, shmem-rss:7340kB, UID:0 pgtables:18688kB oom_score_adj:0
+[57500.800411] systemd-journald[51]: Time jumped backwards, rotating.
+root@LAPTOP-0ACSTN7H:/mnt/c/Users/tonny/OneDrive/Documents/MulticoreProgramming/Tonnys_Multicore-labbar/lab1# 
+
