@@ -155,25 +155,24 @@ update_flow(G, I, U, D ) ->
 
 % Här börjar våran riktig implementation
 
-% discharge tries to push but never waits.
-% discharge(Node, C, G, []) -> Node; Old version of discharge, now we want to keep track of pending nodes to push to
+% Första discharge försöker, om vi har en excess som är 0, gör vi ingenting eftersom vi inte har något att pusha
+% _C och _G är variabler som vi inte använder i denna pattern match
 discharge(#node{e = 0} = Node, _C, _G) -> 
 	% io:format("DISCHARGE FINISHED for node ~p (index ~p)~n", [Node, Node#node.i]),
 	Node; % if pending är tom så slutar vi discharging
 
-% discharge(Node, C, G) when Node#node.e > 0 -> % if excess is greater than 0 and we tried every edge, we need to relabel the node and restart discharge
+% Om våran pending lista att discharga till är tom och våran excess är densamma
 discharge(#node{pending = [], e = E, adj = Adj} = Node, C, G) when E > 0 ->
-	Relabaled = relabeling(Node, G), % relabeling returns a new node with updated height
-	Restart = Relabaled#node{pending = Adj, neighbour_heights = []}, % we reset the pending list to all edges and clear the neighbour_heights list as we are to have a fresh start
-	discharge(Restart, C, G); % we restart the discharge with the relabeled node and the same graph
+	Relabaled = relabeling(Node, G), % Påbörja relabeling
+	Restart = Relabaled#node{pending = Adj, neighbour_heights = []}, % Töm pending listan eftersom vi har nya edges nu när vi har relabalat to all edges
+	discharge(Restart, C, G); % Sedan kör vi discharge igen
 
-% discharge(Node, C, G, [I|Adj]) ->
-discharge(#node{pending = [I|Rest]} = Node, C, G) -> % pending is a list of edges to push to, we take the first one and try to push excess along it
+% Slutligen om våra villkor ovan gäller
+discharge(#node{pending = [I|Rest]} = Node, C, G) ->
 	
-	#node{i = U, e = E, h = Height} = Node, % variabelnamnet måste alltid börja med en stor bokstav
-	% här plockar vi ut noderna U och E från Node recordet, dvs index och excess.
+	#node{i = U, e = E, h = Height} = Node,
 
-	%hämtar edge:
+	%hämtar edge, G är grafen och I är kanten, U är sändaren
 	Edge = edge(G, I),
 
 	%hämtar grannens index:
@@ -182,6 +181,7 @@ discharge(#node{pending = [I|Rest]} = Node, C, G) -> % pending is a list of edge
 	%hämta tillgänglig kapacity
 	Capacity = available_capacity(G, U, I),
 
+	% Om vi har mer kapacitet att kunna ta emot
 	case Capacity > 0 of
 		true ->
 			Amount = min(E, Capacity), % hur mycket vi kan pusha är min av excess och tillgänglig kapacitet
@@ -470,12 +470,17 @@ control(G0) ->
 	S = node_actor(G1, 0),
 	T = node_actor(G1, N-1),
 
-	start_node_actor(G1, 0, N-1),
+	% start_node_actor(G1, 0, N-1), # Bug as it could send to others
 
 	% decide when to print result and where to find it (either excess of sink or abs(excess of source))
 	% good idea to enter a control_loop waiting for messages...
 	% Fråga sink-aktorn om dess excess
+
 	% timer:sleep(1000),
+	% We got a synch issue because the other node actors could act before start has even finished giving out the flow numbers
+	sync_start_others(G1, 1, N-1),
+
+	S ! {self(), start, G1 },
 	receive
 		{S, computation_finished} ->
 			T ! {self(), get_excess}
@@ -488,7 +493,16 @@ control(G0) ->
             io:format("f = ~p~n", [Excess])
     end.
 
+sync_start_others(_G1, N, N) -> ok;
 
+sync_start_others(G1, I, N) ->
+	A = node_actor(G1, I),
+	A ! { self(), start, G1 },
+	A ! { self(), get_excess },
+	receive
+		{A, _E} -> ok
+	end,
+	sync_start_others(G1, I+1, N).
 
 preflow() -> 
 	pr("preflow push in erlang~n", []),
