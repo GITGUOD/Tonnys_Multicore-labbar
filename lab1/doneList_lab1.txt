@@ -199,3 +199,5 @@ ordinary node
 
 source
     -> tell controller computation is finished
+
+time ./run.sh < ../data/railwayplanning/secret/3large.in

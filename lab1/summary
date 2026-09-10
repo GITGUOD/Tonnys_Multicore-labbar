@@ -1,0 +1,1182 @@
+# Lab 1 – Preflow-Push med Erlang Actors
+
+## 1. Krav och grundidé
+
+Vi ska implementera preflow-push som ett distribuerat actorsystem i Erlang.
+
+De viktigaste kraven är:
+
+* Varje grafnod ska vara en egen Erlang-process/actor.
+* Varje nod ska köra sin egen `node_loop`.
+* Nodens state ska vara lokalt för processen, exempelvis:
+
+  * `height`
+  * `excess`
+  * adjacency-lista
+  * `pending`
+  * kända grannhöjder
+  * termination-state
+* Två noder får inte läsa varandras live-state direkt.
+* Information om exempelvis en grannes höjd ska komma via meddelanden.
+* Edge-information och flow-tabellen är det gemensamma grafdata som används.
+* Kontrollern får inte polla eller periodiskt väcka noder för att kontrollera om algoritmen är färdig.
+* Termination måste upptäckas genom meddelanden mellan actors.
+
+Grundstrukturen är alltså:
+
+```text
+Controller
+
+   |
+   v
+
+Source actor
+   |
+   v
+
+Node actors <---- messages ----> Node actors
+   |
+   v
+Sink actor
+```
+
+---
+
+# 2. Actor-strukturen
+
+Vi började med att säkerställa att varje nod verkligen är en actor.
+
+Varje nod kör:
+
+```erlang
+node_loop(Node, C, G)
+```
+
+`Node` är nodens lokala state.
+
+När state förändras muterar vi inte ett gammalt record. Eftersom Erlang är funktionellt skapar vi istället ett nytt record:
+
+```erlang
+NewNode = Node#node{e = NewE}
+```
+
+och fortsätter sedan:
+
+```erlang
+node_loop(NewNode, C, G)
+```
+
+Det betyder att varje actor själv äger sitt aktuella:
+
+```text
+height
+excess
+pending
+neighbour_heights
+parent
+outstanding
+```
+
+---
+
+# 3. Initial state
+
+Alla noder skapas först med:
+
+```text
+height = 0
+excess = 0
+source = false
+sink = false
+```
+
+Därefter markeras:
+
+```text
+node 0     = source
+node N - 1 = sink
+```
+
+Source får initialt:
+
+```text
+height = N
+```
+
+vilket kommer från preflow-push-algoritmen.
+
+---
+
+# 4. Source får initial excess
+
+För att starta computation behöver source ha något att pusha.
+
+Vi skapade därför:
+
+```erlang
+set_source_excess(G)
+```
+
+Den summerar kapaciteten på alla edges som är incidenta med source:
+
+```text
+source.e = summan av source-edge capacities
+```
+
+Alla andra noder har fortfarande:
+
+```text
+e = 0
+```
+
+Det gör att source är den enda nod som initialt har arbete.
+
+---
+
+# 5. Start-meddelandet
+
+Controller skickar ett `start`-meddelande till actors.
+
+Varje node gör ungefär:
+
+```text
+if e > 0:
+    start discharge
+else:
+    do nothing
+```
+
+Eftersom source är den enda noden med initialt excess är det source som faktiskt startar algoritmen.
+
+---
+
+# 6. `pending`
+
+Vi behövde ett sätt att hålla reda på vilka edges en nod redan har försökt under en discharge-omgång.
+
+Därför lade vi till:
+
+```erlang
+pending
+```
+
+När en nod aktiveras sätts:
+
+```erlang
+pending = adj
+```
+
+Exempel:
+
+```text
+adj     = [7, 4, 2]
+pending = [7, 4, 2]
+```
+
+När edge `7` provas blir:
+
+```text
+pending = [4, 2]
+```
+
+Oavsett om pushen accepteras eller rejectas fortsätter vi med nästa edge.
+
+Det hindrar noden från att omedelbart fråga samma granne om och om igen.
+
+När noden senare relabelas startar en ny discharge-runda:
+
+```text
+pending = adj
+```
+
+igen.
+
+---
+
+# 7. Push-protokollet
+
+Vi implementerade ett explicit request/response-protokoll.
+
+Sender skickar:
+
+```erlang
+{
+    self(),
+    push_request,
+    U,
+    I,
+    Amount,
+    Height
+}
+```
+
+Informationen betyder ungefär:
+
+```text
+Sender
+Node index U
+Edge I
+Requested amount
+Sender height
+```
+
+Mottagaren kontrollerar om pushen är admissible.
+
+Normalregeln är:
+
+```text
+h(sender) = h(receiver) + 1
+```
+
+Det vill säga:
+
+```text
+h(receiver) = h(sender) - 1
+```
+
+Push kan dessutom bara ske om det finns residualkapacitet.
+
+---
+
+# 8. Varför vi behöver ett ACK
+
+Från början kunde sender i princip skicka ett push-meddelande och sedan fortsätta.
+
+Det fungerar inte.
+
+Sender får inte göra:
+
+```text
+e = e - Amount
+```
+
+innan receiver faktiskt har bekräftat att den accepterat flödet.
+
+Annars kan excess försvinna ur systemet om requesten rejectas.
+
+Vi implementerade därför:
+
+```erlang
+push_response
+```
+
+Response innehåller bland annat:
+
+```text
+accepted/rejected
+AcceptedAmount
+receiver height
+termination-information
+```
+
+Sender minskar sin excess först efter en lyckad response:
+
+```text
+NewE = E - AcceptedAmount
+```
+
+---
+
+# 9. Flow uppdateras bara en gång
+
+Vi upptäckte tidigare ett problem där flow riskerade att uppdateras både hos sender och receiver.
+
+Det skulle ge dubbel flow-update.
+
+Vi ändrade därför implementationen så att flow commit sker på ett enda ställe när receiver accepterar pushen:
+
+```erlang
+update_flow(...)
+```
+
+Sender uppdaterar sedan endast sitt lokala excess efter ACK.
+
+---
+
+# 10. Noden måste kunna ta emot meddelanden medan den väntar
+
+En viktig concurrency-fråga uppstod när node A skickat en request och väntar på svar.
+
+Om A bara väntar på:
+
+```erlang
+push_response
+```
+
+kan det uppstå deadlock om exempelvis B samtidigt väntar på A.
+
+Därför låter:
+
+```erlang
+await_push_response(...)
+```
+
+även noden hantera inkommande:
+
+```erlang
+push_request
+```
+
+medan den väntar på sin egen response.
+
+Det betyder att en actor fortfarande kan fungera som receiver samtidigt som den väntar på en tidigare outgoing push.
+
+Detta är en viktig förbättring jämfört med ett rent blockerat request/response-system.
+
+---
+
+# 11. Zero excess
+
+Vi hade tidigare en discharge-base-case som även berodde på att `pending` var tom.
+
+Det gjorde att en nod som redan hade:
+
+```text
+e = 0
+```
+
+kunde fortsätta arbeta i onödan.
+
+Nu avslutas discharge direkt med:
+
+```erlang
+discharge(#node{e = 0} = Node, ...)
+```
+
+Så:
+
+```text
+e = 0
+→ local discharge finished
+```
+
+---
+
+# 12. Zero residual capacity
+
+Vi lade också till en kontroll innan en push-request skickas.
+
+Om:
+
+```text
+available_capacity = 0
+```
+
+ska noden inte skicka en meningslös push-request.
+
+Istället tar vi bort kanten från `pending` och provar nästa.
+
+---
+
+# 13. Grannhöjder får inte läsas globalt
+
+Ett viktigt krav är att en actor inte får läsa en annan actors aktuella height från någon global struktur.
+
+Därför lade vi till:
+
+```erlang
+neighbour_heights
+```
+
+Noden lär sig istället en grannes aktuella höjd genom `push_response`.
+
+Exempel:
+
+```text
+edge 4 -> neighbour height 3
+edge 7 -> neighbour height 5
+```
+
+kan lagras ungefär som:
+
+```erlang
+[{4, 3}, {7, 5}]
+```
+
+Detta är actor-safe eftersom informationen har kommit genom meddelanden.
+
+---
+
+# 14. Relabel
+
+Om noden fortfarande har:
+
+```text
+e > 0
+```
+
+men har provat hela:
+
+```text
+pending
+```
+
+utan att kunna bli av med excess behöver den relabelas.
+
+Regeln är:
+
+```text
+new_height =
+    1 + min(height(v))
+```
+
+för grannar `v` där residualkapaciteten är större än noll.
+
+Exempel:
+
+```text
+current node height = 3
+
+residual neighbours:
+3
+4
+5
+```
+
+Då blir:
+
+```text
+new height = 3 + 1 = 4
+```
+
+och grannen på nivå 3 blir admissible.
+
+Efter relabel:
+
+```text
+pending = adj
+neighbour_heights = []
+```
+
+så att en ny discharge-omgång samlar färsk information.
+
+---
+
+# 15. Source är speciell vid initial preflow
+
+Vi upptäckte senare att source inte kan behandlas exakt som en vanlig aktiv nod under initialiseringen.
+
+Source startar med:
+
+```text
+h(source) = N
+```
+
+Den initiala preflowen ska saturera source-kanterna.
+
+Vi behövde därför behandla initiala pushes från source separat från den vanliga admissibility-regeln.
+
+Annars inträffade detta:
+
+```text
+source h=N
+neighbour h=0
+
+push rejected
+
+source relabels ner till 1
+```
+
+vilket inte är den avsedda preflow-initialiseringen.
+
+Vi lade därför till en source-special-case för den initiala pushen.
+
+Detta område har varit en del av vår fortsatta felsökning eftersom större testfall fortfarande inte ger korrekt resultat.
+
+---
+
+# 16. Returned excess till source
+
+På vårt tiny-exempel:
+
+```text
+Source --10--> Node 1 --2--> Sink
+```
+
+har Node 1 efter push till sink fortfarande:
+
+```text
+8 excess
+```
+
+Detta excess kan skickas tillbaka till source.
+
+Vi upptäckte en infinite loop:
+
+```text
+Node 1 --8--> Source
+Source --8--> Node 1
+Node 1 --8--> Source
+Source --8--> Node 1
+...
+```
+
+och heights ökade exempelvis:
+
+```text
+2191
+2192
+2193
+2194
+...
+```
+
+Problemet var att source behandlades som en vanlig nod när den fick excess tillbaka.
+
+Vi ändrade därför source så att returned flow absorberas:
+
+```text
+Node -> Source
+
+source.e += Amount
+
+Source discharges NOT the returned excess again.
+```
+
+Returned excess till source är alltså inte nytt arbete som måste skickas ut igen.
+
+---
+
+# 17. Sink är också speciell
+
+Sink ska aldrig discharge sitt excess.
+
+Det flöde som når sink är det vi senare använder som max-flow-resultat.
+
+Om sink tar emot:
+
+```text
+2
+```
+
+ska:
+
+```text
+sink.e = 2
+```
+
+få ligga kvar.
+
+Sink behandlas därför som en terminal actor:
+
+```text
+receive flow
+increase excess
+do not discharge
+```
+
+---
+
+# 18. Termination detection
+
+Controller får enligt uppgiften inte använda polling:
+
+```erlang
+timer:sleep(...)
+```
+
+och därefter hoppas att computation är klar.
+
+Vi behövde därför riktig distributed termination detection.
+
+Vi valde en variant inspirerad av Dijkstra-Scholten activation trees.
+
+Grundidén är:
+
+```text
+Controller
+    |
+    v
+ Source
+    |
+    v
+    A
+    |
+    v
+    B
+```
+
+När en tidigare idle node aktiveras av ett accepted push får den en:
+
+```text
+parent
+```
+
+Sender håller samtidigt reda på att den delegerat arbete genom:
+
+```text
+outstanding
+```
+
+---
+
+# 19. Nya termination states
+
+Vi lade till:
+
+```erlang
+parent = undefined
+outstanding = 0
+```
+
+Vi diskuterade även ett explicit:
+
+```text
+active
+```
+
+men kom fram till att det inte behövs.
+
+Local activity kan i huvudsak avgöras av:
+
+```text
+e > 0
+```
+
+Så termination-state är:
+
+### `parent`
+
+Vilken actor engagerade mig i computation?
+
+### `outstanding`
+
+Hur många aktiverade child computations väntar jag fortfarande på?
+
+---
+
+# 20. `NewlyEngaged`
+
+När receiver accepterar flow kontrollerar den om den redan ingår i termination tree.
+
+Om:
+
+```text
+parent == undefined
+```
+
+kan den bli newly engaged.
+
+Då blir:
+
+```text
+receiver.parent = Sender
+```
+
+och receiver skickar i sin response:
+
+```text
+NewlyEngaged = true
+```
+
+Sender gör då:
+
+```text
+outstanding = outstanding + 1
+```
+
+Om receiver redan har en parent:
+
+```text
+NewlyEngaged = false
+```
+
+och sender ökar inte sitt child count igen.
+
+---
+
+# 21. Completion för en vanlig nod
+
+En vanlig nod är färdig när:
+
+```text
+e == 0
+AND
+outstanding == 0
+```
+
+Då skickar den:
+
+```erlang
+termination_ack
+```
+
+till sin parent.
+
+Efter det:
+
+```text
+parent = undefined
+```
+
+så att noden senare kan engageras igen om nytt arbete kommer.
+
+När parent får ACK:
+
+```text
+outstanding = outstanding - 1
+```
+
+och testar därefter själv om den kan avslutas.
+
+Det ger propagation:
+
+```text
+B finished
+   |
+   v
+ACK to A
+
+A finished
+   |
+   v
+ACK to Source
+```
+
+---
+
+# 22. Sink och termination
+
+Sink skapar inget nytt computation-arbete.
+
+När den accepterar flow kan dess termination branch därför avslutas direkt.
+
+Sink skickar:
+
+```erlang
+termination_ack
+```
+
+till den actor som engagerade den och nollställer sedan sin parent.
+
+Sink behåller samtidigt sitt excess.
+
+---
+
+# 23. Source och termination
+
+Source är termination tree-roten bland node actors.
+
+Den ska inte få en vanlig parent.
+
+Source rapporterar istället direkt till Controller:
+
+```erlang
+computation_finished
+```
+
+En viktig skillnad är att source kan ha:
+
+```text
+e > 0
+```
+
+när computation är färdig.
+
+Det kan vara flow som har returnerats eftersom det inte kunde nå sink.
+
+Source completion använder därför i vår nuvarande modell främst:
+
+```text
+outstanding == 0
+```
+
+och inte:
+
+```text
+e == 0
+```
+
+---
+
+# 24. Controller utan polling
+
+Tidigare använde vi:
+
+```erlang
+timer:sleep(...)
+```
+
+och frågade sedan sink om excess.
+
+Detta var bara ett temporärt sätt att testa implementationen.
+
+Nu väntar Controller istället på:
+
+```erlang
+{Source, computation_finished}
+```
+
+Först därefter skickar Controller:
+
+```erlang
+get_excess
+```
+
+till sink.
+
+Resultatet skrivs sedan:
+
+```text
+f = SinkExcess
+```
+
+Det betyder att Controller inte längre behöver periodisk polling.
+
+---
+
+# 25. Tiny-testet
+
+För grafen:
+
+```text
+Source --10--> Node 1 --2--> Sink
+```
+
+ska max flow bli:
+
+```text
+2
+```
+
+När returned excess-hanteringen och termination fungerar får vi:
+
+```text
+Source sends 10 to Node 1
+
+Node 1 sends 2 to Sink
+
+Node 1 returns 8 to Source
+
+Sink excess = 2
+
+termination ACKs propagate back
+
+Source -> computation_finished -> Controller
+
+Controller asks Sink
+
+f = 2
+```
+
+Det testet passerar.
+
+---
+
+# 26. Vad vi har verifierat hittills
+
+Följande delar är implementerade:
+
+```text
+Actor structure                     DONE
+One node = one actor                DONE
+Local height/excess state           DONE
+push_request protocol               DONE
+push_response / ACK                 DONE
+Sender reduces excess after ACK     DONE
+pending edge list                   DONE
+Zero excess handling                DONE
+Zero capacity handling              DONE
+Live neighbour heights via msgs     DONE
+Relabel implementation              DONE
+Can receive while waiting for ACK   DONE
+Single flow update                  DONE
+Source/sink special handling        DONE
+Termination parent state            DONE
+Termination outstanding state       DONE
+termination_ack propagation         DONE
+Controller waits for completion     DONE
+timer-based polling removed         DONE
+Tiny test                           PASS
+Sample test                         PASS
+```
+
+---
+
+# 27. Current unresolved problem
+
+Algoritmen fungerar på små testfall men alla större hidden tests passerar ännu inte.
+
+Vi har bland annat sett resultat som:
+
+```text
+expected 268
+got      249
+```
+
+och:
+
+```text
+expected 81
+got      60
+```
+
+Vi testade om detta berodde på att Controller terminerade computation för tidigt genom att temporärt vänta efter `computation_finished`.
+
+Resultatet ändrades inte.
+
+Det tyder på att huvudproblemet sannolikt inte längre är en enkel timing-race i Controller.
+
+Det finns därför fortfarande någon correctness-fråga i själva distributed preflow-push implementationen.
+
+---
+
+# 28. Viktiga områden att kontrollera härnäst
+
+## A. Initial preflow från source
+
+Vi måste verifiera att source-kanterna verkligen behandlas enligt korrekt preflow-initialisering och att source behåller korrekt height.
+
+Speciellt ska source inte felaktigt relabelas från:
+
+```text
+N -> 1
+```
+
+under initialiseringen.
+
+---
+
+## B. Relabel med samtidiga actors
+
+Vi måste kontrollera om vår användning av senast observerade:
+
+```text
+neighbour_heights
+```
+
+fortfarande upprätthåller korrekt push-relabel-invariant när flera actors relabelar samtidigt.
+
+En neighbour height kan förändras efter att vi fått den i ett tidigare response.
+
+Det är tillåtet att actors bara känner till information genom meddelanden, men algoritmen måste fortfarande göra progress och behålla sina invariants.
+
+---
+
+## C. Shared ETS flow updates
+
+Flow ligger i public ETS.
+
+Nu gör `update_flow` ungefär:
+
+```text
+lookup current F
+
+calculate F + D / F - D
+
+insert new F
+```
+
+Om båda endpoint actors uppdaterar samma edge mycket nära samtidigt finns det anledning att kontrollera att read-modify-write-sekvensen inte tappar en update.
+
+Detta är ännu inte bevisat som vårt fel, men större parallella grafer gör det relevant att undersöka.
+
+---
+
+## D. Residual capacity
+
+För en undirected edge:
+
+```text
+u ---- c ---- v
+```
+
+med signed flow `F` använder vi:
+
+```text
+from u: C - F
+from v: C + F
+```
+
+Vi har redan korrigerat receiver-sidan så att pushens residual capacity kontrolleras i senderns riktning.
+
+Detta bör testas mer på edges där flow först går åt ena hållet och senare reverseras.
+
+---
+
+## E. Termination accounting
+
+Tiny-testet visar att:
+
+```text
+NewlyEngaged
+outstanding++
+termination_ack
+outstanding--
+```
+
+fungerar i en enkel kedja.
+
+Större grafer har däremot cross-pushes och fler samtidiga actor relationships.
+
+Vi behöver därför fortfarande verifiera att varje delegated computation alltid hålls representerad i termination tree tills arbetet verkligen är färdigt.
+
+---
+
+# 29. Debugging vi har gjort
+
+Vi lade till debug messages för:
+
+```text
+push accepted/rejected
+excess before/after push
+NewlyEngaged
+outstanding before/after
+termination ACK
+node completion
+source completion
+flow value
+available capacity
+node state
+```
+
+Det var detta som gjorde att vi hittade infinite ping-pong-problemet mellan Node 1 och Source.
+
+Vid large tests ska:
+
+```erlang
+-define(PRINT, 0).
+```
+
+användas.
+
+Med:
+
+```erlang
+-define(PRINT, 1).
+```
+
+produceras enormt mycket terminal-I/O, vilket kan göra computation mycket långsammare än själva algoritmen.
+
+---
+
+# 30. WSL / utvecklingsmiljö
+
+Vi hade också problem eftersom implementationen först kördes från Windows-miljön istället för rätt Linux/WSL-miljö.
+
+För att arbeta direkt från WSL:
+
+```bash
+cd /root
+```
+
+och kopiera projektet:
+
+```bash
+cp -r /mnt/c/Users/tonny/OneDrive/Documents/MulticoreProgramming/Tonnys_Multicore-labbar/lab1 /root/lab1
+```
+
+Öppna sedan katalogen från Ubuntu/WSL med:
+
+```bash
+code .
+```
+
+Om en gammal kopia ska tas bort:
+
+```bash
+cd /root
+rm -rf lab1
+```
+
+---
+
+# 31. Nuvarande mentala modell av algoritmen
+
+En vanlig node fungerar nu konceptuellt så här:
+
+```text
+receive excess
+      |
+      v
+become active
+      |
+      v
+pending = adj
+      |
+      v
+try edge
+      |
+      +---- no capacity ------> next edge
+      |
+      v
+send push_request
+      |
+      v
+wait for response
+      |
+      +---- rejected ---------> next edge
+      |
+      v
+accepted
+      |
+      v
+reduce own excess
+      |
+      v
+e == 0 ?
+   |       |
+  yes      no
+   |       |
+   v       v
+ wait /   continue
+ finish   discharge
+
+If pending empty and e > 0:
+      |
+      v
+    relabel
+      |
+      v
+ pending = adj
+      |
+      v
+try again
+```
+
+Termination kör parallellt med detta:
+
+```text
+A activates B
+
+A.outstanding += 1
+B.parent = A
+
+B finishes own work
+B.outstanding == 0
+
+B -> termination_ack -> A
+
+A.outstanding -= 1
+```
+
+Till slut:
+
+```text
+Source.outstanding == 0
+
+Source -> computation_finished -> Controller
+
+Controller -> get_excess -> Sink
+
+f = sink.e
+```
+
+---
+
+# Current status
+
+Vi har nu gått från ett nästan sekventiellt starter-skelett till ett faktiskt distributed actor-baserat preflow-push-system med:
+
+* lokalt actor state
+* request/response pushes
+* asynchronous communication
+* relabel
+* residual capacities
+* reverse pushes
+* source/sink special cases
+* distributed termination detection
+
+Den återstående huvuduppgiften är inte längre att fylla i saknade komponenter.
+
+Den är istället att hitta den correctness-bugg som fortfarande gör att vissa större testgrafer ger ett för lågt max-flow-resultat.
