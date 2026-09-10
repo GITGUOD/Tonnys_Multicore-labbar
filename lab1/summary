@@ -1182,3 +1182,6 @@ Den återstående huvuduppgiften är inte längre att fylla i saknade komponente
 Den är istället att hitta den correctness-bugg som fortfarande gör att vissa större testgrafer ger ett för lågt max-flow-resultat.
 
 # Idag så löste vi problemet att källan började pusha innan ens grafens noder hade fått sina excess
+
+
+# Credits to Chat and Claude for assisting in helping me understanding and going forward with my lab
