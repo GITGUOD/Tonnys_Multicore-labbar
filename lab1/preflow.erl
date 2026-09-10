@@ -397,8 +397,10 @@ handle_push_request(Node, G, Sender, U, I, Amount, Height) ->
     ReceiverCapacity =  available_capacity(G, U, I),
     AcceptedAmount = min(Amount, ReceiverCapacity), 
 
+	% Initial push should be from source, so we can accept it even if our height is not one less than the sender's height.
+	SenderIsSource = (U == 0),
 	% Vi måste bestämma om vi kan acceptera pushen baserat på höjden på grannen och vår egen höjd.
-    Admissible = (MyHeight == Height - 1) andalso (AcceptedAmount > 0),
+    Admissible = (SenderIsSource orelse MyHeight == Height - 1) andalso (AcceptedAmount > 0),
 
     case Admissible of
         true ->
