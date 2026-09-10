@@ -2,14 +2,14 @@ Questions
 1. If you use a controller, how can it know that no node is active? If you don’t,
 how do the actors agree on terminating the algorithm?
 - Googlade och fick upp Dijkstra-Scholten som en av lösningarna vilket jag tog inspiration från.
-- Så basically vad vi gör då att vi har två olika attribut inlagda, parent och outstanding
+- Så basically vad vi gör då att vi har två olika attribut inlagda, parent och activeChildren
     - parent attributet används för att hålla koll på vilken nod som gör vad. Så om A skickar en push request till B så blir A parent till B. B är då dess child
-    - När det händer så incrementar vi outstanding med +1 som någon form av action.
-När både outstanding är 0 och parents inte har några barn än, samt att excessen är 0 så kan systemet skicka en computation request till controllern för att avgöra att allt är klart.
+    - När det händer så incrementar vi activeChildren med +1 som någon form av action.
+När både activeChildren är 0 och parents inte har några barn än, samt att excessen är 0 så kan systemet skicka en computation request till controllern för att avgöra att allt är klart.
 
 2. How do you ensure messages to the controller do not arrive out-of-order
 and therefore could confuse e.g. a controller?
-- Vi har en activation tree via parent och child. Och på så sätt kan controller checka att outstanding är 0 innan vi skickar ut en computation_finished request.
+- Vi har en activation tree via parent och child. Och på så sätt kan controller checka att activeChildren är 0 innan vi skickar ut en computation_finished request.
 
 3. How many push messages can a node have in progress concurrently in
 your solution? (one is OK)

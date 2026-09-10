@@ -174,7 +174,7 @@ new states
     ...
     active = false,
     parent = undefined,
-    outstanding = 0
+    activeChildren = 0
 }).
 
 active
@@ -185,14 +185,14 @@ We dont need this as we can only check if E > 0
 parent
     Which actor caused my current activation?
 
-outstanding
+activeChildren
     How much work have I delegated that has not yet been acknowledged?
 
 SO Then the completion condition becomes conceptually:
 
 e == 0
 AND
-outstanding == 0
+activeChildren == 0
 
 ordinary node
     -> send termination ACK to parent

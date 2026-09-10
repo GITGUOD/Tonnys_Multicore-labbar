@@ -19,7 +19,7 @@
 
 -record(edge, { u, v, c }).
 
--record(node, { i, h, e, adj, source, sink, pending, neighbour_heights = [], parent = undefined, outstanding = 0 }).	
+-record(node, { i, h, e, adj, source, sink, pending, neighbour_heights = [], parent = undefined, activeChildren = 0 }).	
 
 % i:		index and only used for printing to see which node it is
 % h:		height
@@ -155,19 +155,19 @@ update_flow(G, I, U, D ) ->
 
 % Här börjar våran riktig implementation
 
-% Första discharge försöker, om vi har en excess som är 0, gör vi ingenting eftersom vi inte har något att pusha
-% _C och _G är variabler som vi inte använder i denna pattern match
+% Om excess är 0 finns inget mer lokalt arbete att göra.
+% % _C och _G är variabler som vi inte använder i denna pattern match
 discharge(#node{e = 0} = Node, _C, _G) -> 
 	% io:format("DISCHARGE FINISHED for node ~p (index ~p)~n", [Node, Node#node.i]),
 	Node; % if pending är tom så slutar vi discharging
 
-% Om våran pending lista att discharga till är tom och våran excess är densamma
+% Om alla edges har testats men excess finns kvar, relabela och börja om.
 discharge(#node{pending = [], e = E, adj = Adj} = Node, C, G) when E > 0 ->
 	Relabaled = relabeling(Node, G), % Påbörja relabeling
 	Restart = Relabaled#node{pending = Adj, neighbour_heights = []}, % Töm pending listan eftersom vi har nya edges nu när vi har relabalat to all edges
 	discharge(Restart, C, G); % Sedan kör vi discharge igen
 
-% Slutligen om vi har en pendinglista
+% Slutligen om vi har en pendinglista, Testar nästa edge i pending-listan och skickar en push_request om kapacitet finns.
 discharge(#node{pending = [I|Rest]} = Node, C, G) ->
 	% Pushar till grannen om vi har kapacitet
 	
@@ -197,7 +197,8 @@ discharge(#node{pending = [I|Rest]} = Node, C, G) ->
 	end.
 
 
-% Nu behöver vi logik för att hantera grannens svar:
+% % Väntar på svar på en push_request och uppdaterar nodens state.
+% Kan samtidigt hantera inkommande push_requests från andra actors.
 await_push_response(Node, C, G, Neighbour, I, Rest) ->
 	#node{i = U, e = E} = Node, 
 
@@ -211,17 +212,17 @@ await_push_response(Node, C, G, Neighbour, I, Rest) ->
 					
 					pr("node ~p accepted push_response from ~p, Amount = ~p, NewE = ~p~n, NeighbourHeight = ~p", [Node, Neighbour, AcceptedAmount, NewE, NeighbourHeight]),
 					
-					% Ökar outstanding vilket är aktiviteten eller så sagt: obesvarade push-förfrågningar
-					NewOutstanding =
+					% Ökar activeChildren vilket är aktiviteten eller så sagt: obesvarade push-förfrågningar
+					NewActiveChildren =
 						case NewlyEngaged of
-							true  -> Node#node.outstanding + 1;
-							false -> Node#node.outstanding
+							true  -> Node#node.activeChildren + 1;
+							false -> Node#node.activeChildren
 						end,
-					pr("PUSH ACK node ~p: e ~p -> ~p, newlyEngaged=~p, outstanding ~p -> ~p~n",
+					pr("PUSH ACK node ~p: e ~p -> ~p, newlyEngaged=~p, activeChildren ~p -> ~p~n",
 					[Node#node.i, E, NewE, NewlyEngaged,
-						Node#node.outstanding, NewOutstanding]),
+						Node#node.activeChildren, NewActiveChildren]),
 						
-					NewUpdatedNode = Node#node{e = NewE, pending = Rest, neighbour_heights = NewNeighbourHeights, outstanding = NewOutstanding}, % returnerar en ny version av Node med uppdaterad excess
+					NewUpdatedNode = Node#node{e = NewE, pending = Rest, neighbour_heights = NewNeighbourHeights, activeChildren = NewActiveChildren}, % returnerar en ny version av Node med uppdaterad excess
 					discharge(NewUpdatedNode, C, G);
 				false -> % om grannen inte accepterar
 					pr("node ~p rejected push_response from ~p, Amount = ~p, NewE = ~p~n", [Node, Neighbour, AcceptedAmount, E]),
@@ -279,11 +280,11 @@ node_loop(Node, C, G) ->
 			end;
 
 		{_Child, termination_ack} ->
-			pr("TERM ACK node ~p: outstanding ~p -> ~p, e=~p~n", [Node#node.i, Node#node.outstanding, Node#node.outstanding - 1, Node#node.e]),
-			NewOutstanding = Node#node.outstanding - 1,
+			pr("TERM ACK node ~p: outstanactiveChildrending ~p -> ~p, e=~p~n", [Node#node.i, Node#node.activeChildren, Node#node.activeChildren - 1, Node#node.e]),
+			NewActiveChildren = Node#node.activeChildren - 1,
 
 			UpdatedNode = Node#node{
-				outstanding = NewOutstanding
+				activeChildren = NewActiveChildren
 			},
 
 			TerminationNode = potentiallyFinished(UpdatedNode, C),
@@ -312,6 +313,11 @@ node_loop(Node, C, G) ->
 		Fel		->		erlang:exit(?LINE)
 	end.
 
+%
+%Om en nod har excess kvar men ingen granne är admissible, måste noden relabelas.
+%Då tittar vi på alla grannar som fortfarande har residualkapacitet, tar den minsta av deras senast kända heights och sätter vår egen height till minHeight + 1.
+%Då blir åtminstone en av de grannarna möjlig att pusha till i nästa discharge-runda.
+%
 relabeling(#node{h = H, e = E, i = U, adj = Adj} = Node, G) -> 
 	
 	% Vi vill hitta den minsta höjden bland alla grannar som har tillgänglig kapacitet. Vi kan använda list comprehension för att filtrera grannarna och hämta deras höjder.
@@ -335,7 +341,7 @@ relabeling(#node{h = H, e = E, i = U, adj = Adj} = Node, G) ->
 					end
 				end, [], Adj), % default värden
 
-			% Om det finns några grannar med tillgänglig kapacitet
+			% Om det finns några grannar med tillgänglig kapacitet utifrån våran sökning ovan
 			case NeighbourHeights of
 				[] -> Node; % Om det inte finns några grannar med tillgänglig kapacitet, returnera samma Node utan ändringar
 				_  -> MinHeight = lists:min(NeighbourHeights), % Hitta den minsta höjden bland grannarna
@@ -353,8 +359,8 @@ update_neighbour_height(NeighbourHeights, I, NeighbourHeight) ->
 
 % Source kan vara färdig även om e > 0.
 % Excess som inte kan nå sinken kan returneras till source.
-% När source inte längre har något outstanding arbete är computation klar.
-potentiallyFinished(#node{i = I, source = true, outstanding = 0} = Node, C) ->
+% När source inte längre har något activeChildren arbete är computation klar.
+potentiallyFinished(#node{i = I, source = true, activeChildren = 0} = Node, C) ->
     pr("SOURCE ~p COMPUTATION FINISHED~n", [I]),
 	C ! {self(), computation_finished}, % skicka ett meddelande till processen C.
 	Node;
@@ -362,7 +368,7 @@ potentiallyFinished(#node{i = I, source = true, outstanding = 0} = Node, C) ->
 % En vanlig nod är färdig när dess eget excess är 0 och den inte
 % längre väntar på något arbete från sina children.
 % Då skickar den termination_ack till sin parent.
-potentiallyFinished(#node{i = I, e = 0, outstanding = 0, parent = Parent} = Node, _C) when Parent =/= undefined ->
+potentiallyFinished(#node{i = I, e = 0, activeChildren = 0, parent = Parent} = Node, _C) when Parent =/= undefined ->
     pr("NODE ~p FINISHED -> ACK parent ~p~n", [I, Parent]),
 	Parent ! {self(), termination_ack},
     Node#node{parent = undefined};

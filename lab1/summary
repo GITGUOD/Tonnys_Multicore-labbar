@@ -74,7 +74,7 @@ excess
 pending
 neighbour_heights
 parent
-outstanding
+activeChildren
 ```
 
 ---
@@ -605,7 +605,7 @@ parent
 Sender håller samtidigt reda på att den delegerat arbete genom:
 
 ```text
-outstanding
+activeChildren
 ```
 
 ---
@@ -616,7 +616,7 @@ Vi lade till:
 
 ```erlang
 parent = undefined
-outstanding = 0
+activeChildren = 0
 ```
 
 Vi diskuterade även ett explicit:
@@ -639,7 +639,7 @@ Så termination-state är:
 
 Vilken actor engagerade mig i computation?
 
-### `outstanding`
+### `activeChildren`
 
 Hur många aktiverade child computations väntar jag fortfarande på?
 
@@ -672,7 +672,7 @@ NewlyEngaged = true
 Sender gör då:
 
 ```text
-outstanding = outstanding + 1
+activeChildren = activeChildren + 1
 ```
 
 Om receiver redan har en parent:
@@ -692,7 +692,7 @@ En vanlig nod är färdig när:
 ```text
 e == 0
 AND
-outstanding == 0
+activeChildren == 0
 ```
 
 Då skickar den:
@@ -714,7 +714,7 @@ så att noden senare kan engageras igen om nytt arbete kommer.
 När parent får ACK:
 
 ```text
-outstanding = outstanding - 1
+activeChildren = activeChildren - 1
 ```
 
 och testar därefter själv om den kan avslutas.
@@ -778,7 +778,7 @@ Det kan vara flow som har returnerats eftersom det inte kunde nå sink.
 Source completion använder därför i vår nuvarande modell främst:
 
 ```text
-outstanding == 0
+activeChildren == 0
 ```
 
 och inte:
@@ -883,7 +883,7 @@ Can receive while waiting for ACK   DONE
 Single flow update                  DONE
 Source/sink special handling        DONE
 Termination parent state            DONE
-Termination outstanding state       DONE
+Termination activeChildren state       DONE
 termination_ack propagation         DONE
 Controller waits for completion     DONE
 timer-based polling removed         DONE
@@ -1000,9 +1000,9 @@ Tiny-testet visar att:
 
 ```text
 NewlyEngaged
-outstanding++
+activeChildren++
 termination_ack
-outstanding--
+activeChildren--
 ```
 
 fungerar i en enkel kedja.
@@ -1021,7 +1021,7 @@ Vi lade till debug messages för:
 push accepted/rejected
 excess before/after push
 NewlyEngaged
-outstanding before/after
+activeChildren before/after
 termination ACK
 node completion
 source completion
@@ -1139,21 +1139,21 @@ Termination kör parallellt med detta:
 ```text
 A activates B
 
-A.outstanding += 1
+A.activeChildren += 1
 B.parent = A
 
 B finishes own work
-B.outstanding == 0
+B.activeChildren == 0
 
 B -> termination_ack -> A
 
-A.outstanding -= 1
+A.activeChildren -= 1
 ```
 
 Till slut:
 
 ```text
-Source.outstanding == 0
+Source.activeChildren == 0
 
 Source -> computation_finished -> Controller
 
