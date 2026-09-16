@@ -1,0 +1,82 @@
+A push from u to v along edge a is legal when:
+
+u.e > 0 (u has excess to push)
+residual(a, u, v) > 0 — i.e., there's remaining capacity in the direction u→v
+u.h == v.h + 1 (u is exactly one higher than v)
+
+Node index is basically the index of the node in the graph. Index 0 is the source? And node n-1 is the sink.
+
+Locks, lock acquisition order is importnant, we must have sort of rule that every thread is following.
+That means that it doesnt matter how many threads we have because there will no longer be a circular wait because no high
+index thread will wait for a low-index one.
+
+
+## Summary of principles established
+
+**Push precondition (from sequential preflow-push):**
+A push from `u` to `v` along edge `a` is legal only when:
+1. `u.e > 0`
+2. `residual(a, u, v) > 0`
+3. `u.h == v.h + 1`
+
+**Why locks are needed at all:**
+Checking these conditions and then acting on them (updating `e`, `h`, `f`) is a **check-then-act** sequence. If another thread changes any of those values between your check and your write, you act on stale information — so the check and the push must happen atomically, under lock.
+
+**Locking granularity:**
+- Each `Node` gets its **own lock** — `n` locks total, not one global lock, not a fixed pair. This is what actually gives you parallelism: unrelated nodes never block each other.
+- `relabel(v)` uses the **same** per-node lock as `push` on `v` — there's no separate relabel lock, since both operations touch the same shared fields (`h`, `e`).
+
+**Deadlock avoidance:**
+- A push touches two nodes (`u` and `v`) at once, so a thread must hold two locks simultaneously.
+- Circular-wait deadlock (A holds u waits for v, B holds v waits for u) is avoided by a strict rule: **always acquire locks in increasing order of node index (`i`)**, regardless of which node is "u" and which is "v" in that particular push.
+- Node index `i` has no algorithmic meaning — it's just the node's position from the input file, reused purely as a consistent, comparable ordering key.
+
+**Handling wrong-order locks:**
+- If a thread already holds `u`'s lock and discovers the candidate `v` has a lower index, it must **unlock `u`**, then **relock both in correct order** (lower index first).
+- Critically: after relocking, all previous checks are **stale and must be fully re-verified** — re-read `u.e`, re-check residual capacity, re-check heights — since anything could have changed while no locks were held.
+
+**Shared excess list:**
+- The `excess` list itself (from `Graph`) is a separate shared structure, independent of any single node's lock, and needs its **own lock** to protect concurrent push/pop.
+
+**Idle waiting — condition variables:**
+- Instead of busy-waiting (wasting CPU spinning on an empty list), idle threads should **wait on a condition variable**, and be woken (`notify`/`signal`) when another thread adds a node back onto the excess list.
+
+**Termination detection:**
+- Stopping condition: **excess list is empty AND `threads_active == 0`**.
+- `threads_active` is a shared counter tracking how many threads are currently discharging a node (not idle).
+- It must be **incremented immediately after popping a node, while still holding the excess-list lock** (before unlocking) — and **decremented, followed by a notify, while holding the same lock** after finishing a node. This prevents a window where the list looks empty and no thread is "active," while a thread is actually mid-discharge and about to push new excess back onto the list.
+
+---
+
+## Next: sketching the thread structure
+
+Before diving into `discharge(u)`'s internal push/relabel logic, let's set up the skeleton each worker thread runs, since everything above needs to slot into it correctly.
+
+Here's a partial skeleton to react to — I've deliberately left gaps for you to fill in, since you should be driving this part:
+
+```
+worker_thread_loop():
+    while (true):
+        lock(excess_list_lock)
+
+        // Case 1: truly done?
+        if (excess_list is empty AND threads_active == 0):
+            unlock(excess_list_lock)
+            print "thread terminating"   // requirement 3
+            return
+
+        // Case 2: nothing to do right now, but others still working
+        while (excess_list is empty AND threads_active > 0):
+            wait(condition_variable, excess_list_lock)
+            // after waking: need to re-check both conditions again — why?
+
+        u = pop from excess_list
+        threads_active++
+        unlock(excess_list_lock)
+
+        discharge(u)   // uses per-node locks internally
+
+        lock(excess_list_lock)
+        threads_active--
+        notify_all(condition_variable)
+        unlock(excess_list_lock)
