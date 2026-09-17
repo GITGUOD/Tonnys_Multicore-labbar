@@ -32,9 +32,11 @@ class Graph {
 
 	void enter_excess(Node u)
 	{
-		if (u != node[s] && u != node[t]) {
+						// System.out.println("Letsgoo");
+		if (u != node[s] && u != node[t] && u.e > 0 && !u.inExcess) {
 			u.next = excess;
 			excess = u;
+			u.inExcess = true;
 		}
 	}
 
@@ -46,12 +48,23 @@ class Graph {
 			return a.u;
 	}
 
+	int residual(Edge a, Node from)
+	{
+		if (a.u == from)
+			return a.c - a.f;   // forwarda oanvänd kapacitet
+		else
+			return a.c + a.f;          // backward: flow that can be canceled
+	}
+
 	void relabel(Node u)
 	{
 		int minimum_h = Integer.MAX_VALUE;
 		// Vi vill gå igenom våran adj lista, hitta den minsta och skriva om våran höjd till den + 1.
+
 		for(Edge a : u.adj) { // Kolla genom varje granne
-			int availableCapacity = (a.c - a.f); // kapacitet - flöde för att see hur mycket vi har
+
+			// int availableCapacity = (a.c - a.f); // kapacitet - flöde för att see hur mycket vi har
+			int availableCapacity = residual(a, u);
 			if(availableCapacity > 0) { // finns inget flöde så vi gör inget
 				Node v = other(a, u); // hämta grannen
 				if(v.h < minimum_h) {
@@ -59,41 +72,114 @@ class Graph {
 				}
 			}
 		}
+		// Vi har hittat den minsta grannens höjd, men det är så klart om vi har hittat någon residual höjd
+		if (minimum_h != Integer.MAX_VALUE) {
+			u.h = minimum_h + 1;
+		}
 
-		// Vi har hittat den minsta grannens höjd
-		u.h = minimum_h + 1;
 	}
 
-	void push(Node u, Node v, Edge a)
-	{
-		int flow = Math.min(u.e, (a.c - a.f)); // Hämtar excess flödet mellan antigen Nod U:s flöde eller den maximala kapaciteten längst den vägen E/kanten (eftersom vi ej kan skicka mer än vad vägen har, samt att vi kan inte skicka mer än vad noden U har)
-		a.f += flow; // Ökar flödes i kanten mellan u och v
-		u.e -= flow; // minskar excessflödet i orginal sändaren
-		v.e += flow; // ökar excessflödet till mottagaren
+	// void push(Node u, Node v, Edge a)
+	// {
+	// 			System.out.println("Pushing1");
+	// 	int flow = Math.min(u.e, (a.c - a.f)); // Hämtar excess flödet mellan antigen Nod U:s flöde eller den maximala kapaciteten längst den vägen E/kanten (eftersom vi ej kan skicka mer än vad vägen har, samt att vi kan inte skicka mer än vad noden U har)
+	// 	a.f += flow; // Ökar flödes i kanten mellan u och v
+	// 	u.e -= flow; // minskar excessflödet i orginal sändaren
+	// 	v.e += flow; // ökar excessflödet till mottagaren
+	// 			System.out.println("Pushing2");
+
+	// }
+
+	void push(Node u, Node v, Edge a) {
+
+		int flow = Math.min(u.e, residual(a, u));
+		if (a.u == u)
+			a.f += flow;
+		else
+			a.f -= flow;
+
+		u.e -= flow;
+		v.e += flow;
+	}
+
+	public void lockPair(Node u, Node v) {
+		// Vi låser utifrån lock index, en regel som säkerställer att vi aldrig kan få tag på samma nod via modifikation
+		// System.out.println("debugLockPair1");
+		if(u.i < v.i) {
+			// Låsa i rätt riktning
+			u.nodeLock.lock();
+			v.nodeLock.lock();
+					// System.out.println("debugLockPair2");
+		} else {
+			v.nodeLock.lock();
+			u.nodeLock.lock();
+					// System.out.println("debugLockPair3");
+		}
 	}
 
 	public void discharge(Node u) {
+		// System.out.println("debugDischarge1");
+		u.nodeLock.lock(); //Lås våran nod som vi ska discharga då processen börja //lock count = 1;
 
 		while(u.e > 0) { //Medans vi har någon excess från våran sändare
-
+			boolean pushed = false;
+			// Släpp det vi håller på med
+			u.nodeLock.unlock(); //lcok count för u = 0
 			for(Edge a : u.adj) { // För varje granne/kant till noden u
-				int availableCapacity = (a.c - a.f); // kapacitet - flöde för att see hur mycket vi har
+				// int availableCapacity = (a.c - a.f); // kapacitet - flöde för att see hur mycket vi har
+				int availableCapacity = residual(a, u);
 				Node v = other(a, u); // Hämta grannen
 				if(availableCapacity > 0 && u.h == (v.h + 1)) { // Kolla om våra conditions, rätt höjd, om vi har någon kapacitet o skicka etc
-					push(u, v, a);
+					// System.out.println("debugDischarge2");
+					lockPair(u, v); //Lås eftersom vi ska börja modifikationen om villkoren är rätt, dock kan något/staten har ändrats när vi har kommit hit, vi behöver verificikation
+					// lock count för u och v = 1
+					boolean success = verification(u, v, a);
+
+					if(success) {
 					// Efter att våran granne har fått excess behöver vi lägga den till våran excess lista så att excessen kan behandlas vid nästa nod
-					if (v != node[s] && v != node[t] && v.e > 0) {
-						enter_excess(v);
+					Node source = node[s];
+					Node sink = node[t];
+					pushed = true;
+						if (v != source && v != sink && v.e > 0) {
+							// Låsa innan vi gör en enter_excess och signalera att alla andra trådar kan nu bearbeta nästa
+							excessLock.lock();
+							try {
+								enter_excess(v);
+								excessIsEmpty.signalAll();
+							} finally {
+								excessLock.unlock();
+							}
+						}						
 					}
-					continue; // Vi har nu pushat och är klar, continue bort från while-loopen
+
+					v.nodeLock.unlock(); //Här är vi klar
+					u.nodeLock.unlock();
+					if(success) break; // Vi har nu pushat och är klar, breaka bort till while-loopen
 				}
 
 			}
+			
+			u.nodeLock.lock(); //Vi behöverl åsa u innan vi relabela eller fortsätter med loopen igen
+			if(!pushed) {
+				relabel(u); // relabala
+			}
+			
+		}
 
-			relabel(u); // relabala
+		u.nodeLock.unlock();
+		
+	}
+
+	public boolean verification(Node u, Node v, Edge a) {
+		boolean pushed = false;
+		// int freshAvailableCapacity = (a.c - a.f);
+		int freshAvailableCapacity = residual(a, u);
+		if (u.e > 0 && freshAvailableCapacity > 0 && u.h == v.h + 1) {
+			push(u, v, a);
+			pushed = true;
 
 		}
-		
+		return pushed;
 	}
 
 	int preflow(int s, int t)
@@ -108,35 +194,72 @@ class Graph {
 		this.t = t;
 		Node source = node[s];
 		source.h = n; // Sätter vi höjden
+		Node sink = node[t];
 
 		// Vi behöver göra initiella push från källan:
 		iter = source.adj.listIterator();
 		while (iter.hasNext()) {
 			a = iter.next();
 
-			node[s].e += a.c;
-
-			push(source, other(a, source), a);
-		}
-
-		while (excess != null) {
-			u = excess;
-			v = null;
-			a = null;
-			excess = u.next;
-
-			iter = u.adj.listIterator();
-			while (iter.hasNext()) {
-				a = iter.next();
+			v = other(a, source);
+			// Första pushen från källan är speciell och vi kan därför inte anvädna push metodiken, vi kan bara pusha så mycket som våran kapacitet/flöde tillåter
+			// a.f = a.c;
+			// source.e -= a.c;
+			// v.e += a.c;
+			if (a.u == source) {
+				a.f = a.c;
+			}
+			else {
+				a.f = -a.c;
 			}
 
-			if (v != null)
-				push(u, v, a);
-			else
-				relabel(u);
+			source.e -= a.c;
+			v.e += a.c;
+
+			if((v != source) && v != sink && (v.e > 0)) { // Vi kan påbörja bearbeta våran granne nu
+				enter_excess(v);
+
+			}
+
 		}
 
-		return node[t].e;
+		int numberOfThreads = 4; // fyra threads
+		Thread[] workers = new Thread[numberOfThreads]; // Antalet trådar
+		for(int i = 0; i < numberOfThreads; i++) {
+			final int id = i;
+			workers[id] = new Thread(() -> workerLoop(id));
+			workers[id].start();
+		}
+
+		// Vi behöver kolla alla trådarna innan vi avslutar våran algo
+		try {
+
+			for(int j = 0; j < numberOfThreads; j++) {
+				Thread th = workers[j];
+				th.join();
+			}
+		} catch (Exception e) {
+			System.out.println("Error: " + e);
+		}
+
+		// while (excess != null) {
+		// 	u = excess;
+		// 	v = null;
+		// 	a = null;
+		// 	excess = u.next;
+
+		// 	iter = u.adj.listIterator();
+		// 	while (iter.hasNext()) {
+		// 		a = iter.next();
+		// 	}
+
+		// 	if (v != null)
+		// 		push(u, v, a);
+		// 	else
+		// 		relabel(u);
+		// }
+
+		return sink.e;
 	}
 	/* 
 	Paralleliseringen eller hur man stavar det
@@ -153,30 +276,39 @@ class Graph {
 			excessLock.lock(); // vi låser först eftersom vi gör en ny transaction med en tråd
 			try {
 				// När tråden ska dö
-				while(excess == null && activeThreads == 0) {
-					excessLock.unlock();
-					return;
-				}
-				// Om vi har jobb, vänta
-				while(excess != null) {
-					excessIsEmpty.wait();
+				while(excess == null) {
+					if(activeThreads == 0) {
+						return;
+					}
+					// Om vi har jobb, vänta
+					excessIsEmpty.await();
 				}
 
 				// Nu är det trådens tur och vi plockar upp noderna i excess listan som ska bearbetas / poppa första noden
 				u = excess;
 				excess = u.next; // Gå till nästa nod eftersom vi plockar ut en nod
+				u.next = null; // den vi har plockat fram tar vi bort länken
+
 				activeThreads++; //signalera att vi nu ska börja jobba
+				// System.out.println(Thread.currentThread().getName() + " locking node " + u.i);
 			} catch (Exception e) {
 				System.out.print("Error: " + e);
 			} finally {
+				// System.out.print("Unlocking?");
 				excessLock.unlock(); // Efter att vi har hämtat noden och ska bearbeta den kan vi äntligen släppa låset så att de andra kan ta nästa nod
 			}
+				// System.out.println("Time to discharge");
 
 			discharge(u); // discharge den noden vi har plockat, här behöver vi inte låsa eftersom vi behöver inte blocka dom andra trådarna
+			
 			excessLock.lock(); // Sedan låser vi igen
 			try {
+				u.inExcess = false;
+				if (u.e > 0) { //  Om den fortfarande har excess
+					enter_excess(u);
+				}
 				activeThreads--;
-				excessIsEmpty.notifyAll(); //signalera alla andra trådar att vi är klara!
+				excessIsEmpty.signalAll(); //signalera alla andra trådar att vi är klara!
 
 			} catch (Exception e) {
 				System.out.println("Error: " + e);
@@ -206,9 +338,11 @@ class Worker extends Thread {
 }
 
 class Node {
-	int	h;
+	volatile int	h; // Vi hade datarace på h eftersom alla noder läser h
 	int	e;
 	int	i;
+	ReentrantLock nodeLock;
+	boolean inExcess;
 	Node	next;
 	LinkedList<Edge>	adj;
 
@@ -216,6 +350,8 @@ class Node {
 	{
 		this.i = i;
 		adj = new LinkedList<Edge>();
+		nodeLock = new ReentrantLock();
+		inExcess = false;
 	}
 }
 
@@ -237,6 +373,7 @@ class Edge {
 class Preflow {
 	public static void main(String args[])
 	{
+		System.out.println("Input: ");
 		double	begin = System.currentTimeMillis();
 		Scanner s = new Scanner(System.in);
 		int	n;

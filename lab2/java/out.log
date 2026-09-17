@@ -1,0 +1,5918 @@
+Input: 
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Letsgoo
+Thread-0 locking node 472
+Unlocking?Time to discharge
+debugDischarge1
+Thread-1 locking node 727
+Unlocking?Time to discharge
+debugDischarge1
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-2 locking node 10
+Unlocking?debugDischarge2
+debugLockPair1
+debugLockPair3
+Time to discharge
+debugDischarge1
+Thread-3 locking node 507
+Unlocking?debugDischarge2
+debugLockPair1
+debugLockPair2
+Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-0 locking node 471
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Letsgoo
+Thread-0 locking node 176
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugDischarge2
+Letsgoo
+debugLockPair1
+debugLockPair2
+debugLockPair1
+debugLockPair3
+Thread-2 locking node 77
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-3 locking node 708
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-0 locking node 432
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-1 locking node 331
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-2 locking node 783
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-3 locking node 754
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+Thread-0 locking node 810
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+Thread-1 locking node 81
+Unlocking?debugDischarge2
+debugLockPair1
+debugLockPair3
+Time to discharge
+debugDischarge1
+Letsgoo
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+debugLockPair3
+Thread-0 locking node 392
+Unlocking?Time to discharge
+debugDischarge1
+Thread-2 locking node 657
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+Thread-1 locking node 190
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-0 locking node 578
+Unlocking?Time to discharge
+debugDischarge1
+Thread-3 locking node 154
+Unlocking?debugDischarge2
+debugLockPair1
+debugLockPair3
+Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-1 locking node 789
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-2 locking node 230
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-0 locking node 14
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+Thread-3 locking node 820
+Unlocking?debugLockPair2
+Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Letsgoo
+Thread-0 locking node 156
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Letsgoo
+Thread-1 locking node 553
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Letsgoo
+Letsgoo
+Thread-3 locking node 609
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-0 locking node 97
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-3 locking node 968
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-1 locking node 88
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-2 locking node 280
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-0 locking node 348
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-3 locking node 487
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-1 locking node 163
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-2 locking node 849
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-0 locking node 501
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-3 locking node 412
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-1 locking node 145
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Letsgoo
+Thread-0 locking node 611
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Letsgoo
+Thread-1 locking node 207
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-2 locking node 981
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-0 locking node 151
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+Thread-3 locking node 955
+Unlocking?debugDischarge2
+debugLockPair1
+debugLockPair2
+Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Letsgoo
+Thread-2 locking node 177
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-0 locking node 242
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-3 locking node 60
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-1 locking node 707
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-2 locking node 714
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-0 locking node 843
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-3 locking node 680
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-1 locking node 651
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-2 locking node 555
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-0 locking node 489
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-3 locking node 645
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-1 locking node 231
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+Thread-2 locking node 451
+Unlocking?debugDischarge2
+debugLockPair1
+debugLockPair2
+Time to discharge
+debugDischarge1
+Letsgoo
+Thread-0 locking node 989
+Unlocking?debugDischarge2
+debugLockPair1
+debugLockPair3
+Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-3 locking node 993
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-1 locking node 414
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-2 locking node 124
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-0 locking node 373
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-3 locking node 967
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-1 locking node 20
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-2 locking node 374
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-0 locking node 273
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-3 locking node 286
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-1 locking node 625
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-2 locking node 684
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-0 locking node 149
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-3 locking node 338
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Letsgoo
+Thread-2 locking node 410
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Letsgoo
+Thread-3 locking node 525
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-1 locking node 877
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Letsgoo
+Thread-0 locking node 141
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-3 locking node 291
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-1 locking node 520
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-2 locking node 638
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-0 locking node 683
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-3 locking node 857
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-1 locking node 941
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-2 locking node 497
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+Thread-0 locking node 647
+Unlocking?debugDischarge2
+debugLockPair1
+debugLockPair3
+Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-3 locking node 375
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Letsgoo
+Thread-0 locking node 31
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Letsgoo
+Thread-2 locking node 13
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-0 locking node 961
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-3 locking node 197
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Letsgoo
+Thread-2 locking node 57
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-0 locking node 183
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-3 locking node 494
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-1 locking node 418
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Letsgoo
+Thread-0 locking node 900
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-3 locking node 252
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-1 locking node 735
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+Thread-2 locking node 470
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-0 locking node 902
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Letsgoo
+debugLockPair3
+Thread-2 locking node 806
+Unlocking?Time to discharge
+debugDischarge1
+Thread-3 locking node 650
+Unlocking?debugDischarge2
+debugLockPair1
+debugLockPair2
+Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-0 locking node 9
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-1 locking node 794
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-2 locking node 949
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-3 locking node 170
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-0 locking node 448
+Unlocking?Time to discharge
+Letsgoo
+debugDischarge1
+Thread-1 locking node 333
+Unlocking?debugDischarge2
+debugLockPair1
+debugLockPair2
+Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-2 locking node 198
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Letsgoo
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Letsgoo
+Thread-2 locking node 359
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-3 locking node 212
+Unlocking?Time to discharge
+debugDischarge1
+Thread-0 locking node 724
+Unlocking?debugDischarge2
+debugLockPair1
+debugLockPair3
+Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-1 locking node 587
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Letsgoo
+Thread-3 locking node 22
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Letsgoo
+Thread-1 locking node 377
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-2 locking node 551
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Letsgoo
+Thread-0 locking node 800
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-1 locking node 143
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-2 locking node 181
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+debugDischarge2
+debugLockPair1
+Letsgoo
+Thread-0 locking node 167
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-1 locking node 23
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Letsgoo
+debugLockPair2
+Thread-0 locking node 79
+Unlocking?Time to discharge
+debugDischarge1
+Thread-2 locking node 370
+Unlocking?debugDischarge2
+debugLockPair1
+debugLockPair2
+Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-1 locking node 793
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Letsgoo
+Thread-0 locking node 741
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-2 locking node 804
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-1 locking node 480
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-3 locking node 243
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+Thread-0 locking node 91
+Unlocking?debugLockPair2
+Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Letsgoo
+Thread-1 locking node 780
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-3 locking node 855
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-0 locking node 756
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-2 locking node 196
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-1 locking node 295
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-3 locking node 619
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-0 locking node 354
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-2 locking node 424
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Letsgoo
+Thread-3 locking node 959
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-0 locking node 272
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-2 locking node 825
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Letsgoo
+Thread-0 locking node 452
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-2 locking node 593
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-1 locking node 341
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-3 locking node 323
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-0 locking node 258
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-2 locking node 120
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-1 locking node 103
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-3 locking node 182
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-0 locking node 908
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-2 locking node 340
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-1 locking node 777
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-3 locking node 491
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-0 locking node 787
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-2 locking node 693
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-1 locking node 496
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-3 locking node 37
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-0 locking node 293
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Letsgoo
+Thread-1 locking node 462
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-3 locking node 510
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-0 locking node 98
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-2 locking node 245
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-1 locking node 598
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Letsgoo
+Thread-2 locking node 6
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-1 locking node 116
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-3 locking node 345
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-0 locking node 799
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-2 locking node 449
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-1 locking node 729
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-3 locking node 863
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-0 locking node 344
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Letsgoo
+Thread-1 locking node 47
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-3 locking node 545
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-0 locking node 25
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-2 locking node 442
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-1 locking node 27
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-3 locking node 995
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-0 locking node 358
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-2 locking node 971
+Unlocking?Letsgoo
+Time to discharge
+debugDischarge1
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-3 locking node 946
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-0 locking node 411
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-1 locking node 533
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-2 locking node 733
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Letsgoo
+Thread-1 locking node 428
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-2 locking node 193
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-3 locking node 601
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-0 locking node 206
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-1 locking node 93
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-2 locking node 853
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Letsgoo
+Thread-0 locking node 304
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Letsgoo
+Thread-2 locking node 504
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Letsgoo
+Thread-2 locking node 200
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Letsgoo
+Thread-0 locking node 878
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-1 locking node 610
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-2 locking node 561
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Letsgoo
+Thread-0 locking node 433
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-1 locking node 840
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-2 locking node 18
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-3 locking node 717
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-0 locking node 640
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-1 locking node 781
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-2 locking node 864
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-3 locking node 771
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+Thread-0 locking node 234
+Unlocking?debugDischarge2
+debugLockPair1
+debugLockPair3
+Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-1 locking node 292
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-2 locking node 385
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-3 locking node 133
+Unlocking?Time to discharge
+debugDischarge1
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Letsgoo
+Thread-0 locking node 332
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-1 locking node 308
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+Thread-2 locking node 453
+Unlocking?debugLockPair1
+debugLockPair2
+Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+debugDischarge2
+Letsgoo
+debugLockPair1
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Letsgoo
+debugLockPair2
+Thread-1 locking node 476
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-2 locking node 236
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Letsgoo
+Thread-3 locking node 903
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+Thread-1 locking node 750
+Unlocking?debugLockPair3
+Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-2 locking node 503
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Letsgoo
+Thread-3 locking node 791
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-1 locking node 871
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-2 locking node 86
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-0 locking node 694
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Letsgoo
+Thread-1 locking node 730
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-2 locking node 519
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-0 locking node 876
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-3 locking node 988
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-1 locking node 827
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-2 locking node 350
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-0 locking node 703
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-3 locking node 957
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Letsgoo
+Thread-2 locking node 936
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-0 locking node 546
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-3 locking node 85
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-1 locking node 82
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-2 locking node 65
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Letsgoo
+Thread-1 locking node 881
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-2 locking node 786
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-0 locking node 119
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-3 locking node 138
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-1 locking node 74
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+Thread-2 locking node 34
+Unlocking?debugLockPair1
+debugLockPair2
+Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-0 locking node 576
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-3 locking node 297
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-1 locking node 716
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-2 locking node 486
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-0 locking node 164
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-3 locking node 421
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-1 locking node 888
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Letsgoo
+Thread-0 locking node 173
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-3 locking node 191
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Letsgoo
+Thread-0 locking node 94
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-3 locking node 760
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Letsgoo
+Thread-2 locking node 241
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-0 locking node 616
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-3 locking node 388
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-1 locking node 924
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-2 locking node 964
+Unlocking?Time to discharge
+debugDischarge1
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Letsgoo
+Thread-0 locking node 894
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-3 locking node 399
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-1 locking node 977
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-2 locking node 253
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-0 locking node 38
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-3 locking node 828
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-1 locking node 508
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-2 locking node 784
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-0 locking node 213
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-3 locking node 738
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Letsgoo
+Thread-2 locking node 679
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-0 locking node 907
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-3 locking node 974
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Letsgoo
+Thread-2 locking node 898
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Letsgoo
+Thread-3 locking node 748
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-1 locking node 517
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-2 locking node 268
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Letsgoo
+Thread-3 locking node 467
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-1 locking node 937
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Letsgoo
+Thread-0 locking node 588
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-3 locking node 121
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-1 locking node 215
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-2 locking node 945
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Letsgoo
+Thread-3 locking node 32
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-1 locking node 966
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-2 locking node 129
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Letsgoo
+Thread-3 locking node 568
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-1 locking node 667
+Unlocking?Time to discharge
+debugDischarge1
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Letsgoo
+Thread-2 locking node 180
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-0 locking node 413
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Letsgoo
+Thread-1 locking node 595
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-2 locking node 719
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-0 locking node 715
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-3 locking node 931
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-1 locking node 386
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-2 locking node 718
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-0 locking node 152
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-3 locking node 580
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Letsgoo
+Thread-2 locking node 747
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-0 locking node 110
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-3 locking node 571
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-1 locking node 882
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-2 locking node 43
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-0 locking node 40
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-3 locking node 797
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Letsgoo
+Thread-2 locking node 429
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-0 locking node 852
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-1 locking node 862
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-3 locking node 328
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-2 locking node 516
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-0 locking node 458
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Letsgoo
+Thread-2 locking node 376
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-0 locking node 219
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-1 locking node 991
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Letsgoo
+Thread-2 locking node 335
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-0 locking node 842
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-1 locking node 544
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-3 locking node 364
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-2 locking node 643
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-0 locking node 744
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-1 locking node 105
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-3 locking node 534
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-2 locking node 407
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-0 locking node 859
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-1 locking node 400
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Letsgoo
+Thread-2 locking node 303
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-0 locking node 61
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-1 locking node 921
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-3 locking node 194
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-2 locking node 541
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-0 locking node 69
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-1 locking node 221
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-3 locking node 837
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-2 locking node 299
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-0 locking node 322
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+Thread-1 locking node 137
+Unlocking?debugDischarge2
+debugLockPair1
+debugLockPair3
+Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-3 locking node 778
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-2 locking node 484
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-0 locking node 256
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-1 locking node 309
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-3 locking node 821
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-2 locking node 89
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Letsgoo
+Thread-1 locking node 59
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Letsgoo
+Thread-0 locking node 565
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-1 locking node 515
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Letsgoo
+Thread-2 locking node 757
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-0 locking node 387
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-3 locking node 125
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-1 locking node 352
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+Thread-2 locking node 431
+Unlocking?debugLockPair2
+Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-0 locking node 260
+Unlocking?Time to discharge
+debugDischarge1
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Letsgoo
+Thread-3 locking node 403
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Letsgoo
+Thread-2 locking node 461
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-0 locking node 668
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Letsgoo
+Thread-2 locking node 599
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Letsgoo
+Thread-3 locking node 865
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-1 locking node 605
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-2 locking node 389
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-0 locking node 459
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-3 locking node 531
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-1 locking node 217
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Letsgoo
+Thread-0 locking node 746
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Letsgoo
+debugLockPair2
+Thread-2 locking node 300
+Unlocking?Time to discharge
+debugDischarge1
+Thread-3 locking node 836
+Unlocking?debugDischarge2
+debugLockPair1
+debugLockPair2
+Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-0 locking node 722
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Letsgoo
+Thread-2 locking node 369
+Unlocking?Time to discharge
+Letsgoo
+debugDischarge1
+Thread-3 locking node 42
+Unlocking?debugDischarge2
+debugLockPair1
+debugLockPair3
+Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-0 locking node 46
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-1 locking node 409
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-2 locking node 500
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-3 locking node 223
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-0 locking node 655
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-1 locking node 134
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-2 locking node 723
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-3 locking node 846
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-0 locking node 755
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Letsgoo
+Thread-2 locking node 706
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-3 locking node 2
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-0 locking node 336
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Letsgoo
+Thread-2 locking node 255
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-3 locking node 262
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Letsgoo
+Thread-1 locking node 648
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-2 locking node 251
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-3 locking node 51
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-0 locking node 815
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-1 locking node 148
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-2 locking node 157
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-3 locking node 560
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-0 locking node 766
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Letsgoo
+Thread-2 locking node 535
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Letsgoo
+Thread-0 locking node 972
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-1 locking node 342
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Letsgoo
+Thread-0 locking node 301
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-2 locking node 202
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Letsgoo
+Thread-0 locking node 329
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-2 locking node 960
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-3 locking node 753
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-1 locking node 505
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-0 locking node 465
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Letsgoo
+Thread-3 locking node 841
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-1 locking node 676
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-0 locking node 953
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+Thread-2 locking node 713
+Unlocking?debugDischarge2
+debugLockPair1
+debugLockPair3
+Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-3 locking node 290
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-1 locking node 362
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-0 locking node 456
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-2 locking node 554
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-3 locking node 607
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Letsgoo
+Thread-2 locking node 239
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-3 locking node 277
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Letsgoo
+Thread-0 locking node 90
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-2 locking node 227
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-3 locking node 790
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-1 locking node 818
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-0 locking node 928
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-2 locking node 135
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Letsgoo
+Thread-1 locking node 687
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Letsgoo
+Thread-2 locking node 660
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-3 locking node 371
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-1 locking node 948
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-0 locking node 526
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Letsgoo
+Thread-1 locking node 199
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-0 locking node 685
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-2 locking node 637
+Unlocking?Time to discharge
+debugDischarge1
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Letsgoo
+Thread-3 locking node 584
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-1 locking node 102
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Letsgoo
+Thread-2 locking node 324
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Letsgoo
+Thread-1 locking node 64
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-0 locking node 669
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-2 locking node 92
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-1 locking node 939
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-0 locking node 893
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-2 locking node 478
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-3 locking node 355
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-1 locking node 801
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-0 locking node 109
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-2 locking node 681
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-3 locking node 602
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Letsgoo
+Thread-2 locking node 339
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-3 locking node 579
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-1 locking node 540
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-0 locking node 305
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-2 locking node 763
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-3 locking node 752
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Letsgoo
+Thread-0 locking node 72
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-2 locking node 8
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-3 locking node 356
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-1 locking node 12
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Letsgoo
+Thread-3 locking node 803
+Unlocking?Time to discharge
+debugDischarge1
+Thread-0 locking node 779
+Unlocking?debugDischarge2
+debugLockPair1
+debugLockPair3
+Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-1 locking node 52
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-2 locking node 330
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-3 locking node 307
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-0 locking node 736
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Letsgoo
+Thread-2 locking node 634
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-3 locking node 401
+Unlocking?Time to discharge
+debugDischarge1
+Thread-1 locking node 992
+Unlocking?debugDischarge2
+debugLockPair1
+debugLockPair2
+Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-0 locking node 3
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-2 locking node 986
+Unlocking?Time to discharge
+debugDischarge1
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Letsgoo
+Thread-3 locking node 923
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-1 locking node 976
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-0 locking node 536
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-2 locking node 184
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-3 locking node 518
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-1 locking node 851
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-0 locking node 265
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-2 locking node 483
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-3 locking node 310
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-1 locking node 573
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-0 locking node 205
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Letsgoo
+Thread-3 locking node 909
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-1 locking node 267
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Letsgoo
+Thread-2 locking node 422
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-3 locking node 122
+Unlocking?Time to discharge
+debugDischarge1
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Letsgoo
+Thread-0 locking node 532
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Letsgoo
+Thread-3 locking node 397
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-1 locking node 351
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-0 locking node 382
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-2 locking node 654
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-3 locking node 147
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Letsgoo
+Thread-0 locking node 383
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-2 locking node 380
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-3 locking node 835
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-1 locking node 70
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-0 locking node 174
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-2 locking node 249
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-3 locking node 394
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-1 locking node 623
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-0 locking node 858
+Unlocking?Time to discharge
+debugDischarge1
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Letsgoo
+Thread-2 locking node 665
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Letsgoo
+Thread-1 locking node 269
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-0 locking node 208
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-2 locking node 710
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-3 locking node 861
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Letsgoo
+Thread-0 locking node 742
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-2 locking node 952
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-3 locking node 326
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-1 locking node 492
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-0 locking node 314
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Letsgoo
+Thread-3 locking node 87
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-1 locking node 264
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-0 locking node 673
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-2 locking node 15
+Unlocking?Time to discharge
+debugDischarge1
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Letsgoo
+Thread-3 locking node 869
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-1 locking node 594
+Unlocking?Time to discharge
+debugDischarge1
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Letsgoo
+Thread-0 locking node 847
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-2 locking node 636
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-3 locking node 334
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-1 locking node 398
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-0 locking node 250
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-2 locking node 646
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-3 locking node 811
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-1 locking node 649
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-0 locking node 288
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-2 locking node 44
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-3 locking node 985
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-1 locking node 19
+Unlocking?Time to discharge
+debugDischarge1
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Letsgoo
+Thread-0 locking node 405
+Unlocking?Time to discharge
+debugDischarge1
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Letsgoo
+Thread-3 locking node 962
+Unlocking?Time to discharge
+debugDischarge1
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Letsgoo
+Thread-0 locking node 393
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-2 locking node 751
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-3 locking node 998
+Unlocking?Time to discharge
+debugDischarge1
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Letsgoo
+Thread-1 locking node 366
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-0 locking node 613
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-2 locking node 566
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Letsgoo
+Thread-0 locking node 726
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Letsgoo
+Thread-3 locking node 603
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-1 locking node 210
+Unlocking?Time to discharge
+debugDischarge1
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Letsgoo
+Thread-2 locking node 879
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-3 locking node 641
+Unlocking?Time to discharge
+debugDischarge1
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Letsgoo
+Thread-1 locking node 99
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-0 locking node 686
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Letsgoo
+Thread-3 locking node 5
+Unlocking?Time to discharge
+debugDischarge1
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Letsgoo
+Thread-1 locking node 224
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-0 locking node 185
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-2 locking node 805
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-3 locking node 155
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-1 locking node 539
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Letsgoo
+Thread-2 locking node 904
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-3 locking node 942
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-1 locking node 279
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-0 locking node 123
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-2 locking node 444
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Letsgoo
+Thread-1 locking node 408
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-0 locking node 782
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-2 locking node 306
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-3 locking node 848
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-1 locking node 466
+Unlocking?Time to discharge
+debugDischarge1
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Letsgoo
+Thread-0 locking node 575
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-2 locking node 50
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-3 locking node 870
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-1 locking node 808
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-0 locking node 983
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-2 locking node 327
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-3 locking node 549
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-1 locking node 917
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-0 locking node 349
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-2 locking node 731
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Letsgoo
+Thread-1 locking node 468
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-0 locking node 201
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-2 locking node 767
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-3 locking node 67
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-1 locking node 873
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Letsgoo
+Thread-2 locking node 690
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-3 locking node 490
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-1 locking node 872
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-0 locking node 887
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-2 locking node 150
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-3 locking node 131
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-1 locking node 296
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Letsgoo
+Thread-2 locking node 378
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-3 locking node 485
+Unlocking?Time to discharge
+debugDischarge1
+Thread-0 locking node 658
+Unlocking?debugDischarge2
+debugLockPair1
+debugLockPair3
+Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-1 locking node 530
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-2 locking node 860
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-3 locking node 166
+Unlocking?Time to discharge
+debugDischarge1
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Letsgoo
+Thread-1 locking node 642
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Letsgoo
+Thread-3 locking node 390
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Letsgoo
+Thread-1 locking node 944
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-2 locking node 415
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Letsgoo
+Thread-0 locking node 912
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Letsgoo
+Thread-2 locking node 788
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-3 locking node 522
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-0 locking node 570
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-1 locking node 604
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-2 locking node 589
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-3 locking node 773
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Letsgoo
+Thread-1 locking node 271
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-2 locking node 437
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-3 locking node 29
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Letsgoo
+Thread-1 locking node 58
+Unlocking?Time to discharge
+debugDischarge1
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Letsgoo
+Thread-2 locking node 926
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-3 locking node 702
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-0 locking node 474
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-1 locking node 127
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-2 locking node 95
+Unlocking?Time to discharge
+debugDischarge1
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Letsgoo
+Thread-3 locking node 298
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Letsgoo
+Thread-1 locking node 521
+Unlocking?Time to discharge
+debugDischarge1
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Letsgoo
+Thread-2 locking node 1
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-3 locking node 237
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-0 locking node 749
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-1 locking node 66
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Letsgoo
+Thread-3 locking node 889
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Letsgoo
+Thread-3 locking node 73
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+Thread-0 locking node 675
+Unlocking?debugLockPair1
+debugLockPair2
+Time to discharge
+debugDischarge1
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Letsgoo
+Thread-2 locking node 732
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-3 locking node 913
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-0 locking node 583
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-1 locking node 111
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-2 locking node 758
+Unlocking?Time to discharge
+debugDischarge1
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Letsgoo
+Thread-3 locking node 626
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-0 locking node 901
+Unlocking?Time to discharge
+debugDischarge1
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Letsgoo
+Thread-1 locking node 463
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Letsgoo
+Thread-3 locking node 455
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-0 locking node 712
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Letsgoo
+Thread-3 locking node 55
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-0 locking node 30
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-1 locking node 285
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-2 locking node 195
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-3 locking node 175
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-0 locking node 632
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-1 locking node 943
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-2 locking node 624
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Letsgoo
+Thread-0 locking node 704
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-1 locking node 670
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Letsgoo
+Thread-1 locking node 445
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Letsgoo
+Thread-3 locking node 160
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-0 locking node 140
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-1 locking node 75
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-2 locking node 187
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Letsgoo
+Thread-1 locking node 701
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-2 locking node 294
+Unlocking?Time to discharge
+debugDischarge1
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Letsgoo
+Thread-3 locking node 922
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-0 locking node 678
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-1 locking node 235
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Letsgoo
+Thread-1 locking node 289
+Unlocking?Time to discharge
+debugDischarge1
+Thread-2 locking node 274
+Unlocking?debugDischarge2
+debugLockPair1
+debugLockPair2
+Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-3 locking node 495
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-0 locking node 118
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-1 locking node 543
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-2 locking node 24
+Unlocking?Time to discharge
+Letsgoo
+debugDischarge1
+Thread-3 locking node 614
+Unlocking?debugDischarge2
+debugLockPair1
+debugLockPair2
+Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-0 locking node 161
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Letsgoo
+Letsgoo
+Thread-3 locking node 630
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-0 locking node 502
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-2 locking node 963
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-3 locking node 238
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-2 locking node 493
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-3 locking node 854
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-0 locking node 547
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Letsgoo
+Thread-2 locking node 674
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-3 locking node 357
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Letsgoo
+debugLockPair2
+Thread-1 locking node 586
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-2 locking node 101
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Letsgoo
+Thread-3 locking node 682
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-1 locking node 513
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-2 locking node 802
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Letsgoo
+Thread-1 locking node 979
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Letsgoo
+Thread-3 locking node 934
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Letsgoo
+Thread-2 locking node 844
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Letsgoo
+debugDischarge2
+debugLockPair1
+Letsgoo
+debugLockPair3
+Thread-1 locking node 169
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Letsgoo
+Thread-0 locking node 627
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-3 locking node 379
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-1 locking node 26
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-2 locking node 635
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Letsgoo
+Thread-3 locking node 511
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-1 locking node 608
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-2 locking node 192
+Unlocking?Time to discharge
+debugDischarge1
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Letsgoo
+Thread-0 locking node 287
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-3 locking node 897
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-1 locking node 830
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-2 locking node 48
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-0 locking node 597
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-3 locking node 188
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-1 locking node 996
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-2 locking node 581
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-0 locking node 984
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-3 locking node 112
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Letsgoo
+Thread-2 locking node 247
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-0 locking node 108
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-3 locking node 136
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-1 locking node 527
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-2 locking node 982
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+Thread-0 locking node 661
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-3 locking node 618
+Unlocking?debugLockPair3
+Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Letsgoo
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-1 locking node 940
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-0 locking node 950
+Unlocking?Time to discharge
+debugDischarge1
+Thread-2 locking node 430
+Unlocking?debugDischarge2
+debugLockPair1
+debugLockPair3
+Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-3 locking node 337
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-1 locking node 911
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Letsgoo
+Thread-2 locking node 612
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-3 locking node 590
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Letsgoo
+Thread-3 locking node 745
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-1 locking node 83
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-0 locking node 850
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Letsgoo
+Thread-3 locking node 585
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Letsgoo
+Thread-0 locking node 550
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Letsgoo
+Thread-3 locking node 839
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-1 locking node 700
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-0 locking node 664
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Letsgoo
+Thread-3 locking node 420
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Letsgoo
+Thread-0 locking node 695
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Letsgoo
+Thread-3 locking node 824
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-1 locking node 915
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-0 locking node 929
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-2 locking node 477
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-3 locking node 662
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-1 locking node 947
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-0 locking node 891
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-2 locking node 365
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Letsgoo
+Thread-1 locking node 925
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-0 locking node 832
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-2 locking node 829
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-3 locking node 498
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-1 locking node 883
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-0 locking node 759
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Thread-2 locking node 528
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-3 locking node 469
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-1 locking node 168
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Thread-0 locking node 233
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair3
+Letsgoo
+Thread-1 locking node 360
+Unlocking?Time to discharge
+debugDischarge1
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Letsgoo
+Thread-2 locking node 557
+Unlocking?Time to discharge
+debugDischarge1
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Letsgoo
+debugDischarge2
+debugLockPair1
+debugLockPair2
+Letsgoo
+Thread-1 locking node 826
