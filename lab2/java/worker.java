@@ -106,15 +106,17 @@ class Graph {
 		
 		this.s = s;
 		this.t = t;
-		node[s].h = n;
+		Node source = node[s];
+		source.h = n; // Sätter vi höjden
 
-		iter = node[s].adj.listIterator();
+		// Vi behöver göra initiella push från källan:
+		iter = source.adj.listIterator();
 		while (iter.hasNext()) {
 			a = iter.next();
 
 			node[s].e += a.c;
 
-			push(node[s], other(a, node[s]), a);
+			push(source, other(a, source), a);
 		}
 
 		while (excess != null) {
@@ -136,15 +138,53 @@ class Graph {
 
 		return node[t].e;
 	}
+	/* 
+	Paralleliseringen eller hur man stavar det
+	Främst för att trådarna ska göra tre saker:
 
+		Hämta ett jobb från arbetsstationen
+		Utföra jobbet (discharge)
+		Berätta att de är klara så andra kan fortsätta
+	*/
 	public void workerLoop(int workerId) {
 		// Den ska jobba hela tiden
 		while(true) {
+			Node u = null;
+			excessLock.lock(); // vi låser först eftersom vi gör en ny transaction med en tråd
+			try {
+				// När tråden ska dö
+				while(excess == null && activeThreads == 0) {
+					excessLock.unlock();
+					return;
+				}
+				// Om vi har jobb, vänta
+				while(excess != null) {
+					excessIsEmpty.wait();
+				}
 
-			// När tråden ska dö
-			while(excess == null && activeThreads == 0) {
-				return;
+				// Nu är det trådens tur och vi plockar upp noderna i excess listan som ska bearbetas / poppa första noden
+				u = excess;
+				excess = u.next; // Gå till nästa nod eftersom vi plockar ut en nod
+				activeThreads++; //signalera att vi nu ska börja jobba
+			} catch (Exception e) {
+				System.out.print("Error: " + e);
+			} finally {
+				excessLock.unlock(); // Efter att vi har hämtat noden och ska bearbeta den kan vi äntligen släppa låset så att de andra kan ta nästa nod
 			}
+
+			discharge(u); // discharge den noden vi har plockat, här behöver vi inte låsa eftersom vi behöver inte blocka dom andra trådarna
+			excessLock.lock(); // Sedan låser vi igen
+			try {
+				activeThreads--;
+				excessIsEmpty.notifyAll(); //signalera alla andra trådar att vi är klara!
+
+			} catch (Exception e) {
+				System.out.println("Error: " + e);
+			} finally {
+				excessLock.unlock();
+			}
+
+
 		}
 
 	}
