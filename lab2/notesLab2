@@ -80,3 +80,68 @@ worker_thread_loop():
         threads_active--
         notify_all(condition_variable)
         unlock(excess_list_lock)
+
+
+debugging:
+java Preflow
+3 2 0 0
+0 1 10
+1 2 2¨
+
+java Preflow < ../../data/big/002.in > out.log 2>&1 &
+sleep 2
+kill %1
+tail -50 out.log
+
+kill the process:
+pkill -f Preflow
+
+
+root@LAPTOP-0ACSTN7H:/mnt/c/Users/tonny/OneDrive/Documents/MulticoreProgramming/Tonnys_Multicore-labbar/lab2/java# make java
+# make this complete first and when it works
+# parallelize it and modify the makefile!
+javac worker.java
+time sh check-solution.sh java Preflow
+../../data/tiny/0.in
+PASS ../../data/tiny/0.in
+../../data/railwayplanning/sample/1.in
+PASS ../../data/railwayplanning/sample/1.in
+../../data/railwayplanning/secret/0mini.in
+PASS ../../data/railwayplanning/secret/0mini.in
+../../data/railwayplanning/secret/1small.in
+PASS ../../data/railwayplanning/secret/1small.in
+../../data/railwayplanning/secret/2med.in
+PASS ../../data/railwayplanning/secret/2med.in
+../../data/railwayplanning/secret/3large.in
+PASS ../../data/railwayplanning/secret/3large.in
+../../data/railwayplanning/secret/4huge.in
+PASS ../../data/railwayplanning/secret/4huge.in
+../../data/big/000.in
+PASS ../../data/big/000.in
+../../data/big/001.in
+PASS ../../data/big/001.in
+../../data/big/002.in
+PASS ../../data/big/002.in
+../../data/huge/001.in
+PASS ../../data/huge/001.in
+23.90user 2.27system 0:11.10elapsed 235%CPU (0avgtext+0avgdata 633436maxresident)k
+424inputs+728outputs (93major+158459minor)pagefaults 0swaps
+PASS all tests
+
+
+varje objekt har inbyggt lock + inbyggd condition variable
+
+synchronized ger dig automatiskt mutual exclusion
+
+varför vi verkligen en mutex i enter, vi har det inte i java
+Kort sagt: i Java slipper du mutex i enter_excess() eftersom Java‑objektets monitor är låset, medan i C finns ingen implicit monitor — du måste skapa låset själv.
+
+
+för c:
+gcc -o preflow_tsan preflow.c -g -O1 -pthread -fsanitize=thread
+
+./preflow_tsan < ../data/tiny/0.in
+
+# 2. Helgrind
+gcc -o preflow_helgrind preflow.c -g -O0 -pthread
+valgrind --tool=helgrind ./preflow_helgrind < ../data/tiny/0.in
