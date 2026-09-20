@@ -145,3 +145,251 @@ gcc -o preflow_tsan preflow.c -g -O1 -pthread -fsanitize=thread
 # 2. Helgrind
 gcc -o preflow_helgrind preflow.c -g -O0 -pthread
 valgrind --tool=helgrind ./preflow_helgrind < ../data/tiny/0.in
+
+
+
+1. How do you avoid data-races and deadlocks?
+    - In Java, we only need to lock down each action that requires any of the CRUD operation like, also for variables/global variables which all threads needs to read
+    - the volatile declaration is crucial as it saves the variable in the memory so that every thread can read so that it doesnt become a data race. Clear rules are established in java using index.
+
+    - For C we use a linkedList where there is also a clear order of which node is first etc.
+    - In C however, the approach is similar but we still need to account into memory, and that each node has a lock where we don't read other nodes attributes outside of that because the data of that paritcular node could have changed
+2. What is your approach to load-balancing and how does it succeed?
+    - We use a linkedlist where the next thread can grab the next node and work with it.This is successing because we dont assign the threads that they should work on specific nodes etc. Some could gain more workload than others.
+3. Is your parallel program faster than the sequential from Lab 0, and what
+do you think is the reason for this?
+    - Well, it is much faster but the difference will be more noticed the more work a program has and thats because the more work it has the more delegation the work can be done for the threads.
+
+    File	Lab 0 (serial)	Lab 2 C (parallel)
+    tiny/0.in	12 ms	2 ms
+    big/002.in	11583 ms	1500 ms
+    huge/001.in	1707 ms	657 ms
+
+
+4. Did you notice any big performance difference between Java and C? (in
+principle, either can be fastest and the JVM and the optimizing compiler
+are important factors, and how you use the languages).
+    - Java is much slower. The smaller files have a fixed time. Around 250ms, I guess its the startup time for the JVM.
+5. Explain your source codes.
+    - For C:
+        relabel:
+            - Inget speciellt här_
+            - Låser först processen, inkrementa sändarens höjd med 1 utifrån den minsta h
+            - Låser upp höjden
+        push
+            - Ta fram deras index och sedan bestämmer vi vilka nod vi låser först och ska unlocka först
+            Sedan bestämmer vi vilket håll vi ska pusha
+            - Sedan kolalr vi om det är giltig att pusha, om det inte är det så unlockar vi först den vi tänkte pusha till från sändaren och sedan den första noden.
+            Annars om vi inte gör det så pushar vi så mycket det går, tar det minimala antingen så mycket flöde som vi ska skicka eller maxkapaciteten av kanterna,
+            logiken är att maxkapaciteten kommer alltid vara det maximala vi kan pusha så klart.
+            sedan så justerar vi hur mycket vi pushar beroende på framåt eller bakåtriktningen.
+            Sedan kollar vi så att vi ka pusha.
+            Därefter pushar vi till våran linkedlist där arbetarna kan jobba. Sedan låser vi upp noderna.
+        queue_task_done
+            - När en task är klar, låser vi kön och minskar aktiva trådar eftersom vi inte vill flera trådar ska kunna modifiera våran räknare och göra den crazy.
+            - Sedan så broadvasta vi om trådarna är slutfärdiga så att systemet kan sluta jobba då jobbet är klart.
+            - Låser upp kön.
+        queue_pop
+            - Låsa kön för att hämta noden, om det inte finns något att göra men att det fortfarande finns aktiva noder så chillar vi
+            - Sedan när aktiva = 0 så är vi klar med jobbet.
+            - Annars så tar vi första noden för att jobba och fixa till det linkade listan
+            - När vi har taget jobbet så incrementar vi aktiva nodar och låseru pp processen för att returnera u.
+        queue_push
+            - Handlar om att basically att pusha upp jobb till våran jobblista och signalera trådar som väntar att det finns jobb.
+        init_queue
+            - Initiera variabler.
+        find_admissible_edge
+            -kollar bara vilken kant som går att pusha till utifrån riktning etc
+
+        för våra globala så är det workqueue där vi la till active, cond, lock och node_t där vi la till lock
+    OS:et (schemaläggaren) bestämmer i vilken ordning trådarna faktiskt körs på CPU-kärnorna. Enligt google: es, the operating system uses a part called the scheduler to decide which thread runs first and when it switches to another
+    
+    Java:
+        - Inget specieltl här typ.
+
+6. Did you find a way to improve the performance of your programs over the
+first correct version?
+    - I haven't come that far
+
+
+
+make java
+# make this complete first and when it works
+# parallelize it and modify the makefile!
+javac worker.java
+time sh check-solution.sh java Preflow
+../../data/tiny/0.in
+time: 251 ms
+PASS ../../data/tiny/0.in
+../../data/railwayplanning/sample/1.in
+time: 242 ms
+PASS ../../data/railwayplanning/sample/1.in
+../../data/railwayplanning/secret/0mini.in
+time: 268 ms
+PASS ../../data/railwayplanning/secret/0mini.in
+../../data/railwayplanning/secret/1small.in
+time: 287 ms
+PASS ../../data/railwayplanning/secret/1small.in
+../../data/railwayplanning/secret/2med.in
+time: 336 ms
+PASS ../../data/railwayplanning/secret/2med.in
+../../data/railwayplanning/secret/3large.in
+time: 799 ms
+PASS ../../data/railwayplanning/secret/3large.in
+../../data/railwayplanning/secret/4huge.in
+time: 1064 ms
+PASS ../../data/railwayplanning/secret/4huge.in
+../../data/big/000.in
+time: 1090 ms
+PASS ../../data/big/000.in
+../../data/big/001.in
+time: 1291 ms
+PASS ../../data/big/001.in
+../../data/big/002.in
+time: 4551 ms
+PASS ../../data/big/002.in
+../../data/huge/001.in
+time: 7480 ms
+PASS ../../data/huge/001.in
+40.84user 4.15system 0:18.06elapsed 249%CPU (0avgtext+0avgdata 616240maxresident)k
+0inputs+704outputs (88major+163593minor)pagefaults 0swaps
+PASS all tests
+root@LAPTOP-0ACSTN7H:/mnt/c/Users/tonny/OneDrive/Documents/MulticoreProgramming/Tonnys_Multicore-labbar/lab2/java# 
+
+C:
+
+make main
+gcc -o preflow preflow.c -g -O3 -pthread
+time sh check-solution.sh ./preflow
+../data/tiny/0.in
+time: 2 ms
+PASS ../data/tiny/0.in
+../data/railwayplanning/sample/1.in
+time: 3 ms
+PASS ../data/railwayplanning/sample/1.in
+../data/railwayplanning/secret/0mini.in
+time: 3 ms
+PASS ../data/railwayplanning/secret/0mini.in
+../data/railwayplanning/secret/1small.in
+time: 4 ms
+PASS ../data/railwayplanning/secret/1small.in
+../data/railwayplanning/secret/2med.in
+time: 2 ms
+PASS ../data/railwayplanning/secret/2med.in
+../data/railwayplanning/secret/3large.in
+time: 14 ms
+PASS ../data/railwayplanning/secret/3large.in
+../data/railwayplanning/secret/4huge.in
+time: 32 ms
+PASS ../data/railwayplanning/secret/4huge.in
+../data/big/000.in
+time: 28 ms
+PASS ../data/big/000.in
+../data/big/001.in
+time: 34 ms
+PASS ../data/big/001.in
+../data/big/002.in
+time: 1500 ms
+PASS ../data/big/002.in
+../data/huge/001.in
+time: 657 ms
+PASS ../data/huge/001.in
+6.85user 0.20system 0:02.32elapsed 303%CPU (0avgtext+0avgdata 88864maxresident)k
+42472inputs+88outputs (0major+34693minor)pagefaults 0swaps
+PASS all tests
+root@LAPTOP-0ACSTN7H:~/lab2# 
+
+
+Lab 0:
+
+make main
+gcc -o preflow preflow.c -g -O3
+time sh check-solution.sh ./preflow
+../data/tiny/0.in
+time: 12 ms
+PASS ../data/tiny/0.in
+../data/railwayplanning/sample/1.in
+time: 11 ms
+PASS ../data/railwayplanning/sample/1.in
+../data/railwayplanning/secret/0mini.in
+time: 12 ms
+PASS ../data/railwayplanning/secret/0mini.in
+../data/railwayplanning/secret/1small.in
+time: 9 ms
+PASS ../data/railwayplanning/secret/1small.in
+../data/railwayplanning/secret/2med.in
+time: 11 ms
+PASS ../data/railwayplanning/secret/2med.in
+../data/railwayplanning/secret/3large.in
+time: 51 ms
+PASS ../data/railwayplanning/secret/3large.in
+../data/railwayplanning/secret/4huge.in
+time: 106 ms
+PASS ../data/railwayplanning/secret/4huge.in
+../data/big/000.in
+time: 131 ms
+PASS ../data/big/000.in
+../data/big/001.in
+time: 106 ms
+PASS ../data/big/001.in
+../data/big/002.in
+time: 11583 ms
+PASS ../data/big/002.in
+../data/huge/001.in
+time: 1707 ms
+PASS ../data/huge/001.in
+12.70user 0.23system 0:13.91elapsed 92%CPU (0avgtext+0avgdata 87664maxresident)k
+704inputs+0outputs (22major+33624minor)pagefaults 0swaps
+PASS all tests
+root@LAPTOP-0ACSTN7H:/mnt/c/Users/tonny/OneDrive/Documents/MulticoreProgramming/Tonnys_Multicore-labbar/lab0# 
+
+
+
+
+javac worker.java
+java Preflow < ../../data/tiny/0.in
+java Preflow < ../../data/huge/001.in
+java Preflow < ../../data/big/000.in
+
+
+abbar/lab2/java# java Preflow < ../../data/huge/001.in
+Input: 
+Thread 2 terminated: processed 10462 nodes, waited 7.02631 ms on synchronization
+Thread 1 terminated: processed 10772 nodes, waited 8.464657 ms on synchronization
+Thread 0 terminated: processed 10491 nodes, waited 7.3028 ms on synchronization
+Thread 3 terminated: processed 10569 nodes, waited 7.202415 ms on synchronization
+t = 3.442 s
+f = 3930947
+
+totalWait = 29.996 ms
+t = 3442 ms
+fraction = 29.996 / 3442 ≈ 0.0087 = 0.87%
+
+abbar/lab2/java# java Preflow < ../../data/big/000.in
+Input: 
+Thread 1 terminated: processed 660 nodes, waited 1.17497 ms on synchronization
+Thread 2 terminated: processed 649 nodes, waited 0.780679 ms on synchronization
+Thread 0 terminated: processed 651 nodes, waited 0.874602 ms on synchronization
+Thread 3 terminated: processed 601 nodes, waited 1.018995 ms on synchronization
+t = 0.585 s
+f = 9977
+
+
+totalWait = 3.849 ms
+t = 585 ms
+fraction = 3.849 / 585 ≈ 0.0066 = 0.66%
+
+abbar/lab2/java# java Preflow < ../../data/tiny/0.in
+Input: 
+Thread 0 terminated: processed 1 nodes, waited 0.021852 ms on synchronization
+Thread 1 terminated: processed 0 nodes, waited 0.0 ms on synchronization
+Thread 2 terminated: processed 0 nodes, waited 0.0 ms on synchronization
+Thread 3 terminated: processed 0 nodes, waited 0.0 ms on synchronization
+t = 0.069 s
+f = 2
+
+totalWait = 0.021852 ms
+t = 69 ms
+fraction = 0.021852 / 69 ≈ 0.000317 = 0.032%
+
+"synchronization time" here means time a thread spends waiting/blocked because of a lock or condition variable, rather than time spent doing actual algorithmic work (traversing edges, comparing heights, updating flow).

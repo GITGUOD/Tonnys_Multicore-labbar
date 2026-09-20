@@ -34,6 +34,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <pthread.h>
+#include <limits.h>
 
 #define PRINT		0	/* enable/disable prints. */
 
@@ -537,15 +538,50 @@ static void push(graph_t* graph, node_t* sender, node_t* receiver, edge_t* edge)
 }
 
 
+// static void relabel(graph_t* graph, node_t* sender)
+// {
+// 	pthread_mutex_lock(&sender->lock); //när vi ska relabala så låser vi våran variabel
+
+// 	sender->h += 1;
+
+// 	pr("relabel %d now h = %d\n", id(graph, sender), sender->h);
+
+// 	pthread_mutex_unlock(&sender->lock); //när vi ska relabala så låser vi våran variabel
+// }
+
 static void relabel(graph_t* graph, node_t* sender)
 {
-	pthread_mutex_lock(&sender->lock); //när vi ska relabala så låser vi våran variabel
+    int minimum_h = INT_MAX;
+    list_t* p = sender->edge;
 
-	sender->h += 1;
+	pthread_mutex_lock(&sender->lock);   // låset behövs bara för SKRIVNINGEN
 
-	pr("relabel %d now h = %d\n", id(graph, sender), sender->h);
+    while (p != NULL) {
+        edge_t* a = p->edge;
+        p = p->next;
 
-	pthread_mutex_unlock(&sender->lock); //när vi ska relabala så låser vi våran variabel
+        node_t* v;
+        int residual;
+        if (a->u == sender) {
+            v = a->v;
+            residual = a->c - a->f;
+        } else {
+            v = a->u;
+            residual = a->c + a->f;
+        }
+
+		// Kolla rätt riktning
+        if (residual > 0 && v->h < minimum_h) {
+            minimum_h = v->h;
+        }
+    }
+
+    if (minimum_h != INT_MAX) {
+        sender->h = minimum_h + 1;
+    }
+    pthread_mutex_unlock(&sender->lock);
+
+    pr("relabel %d now h = %d\n", id(graph, sender), sender->h);
 }
 
 static node_t* other(node_t* u, edge_t* e)
