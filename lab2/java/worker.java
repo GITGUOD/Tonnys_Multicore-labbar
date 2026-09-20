@@ -17,6 +17,9 @@ class Graph {
 	Node	excess;		// list of nodes with excess preflow
 	Node	node[];
 	Edge	edge[];
+	long[] syncWait;
+	int numberOfThreads;
+	int threadsProcessed[];
 
 	Graph(Node node[], Edge edge[])
 	{
@@ -28,6 +31,10 @@ class Graph {
 		this.excessLock = new ReentrantLock();
 		this.excessIsEmpty = excessLock.newCondition();
 		this.activeThreads = 0;
+		this.numberOfThreads = 4;
+		this.syncWait = new long[numberOfThreads]; // Sparar hur länge de väntar
+		this.threadsProcessed = new int[numberOfThreads];
+
 	}
 
 	void enter_excess(Node u)
@@ -223,7 +230,6 @@ class Graph {
 
 		}
 
-		int numberOfThreads = 4; // fyra threads
 		Thread[] workers = new Thread[numberOfThreads]; // Antalet trådar
 		for(int i = 0; i < numberOfThreads; i++) {
 			final int id = i;
@@ -238,6 +244,7 @@ class Graph {
 				Thread th = workers[j];
 				th.join();
 			}
+
 		} catch (Exception e) {
 			System.out.println("Error: " + e);
 		}
@@ -272,12 +279,15 @@ class Graph {
 	public void workerLoop(int workerId) {
 		// Den ska jobba hela tiden
 		while(true) {
+			long t0 = System.nanoTime();
+
 			Node u = null;
 			excessLock.lock(); // vi låser först eftersom vi gör en ny transaction med en tråd
 			try {
 				// När tråden ska dö
 				while(excess == null) {
 					if(activeThreads == 0) {
+						System.out.println("Thread " + workerId + " terminated: processed " + threadsProcessed[workerId] + " nodes, waited " + (syncWait[workerId] / 1e6) + " ms on synchronization");
 						return;
 					}
 					// Om vi har jobb, vänta
@@ -298,9 +308,10 @@ class Graph {
 				excessLock.unlock(); // Efter att vi har hämtat noden och ska bearbeta den kan vi äntligen släppa låset så att de andra kan ta nästa nod
 			}
 				// System.out.println("Time to discharge");
-
+			syncWait[workerId] += (System.nanoTime() - t0);
 			discharge(u); // discharge den noden vi har plockat, här behöver vi inte låsa eftersom vi behöver inte blocka dom andra trådarna
 			
+			long t1 = System.nanoTime();
 			excessLock.lock(); // Sedan låser vi igen
 			try {
 				u.inExcess = false;
@@ -315,6 +326,9 @@ class Graph {
 			} finally {
 				excessLock.unlock();
 			}
+		
+			syncWait[workerId] += (System.nanoTime() - t1);
+        threadsProcessed[workerId]++;
 
 
 		}
