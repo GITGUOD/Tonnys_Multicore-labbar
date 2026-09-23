@@ -86,16 +86,7 @@ class Graph {
 
 	}
 
-	// void push(Node u, Node v, Edge a)
-	// {
-	// 			System.out.println("Pushing1");
-	// 	int flow = Math.min(u.e, (a.c - a.f)); // Hämtar excess flödet mellan antigen Nod U:s flöde eller den maximala kapaciteten längst den vägen E/kanten (eftersom vi ej kan skicka mer än vad vägen har, samt att vi kan inte skicka mer än vad noden U har)
-	// 	a.f += flow; // Ökar flödes i kanten mellan u och v
-	// 	u.e -= flow; // minskar excessflödet i orginal sändaren
-	// 	v.e += flow; // ökar excessflödet till mottagaren
-	// 			System.out.println("Pushing2");
 
-	// }
 
 	void push(Node u, Node v, Edge a) {
 

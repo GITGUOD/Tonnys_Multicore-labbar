@@ -1,0 +1,54 @@
+The barrier design pattern is a synchronization mechanism that forces a group of concurrent tasks or threads to pause and wait at a specific point until every task in the group reaches that same point
+How it works:
+    - The Meeting Point: Tasks run independently until they hit the barrier, the so called meeting point.
+    - The Wait: The first tasks to arrive are blocked and put to sleep or suspended. Why?
+        - Why?
+            In the barrier design pattern, the first tasks to finish are suspended because the pattern is specifically designed to synchronize multiple concurrent tasks so they all proceed past a certain point together.
+            Think of a barrier like a tour guide waiting for a tour group to gather. The fast walkers (the first tasks) must wait at the meeting point until the slowest walker arrives. Only when everyone is present does the guide let the entire group move forward together.Here is exactly why this suspension happens and why it is necessary:1. Enforcing a Synchronization Point
+            In parallel computing, tasks often run at different speeds due to CPU scheduling, data sizes, or network latency. If your program requires all parallel tasks to complete "Phase 1" before any of them can safely start "Phase 2", you need a barrier. The first tasks are suspended to prevent them from racing ahead and working on data that isn't ready yet. 2. Preventing Race Conditions and Data CorruptionA barrier is often used when Phase 2 relies on the combined outputs of Phase 1.If a fast task did not suspend,
+            it would immediately move to Phase 2.It might try to read data from a slow task that hasn't been written yet.This causes a race condition, leading to bugs, crashes, or corrupted data.
+
+
+Common Real-World AnalogyThink of a tour group traveling by bus:The tour guide tells everyone to meet back at the bus at 5:00 PM (the barrier).The fast walkers return by 4:45 PM and must sit on the bus and wait.The slow walkers return exactly at 5:00 PM.The final passenger steps onto the bus (hits the barrier).Only then can the bus drive to the next destination (the release), ensuring no one is left behind.
+
+First generally thought is just using lab2 but instead of pushing directly or relabeling directly.
+What we can do is replace all the action with adding them into a working list.
+
+First phase:
+    - Scouting phase, record every decision or whatever.
+
+Second phase:
+    - A single thread walks through all the decision and actually do mutations, moves nodes etc.
+
+Some questions:
+    - Decide, what does decide mean?
+    Answer: find_admissible_edge will be used to track all the nodes. . Store the amount decided in phase 1, and phase 2 just applies it (fast, but risks applying a now-invalid amount if state changed).
+    We will use a decisionList and a nextRoundList
+    we work through phase 1 to phase 2 and then go back to phase 1 and keep the process?
+        - It's a loop between the two phases, synchronized by barriers, repeating until there's no more work. To lay out the loop shape explicitly:
+        - First decision was to only use one single decision list and make phase 2 go through the decisionList. The issue discovered later was that
+        - There could be dataraces and that the states will not remain the same for each iteration, meaning that we cannot only rely on one single round.
+
+    - Stale decisions: if thread A decides "push 5 to node v" based on v's height at the time, but by the time phase 2 runs, has anything changed about v?
+    Answer: We first thought verifying every decision in phase 2 would be needed, but that's ineffective.
+    Instead, we enforce that each node is scanned and produces at most ONE decision per round
+    (a node popped in phase 1 is not requeued within that same round). Because of this, no node
+    can ever be the SENDER of two decisions in the same round, so a decision's stored push amount
+    can never be invalidated by another decision draining the same sender first. A node CAN be the
+    RECEIVER of multiple decisions in one round, but receiving only ever increases excess, which is
+    always safe to apply. This means phase 2 can trust and apply stored amounts directly, with no
+    re-validation needed.
+
+    - Next round list: how does a node that just received excess (but wasn't scanned this round) get
+    picked up for scanning in the next round?
+    Answer: The decisionList only records actions taken by nodes that were already in this round's
+    workload - it never mentions nodes that only received flow. So we build a SEPARATE list,
+    nextRoundWorkload, during phase 2: whenever a decision is applied and (a) a receiver's excess
+    goes from 0 to positive, or (b) the sender still has leftover excess after its own decision
+    (e.g. it could only push part of what it had due to edge capacity), that node is added to
+    nextRoundWorkload. This becomes the workload for phase 1 of the next round.
+
+    - Termination:
+    Answer: NOT the same as lab2. The loop terminates when nextRoundWorkload comes back EMPTY after
+    a phase 2 pass - i.e., no receiver became newly excess and no sender was left with leftover
+    excess. At that point no node (other than s, t) has e > 0, and the algorithm is done.
