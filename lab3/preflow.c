@@ -36,6 +36,13 @@
 #include <pthread.h>
 #include <limits.h>
 
+/* Barrier*/
+#include "pthread_barrier.h"
+// Angle brackets (<...>) tell the compiler to search only system include directories (like /usr/include), not your current folder.
+// Since pthread_barrier.h is a file you wrote yourself, sitting next to preflow.c, you need quotes instead:
+
+pthread_barrier_t barrier; // Our barrier  
+
 #define PRINT		0	/* enable/disable prints. */
 
 /* the funny do-while next clearly performs one iteration of the loop.
@@ -75,25 +82,36 @@ struct list_t {
 	list_t*		next;
 };
 
-// Tillagd, trådkö
+// A decision_t just a record of "what to do", so typ en sändare som skickar till recever, kant, hur mycket, ska vi relabala etc.
 typedef struct {
-    node_t* first;
-	node_t* next;
-    pthread_mutex_t lock; // lås
-    pthread_cond_t nonempty; // condition variable
-	int active;
-} workqueue_t;
+    node_t*  sender;
+    node_t*  receiver;   
+    edge_t*  edge;        
+    int      amount;      // push amount, or ignored for relabel
+    int      is_relabel;  // 0 = push, 1 = relabel
+    int      new_height;  // only if is_relabel
+} decision_t;
 
-workqueue_t Q; // Delad kö med aktiva noder
+typedef struct {
+    graph_t* g;
+    int      thread_id;
+} thread_args_t;
+// definiera en tråd, den har både en tråd och ett ansvarsområde i grafen.
+
 pthread_t workers[N]; //trådar
+decision_t*     decisionList;
+node_t**    currentWorkload;   // denna rundas aktiva noder
+int         currentCount; // Antal noder som ska bearbetas
+int* queuedThisRound;
 
+node_t**    nextWorkload;      // nästa runda
+int         nextCount;         
 
 struct node_t {
 	int		h;	/* height.			*/
 	int		e;	/* excess flow.			*/
 	list_t*		edge;	/* adjacency list.		*/
 	node_t*		next;	/* with excess preflow.		*/
-    pthread_mutex_t lock;
 };
 
 struct edge_t {
@@ -196,7 +214,44 @@ static edge_t* find_admissible_edge(node_t* u) {
     return NULL;
 }
 
+static int findDirection(edge_t* edge, node_t* sender) {
+	int direction = 0;
 
+	if (sender == edge->u) {
+        direction = 1;
+	} else {
+		direction = -1;
+	}
+
+	return direction;
+}
+
+static int f_pushAmount(edge_t* edge, node_t* sender) {
+	int pushAmount = 0;
+
+	if (sender == edge->u) {
+ 		pushAmount = MIN(sender->e, edge->c - edge->f);
+	} else {
+		pushAmount = MIN(sender->e, edge->c + edge->f);
+	}
+
+	return pushAmount;
+}
+
+static void record_decision(graph_t* graph, node_t* sender, node_t* receiver, edge_t* edge,
+                             int amount, int is_relabel, int new_height) {
+
+    int idx = sender - graph->v;
+
+    decisionList[idx] = (decision_t){
+        .sender = sender,
+        .receiver = receiver,
+        .edge = edge,
+        .amount = amount,
+        .is_relabel = is_relabel,
+        .new_height = new_height
+    };
+}
 
 void error(const char* fmt, ...)
 {
@@ -315,68 +370,12 @@ static void* xcalloc(size_t n, size_t s)
 	return p;
 }
 
-void init_queue(workqueue_t* q) {
-	pr("initiating queue");
-    q-> first = NULL;
-	q-> next = NULL;
-	q->active = 0;
-    pthread_mutex_init(&q->lock, NULL);
-    pthread_cond_init(&q->nonempty, NULL);
-}
-// * är pekaren
-// & för address
-void queue_push(workqueue_t* q, node_t* u) {
-	u->next = NULL;
 
-	pr("pushing jobs to the queue \n");
-    pthread_mutex_lock(&q->lock); //vi låser våran kö så att ingen kan modifiera
-	// Om vi ska pusha något till en tom kö:
-	if(q->next == NULL) {
-		q->first = u;
-		q->next = u; //vi gör den cirkulär
-	} else {
-		q-> next ->next = u;
-		q -> next = u;
-	}
-
-	pthread_cond_signal(&q->nonempty); // Signalera någon tråd som väntar på att kön ska fyllas på
-    pthread_mutex_unlock(&q->lock); // Låser upp så att andra trådar kan börja slåss
-}
-
-
-node_t* queue_pop(workqueue_t* q) {
-	
-	pr("Attempting to get the first job in the queue \n");
-
-    pthread_mutex_lock(&q->lock); // Låsa
-    while (q->first == NULL && q->active > 0) {// om det inte finns något jobb därav huvud == svansen men att vi har active threads
-        pthread_cond_wait(&q->nonempty, &q->lock); //invänta
-	}
-
-	if (q->first == NULL) {          /* empty AND active == 0 -> done */
-        pthread_mutex_unlock(&q->lock);
-        return NULL;
-    }
-    node_t* u = q->first;
-	q -> first = u -> next;
-	//verifiera igen
-	if (q->first == NULL) {
-        q->next = NULL; /* kön blev tom */
-    }
-	q->active++;
-    pthread_mutex_unlock(&q->lock); // låsa upp
-    return u; // returnera den noden
-}
-
-/* Call this after a worker has fully discharged a node (u->e == 0). */
-void queue_task_done(workqueue_t* q) {
-	pr("Task done in the queue. \n");
-    pthread_mutex_lock(&q->lock);
-    q->active--;
-    if (q->first == NULL && q->active == 0) {
-        pthread_cond_broadcast(&q->nonempty);  /* wake everyone, not just one */
-    }
-    pthread_mutex_unlock(&q->lock);
+void init_phase_lists(graph_t* g) {
+    currentWorkload = xmalloc(g->n * sizeof(node_t*));
+    decisionList    = xmalloc(g->n * sizeof(decision_t));
+    nextWorkload    = xmalloc(g->n * sizeof(node_t*));
+    queuedThisRound = xcalloc(g->n, sizeof(int));
 }
 
 static void add_edge(node_t* u, edge_t* e)
@@ -427,10 +426,6 @@ static graph_t* new_graph(FILE* in, int n, int m)
 	g->v = xcalloc(n, sizeof(node_t));
 	g->e = xcalloc(m, sizeof(edge_t));
 
-    for (i = 0; i < n; i++) {
-        pthread_mutex_init(&g->v[i].lock, NULL);
-    }
-
 	g->s = &g->v[0];
 	g->t = &g->v[n-1];
 	g->excess = NULL;
@@ -464,97 +459,29 @@ static void enter_excess(graph_t* g, node_t* v)
 	}
 }
 
-static void push(graph_t* graph, node_t* sender, node_t* receiver, edge_t* edge)
-{
-	int		pushAmount;	/* remaining capacity of the edge. */
-
-    node_t* first; // första låset
-    node_t* second; // andra
-	
-    int sender_index = sender - (graph->v); // Här tar vi vad u pekar på och subtrahera vad v pekar på i g. -> säger att vi hämtar den variabeln i g.
-    int receiver_index = receiver - (graph->v);
-
-    // Vi vill bestämma vilken nod som är först och efter
-    if (sender_index < receiver_index) {
-        first = sender;
-        second = receiver;
-    } else {
-        first = receiver;
-        second = sender;
-    }
-
-	// Låsa våra noder så att ingen annan kan modifiera de
-    pthread_mutex_lock(&first->lock);
-    pthread_mutex_lock(&second->lock);
-
-	// Dubbelkolla att kanten fortfarande går att pusha på
-    int direction;
-
+static void push(graph_t* g, node_t* sender, node_t* receiver, edge_t* edge, int amount)
+{	
+	//
     if (sender == edge->u) {
-        direction = 1;
-    } else {
-        direction = -1;
-    }
-
-    if (!(sender->h > receiver->h && direction * edge->f < edge->c)) {
-        pthread_mutex_unlock(&second->lock);
-        pthread_mutex_unlock(&first->lock);
-        return;
-    }
-
-    // Nu vet vi att kanten fortfarande är giltig
-
-	pr("push from %d to %d: ", id(graph, sender), id(graph, receiver));
-	pr("f = %d, c = %d, so ", edge->f, edge->c);
-	
-	// vi kollar om nod u är samma som
-	if (sender == edge->u) {
-		pushAmount = MIN(sender->e, edge->c - edge->f);
-		edge->f += pushAmount;
+        edge->f += amount;
 	} else {
-		pushAmount = MIN(sender->e, edge->c + edge->f); // När vi gör sender -> e så hämtar vi excessen hos sändaren, men om vi gör edge -> f så hämtar vi flödet från kanten i klassen edge
-		edge->f -= pushAmount;
+        edge->f -= amount;
 	}
 
-	pr("pushing %d\n", pushAmount);
+    sender->e   -= amount;
+    receiver->e += amount;
 
-	int receiverHasExcess = (receiver->e == 0); // Säkerställa att vi inte har pushat redan via att excessen ska vara 0 innan vi pushar
-
-	sender->e -= pushAmount;
-	receiver->e += pushAmount;
-
-	/* the following are always true. */
-
-	assert(pushAmount >= 0);
-	assert(sender->e >= 0);
-	assert(abs(edge->f) <= edge->c);
-
-	if (receiverHasExcess && receiver != graph->s && receiver != graph->t) { //Om noden inte har varit aktiv och inte är källan eller sänkan så pushar vi till kön där trådarna kan arbeta
-		queue_push(&Q, receiver);
-	}
-    pthread_mutex_unlock(&second->lock);
-    pthread_mutex_unlock(&first->lock);
-
+    assert(amount >= 0);
+    assert(sender->e >= 0);
+    assert(abs(edge->f) <= edge->c);
 }
 
 
-// static void relabel(graph_t* graph, node_t* sender)
-// {
-// 	pthread_mutex_lock(&sender->lock); //när vi ska relabala så låser vi våran variabel
-
-// 	sender->h += 1;
-
-// 	pr("relabel %d now h = %d\n", id(graph, sender), sender->h);
-
-// 	pthread_mutex_unlock(&sender->lock); //när vi ska relabala så låser vi våran variabel
-// }
 
 static void relabel(graph_t* graph, node_t* sender)
 {
     int minimum_h = INT_MAX;
     list_t* p = sender->edge;
-
-	pthread_mutex_lock(&sender->lock);   // låset behövs bara för SKRIVNINGEN
 
     while (p != NULL) {
         edge_t* a = p->edge;
@@ -570,16 +497,14 @@ static void relabel(graph_t* graph, node_t* sender)
             residual = a->c + a->f;
         }
 
-		// Kolla rätt riktning
         if (residual > 0 && v->h < minimum_h) {
-            minimum_h = v->h;
+            minimum_h = v->h;    // läses utan lås på v — okej, se motivering ovan
         }
     }
 
     if (minimum_h != INT_MAX) {
         sender->h = minimum_h + 1;
     }
-    pthread_mutex_unlock(&sender->lock);
 
     pr("relabel %d now h = %d\n", id(graph, sender), sender->h);
 }
@@ -592,30 +517,128 @@ static node_t* other(node_t* u, edge_t* e)
 		return e->u;
 }
 
+// Phase 1
+static void decide(graph_t* graph, int i) {
+	node_t* sender = currentWorkload[i]; // sändaren
+	edge_t* edge = find_admissible_edge(sender); // Hitta en admissible edge
+	// fprintf(stderr, "decide: node %ld (e=%d h=%d) -> edge=%p\n",
+    //         sender - graph->v, sender->e, sender->h, (void*)edge);
+	if(edge) {
+		node_t* neighbour_receiver = other(sender, edge);
 
-/*
-Våran worker class, hämtar en nod och börja discharga
-*/
-static void* worker(void* arg)
-{
-	graph_t* graph = (graph_t*) arg; // Vi vill kunna använda den grafen som används
-    while (1) {
-        node_t* u = queue_pop(&Q);
-		if(u == NULL) { // Inget och köra, terminering
-			break;
+		int direction = findDirection(edge, sender);
+
+		int pushAmount = f_pushAmount(edge, sender);
+
+		decisionList[i] = (decision_t){
+            .sender = sender,
+            .receiver = neighbour_receiver,
+            .edge = edge,
+            .amount = pushAmount,
+            .is_relabel = 0
+        };
+		// Vi har nu gjort ett val
+
+    } else {
+		// Vi hittade ingen, vi behöver relabela men vi gör det inte utan låter decisionträdet göra det åt oss.
+        decisionList[i] = (decision_t){
+            .sender = sender,
+            .is_relabel = 1
+        };
+    }
+
+}
+
+int* queuedThisRound;   // g->n entries, all reset to 0 at start of each round
+
+static void next_work_phase(graph_t* graph, node_t* u) {
+    int idx = u - graph->v; // Hämta index av noden
+	// fprintf(stderr, "  next_work_phase called for node %d, queued=%d\n", idx, queuedThisRound[idx]);
+
+    if (!queuedThisRound[idx]) { // Lägg till i kön om vi inte har redan queat våran nod
+        queuedThisRound[idx] = 1; // Sätt den till köad status
+        nextWorkload[nextCount] = u; // Lägg i våran arbetslista
+        nextCount++;
+    }
+}
+
+//Phase 2:
+static void apply_decision(graph_t* graph, decision_t* decision) {
+	node_t* sender = decision->sender;
+
+	if(decision->is_relabel) { // Om valet är att relabela
+		relabel(graph, sender);              // <-- same logic, modulo locking
+    	next_work_phase(graph, sender);
+	} else {
+		node_t* receiver = decision->receiver; // om vi inte relabela så kan vi ju äntligen "pusha", (vi ska inte pusha men vanligtvis ja)
+		edge_t* edge = decision->edge;
+		int pushAmountFromDecision = decision -> amount;
+
+		if(sender == edge->u) {
+			edge->f += pushAmountFromDecision;
+		} else {
+			edge->f -= pushAmountFromDecision;
+		}
+		int receiverWasEmpty = (receiver->e == 0);
+		sender->e   -= pushAmountFromDecision;
+		receiver->e += pushAmountFromDecision;
+
+		// När vi är färdiga kan vi lägga undan till nästa runda, så länge vi inte är vid sänkan eller källan.
+		node_t* source = graph -> s;
+		node_t* tink = graph->t;
+		if(receiverWasEmpty && receiver != source && receiver != tink) {
+			next_work_phase(graph, receiver);
 		}
 
-        while (u->e > 0) {
-            edge_t* edge = find_admissible_edge(u);
-            if (edge)
-                push(graph, u, other(u, edge), edge);   // ingen extra låsning här
-            else
-                relabel(graph, u);
-        }
-			queue_task_done(&Q);
+		if(sender-> e > 0) {
+			next_work_phase(graph, sender);
+		}
+	}
+}
+
+
+static void phase2_run(graph_t* graph) {
+    for (int i = 0; i < currentCount; i++) {
+        apply_decision(graph, &decisionList[i]);
     }
-    printf("thread terminated\n");
-    return NULL;
+}
+
+static void* createThreads(void* arg) {
+	thread_args_t* t = (thread_args_t*) arg;
+	graph_t* g = t->g; //hämta trådens graf
+	int thread_id = t->thread_id;
+
+	while(currentCount > 0) {
+		pthread_barrier_wait(&barrier);
+
+		for(int i = thread_id; i < currentCount; i+=N) { // Våran loadbalancing, varje tråd har sin egna uppgift, unik index
+			decide(g, i);
+		}
+		pthread_barrier_wait(&barrier);
+
+		if (pthread_barrier_wait(&barrier) == PTHREAD_BARRIER_SERIAL_THREAD) { // När alla trådar inväntar den sista, så får en av trådarna ett specialjobb och sedan låter vi den sista tråden jobba
+            memset(queuedThisRound, 0, g->n * sizeof(int)); // Nollställ arrayen queuedThisRound i början av varje runda.
+            nextCount = 0; // initiera
+
+            for (int i = 0; i < currentCount; i++) {
+                apply_decision(g, &decisionList[i]);
+			}
+
+            node_t** temp = currentWorkload;
+            currentWorkload = nextWorkload;
+            nextWorkload = temp;
+			currentCount = nextCount;
+
+			// fprintf(stderr, "=== round end: nextCount=%d, sink_e=%d ===\n", nextCount, g->t->e);
+			// for (int k = 0; k < currentCount; k++) {
+			// 	node_t* node = currentWorkload[k];
+			// 	// fprintf(stderr, "  node %ld: e=%d h=%d\n", node - g->v, node->e, node->h);
+			// }
+		}
+
+        pthread_barrier_wait(&barrier);
+    }
+	return NULL;
 }
 	
 int preflow(graph_t* g)
@@ -628,13 +651,13 @@ int preflow(graph_t* g)
 	int		b;
 
 
-    init_queue(&Q); // Initiera kön
-
+	pthread_barrier_init(&barrier, NULL, N); // En pekare till klassen barrier så att vi kan utnyttja den
+	init_phase_lists(g);
     //initiera höjden och allt annat
-	s = g->s;
-	s->h = g->n;
+	s = g->s; // initiera källan
+	s->h = g->n; //initiera höjden med antalet noder
 
-	p = s->edge;
+	p = s->edge; // hämtar en lista av kanterna från källan
 
 	/* start by pushing as much as possible (limited by
 	 * the edge capacity) from the source to its neighbors.
@@ -646,24 +669,28 @@ int preflow(graph_t* g)
 		p = p->next;
 
 		s->e += e->c;
-		push(g, s, other(s, e), e);
+		push(g, s, other(s, e), e, e->c);
 	}
 
-    // Lägg alla noder med excess i kön
-    // for (int i = 0; i < g->n; i++) {
-    //     node_t* u = &g->v[i];
-    //     if (u != g->s && u != g->t && u->e > 0)
-    //         queue_push(&Q, u);
-    // }
-	
-	// Starta workers
-    for (int i = 0; i < N; i++) {
-        pthread_create(&workers[i], NULL, worker, g);
-    }
+	// Vi behöver lägga ut antalet noder som vi ska bearbeta
+	currentCount = 0;
+	for (int i = 0; i < g->n; i++) { //Loopa genom alla noder i grafen
+		node_t* u = &g->v[i]; // för varje nod i grafen
+		if (u != g->s && u != g->t && u->e > 0) { // Om noden vi befinner oss i inte är källan eller sinkan, samt att vi har excess kvar
+			currentWorkload[currentCount++] = u;  // Lägger vi till de i våran lista som ska bearbetas
+		}
+	}
 
-    for (int i = 0; i < N; i++) {
-        pthread_join(workers[i], NULL);
-    }
+	thread_args_t targs[N];
+	for (int i = 0; i < N; i++) {
+		targs[i].g = g;
+        targs[i].thread_id = i;
+    	pthread_create(&workers[i], NULL, createThreads, &targs[i]);
+	}
+
+	for (int i = 0; i < N; i++) {
+		pthread_join(workers[i], NULL);
+	}
 
 	return g->t->e;
 }
