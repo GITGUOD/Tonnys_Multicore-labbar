@@ -39,6 +39,9 @@ Some questions:
     always safe to apply. This means phase 2 can trust and apply stored amounts directly, with no
     re-validation needed.
 
+    How? Well, let's introduce anotherList which scans the workload from the first round and then feed them into the decisionList which decides what to do and so forth.
+    This makes it simply too hard to miss, and too hard for nodes to collide.
+
     - Next round list: how does a node that just received excess (but wasn't scanned this round) get
     picked up for scanning in the next round?
     Answer: The decisionList only records actions taken by nodes that were already in this round's
