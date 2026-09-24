@@ -393,3 +393,15 @@ t = 69 ms
 fraction = 0.021852 / 69 ≈ 0.000317 = 0.032%
 
 "synchronization time" here means time a thread spends waiting/blocked because of a lock or condition variable, rather than time spent doing actual algorithmic work (traversing edges, comparing heights, updating flow).
+
+
+
+Det handlar om att C inte har inbyggt stöd för synkronisering på objektnivå, till skillnad från Java.
+
+I Java:
+Varje objekt har ett inbyggt "monitor lock" (intrinsic lock) som du kan använda direkt:
+
+java
+synchronized(node) {
+    node.e -= flow;
+}

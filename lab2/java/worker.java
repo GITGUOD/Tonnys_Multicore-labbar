@@ -37,10 +37,19 @@ class Graph {
 
 	}
 
+	/*
+	Lägger till excess
+	*/
 	void enter_excess(Node u)
 	{
 						// System.out.println("Letsgoo");
-		if (u != node[s] && u != node[t] && u.e > 0 && !u.inExcess) {
+		if (u != node[s] && u != node[t] && u.e > 0 && !u.inExcess) { //
+			/*
+			Fixar vår länkade lista
+			u.next = excess // Hämtar nästa nods excess
+			excess = u // Absorbera dess excess
+			u.inExcess = true // flagga så att vi slipper duplicate excess tillagda
+			*/
 			u.next = excess;
 			excess = u;
 			u.inExcess = true;
@@ -55,14 +64,20 @@ class Graph {
 			return a.u;
 	}
 
+	/*
+	Flow logik
+	*/
 	int residual(Edge a, Node from)
 	{
 		if (a.u == from)
-			return a.c - a.f;   // forwarda oanvänd kapacitet
+			return a.c - a.f;   // backwarda oanvänd kapacitet
 		else
-			return a.c + a.f;          // backward: flow that can be canceled
+			return a.c + a.f;          // forwarda flow
 	}
 
+	/*
+	Relabel logik för fixa höjden
+	*/
 	void relabel(Node u)
 	{
 		int minimum_h = Integer.MAX_VALUE;
@@ -87,17 +102,19 @@ class Graph {
 	}
 
 
-
+	/*
+	
+	*/
 	void push(Node u, Node v, Edge a) {
 
-		int flow = Math.min(u.e, residual(a, u));
-		if (a.u == u)
+		int flow = Math.min(u.e, residual(a, u)); //hämta flow och Math.min gör så att vi aldrig kan pusha mer än vad vi kan.
+		if (a.u == u) // Om vårna nod är i rätt riktning sp pushar vi framåt
 			a.f += flow;
 		else
-			a.f -= flow;
+			a.f -= flow; // annars bakåt
 
-		u.e -= flow;
-		v.e += flow;
+		u.e -= flow; // ta bort excess, överskottet
+		v.e += flow; // lägg till den hos grannen istället
 	}
 
 	public void lockPair(Node u, Node v) {
@@ -240,22 +257,6 @@ class Graph {
 			System.out.println("Error: " + e);
 		}
 
-		// while (excess != null) {
-		// 	u = excess;
-		// 	v = null;
-		// 	a = null;
-		// 	excess = u.next;
-
-		// 	iter = u.adj.listIterator();
-		// 	while (iter.hasNext()) {
-		// 		a = iter.next();
-		// 	}
-
-		// 	if (v != null)
-		// 		push(u, v, a);
-		// 	else
-		// 		relabel(u);
-		// }
 
 		return sink.e;
 	}
@@ -270,22 +271,22 @@ class Graph {
 	public void workerLoop(int workerId) {
 		// Den ska jobba hela tiden
 		while(true) {
-			long t0 = System.nanoTime();
+			long t0 = System.nanoTime(); //tidsspårning
 
 			Node u = null;
 			excessLock.lock(); // vi låser först eftersom vi gör en ny transaction med en tråd
 			try {
-				// När tråden ska dö
+				// När vi inte har något överflöde kvar, då är vi i våran termination process, tråden ska dö
 				while(excess == null) {
-					if(activeThreads == 0) {
+					if(activeThreads ==0) {
 						System.out.println("Thread " + workerId + " terminated: processed " + threadsProcessed[workerId] + " nodes, waited " + (syncWait[workerId] / 1e6) + " ms on synchronization");
 						return;
 					}
-					// Om vi har jobb, vänta
+					// Om vi har jobb kvar, vänta
 					excessIsEmpty.await();
 				}
 
-				// Nu är det trådens tur och vi plockar upp noderna i excess listan som ska bearbetas / poppa första noden
+				// Nu är det trådens tur och vi plockar upp noderna i excess listan som ska bearbetas / poppa första noden, enkel länkadlista
 				u = excess;
 				excess = u.next; // Gå till nästa nod eftersom vi plockar ut en nod
 				u.next = null; // den vi har plockat fram tar vi bort länken
@@ -300,7 +301,7 @@ class Graph {
 			}
 				// System.out.println("Time to discharge");
 			syncWait[workerId] += (System.nanoTime() - t0);
-			discharge(u); // discharge den noden vi har plockat, här behöver vi inte låsa eftersom vi behöver inte blocka dom andra trådarna
+			discharge(u); // discharge den noden vi har plockat, tömma dess excess, här behöver vi inte låsa eftersom vi behöver inte blocka dom andra trådarna
 			
 			long t1 = System.nanoTime();
 			excessLock.lock(); // Sedan låser vi igen

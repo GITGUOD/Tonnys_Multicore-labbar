@@ -55,3 +55,17 @@ Some questions:
     Answer: NOT the same as lab2. The loop terminates when nextRoundWorkload comes back EMPTY after
     a phase 2 pass - i.e., no receiver became newly excess and no sender was left with leftover
     excess. At that point no node (other than s, t) has e > 0, and the algorithm is done.
+
+
+Vad vi har implementeraT:
+
+Mindre viktigt
+    - Push
+    - relabel
+
+Viktigt
+    decide: basically bestömmer vad soma göras
+    next_work_phase
+    apply_decision
+    create_threads
+     
