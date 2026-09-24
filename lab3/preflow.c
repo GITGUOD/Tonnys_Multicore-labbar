@@ -372,7 +372,7 @@ static void* xcalloc(size_t n, size_t s)
 
 
 void init_phase_lists(graph_t* g) {
-    currentWorkload = xmalloc(g->n * sizeof(node_t*));
+    currentWorkload = xmalloc(g->n * sizeof(node_t*)); // allokera minnen till vardera kö
     decisionList    = xmalloc(g->n * sizeof(decision_t));
     nextWorkload    = xmalloc(g->n * sizeof(node_t*));
     queuedThisRound = xcalloc(g->n, sizeof(int));
@@ -498,7 +498,7 @@ static void relabel(graph_t* graph, node_t* sender)
         }
 
         if (residual > 0 && v->h < minimum_h) {
-            minimum_h = v->h;    // läses utan lås på v — okej, se motivering ovan
+            minimum_h = v->h;
         }
     }
 
@@ -567,18 +567,20 @@ static void apply_decision(graph_t* graph, decision_t* decision) {
 	node_t* sender = decision->sender;
 
 	if(decision->is_relabel) { // Om valet är att relabela
-		relabel(graph, sender);              // <-- same logic, modulo locking
-    	next_work_phase(graph, sender);
+		relabel(graph, sender); // relabel
+    	next_work_phase(graph, sender); // gå och lägg till i våran nästa fas
 	} else {
 		node_t* receiver = decision->receiver; // om vi inte relabela så kan vi ju äntligen "pusha", (vi ska inte pusha men vanligtvis ja)
-		edge_t* edge = decision->edge;
-		int pushAmountFromDecision = decision -> amount;
+		edge_t* edge = decision->edge; //hämta kanten som decision ska göras
+		int pushAmountFromDecision = decision -> amount; // Hämta hur mycket vi ska pusha
 
+		// push mechanics
 		if(sender == edge->u) {
 			edge->f += pushAmountFromDecision;
 		} else {
 			edge->f -= pushAmountFromDecision;
 		}
+		// Varje gång så kontrollerar vi om receiverns excess är tom
 		int receiverWasEmpty = (receiver->e == 0);
 		sender->e   -= pushAmountFromDecision;
 		receiver->e += pushAmountFromDecision;
@@ -586,10 +588,11 @@ static void apply_decision(graph_t* graph, decision_t* decision) {
 		// När vi är färdiga kan vi lägga undan till nästa runda, så länge vi inte är vid sänkan eller källan.
 		node_t* source = graph -> s;
 		node_t* tink = graph->t;
+		// vi skcikar in receivern eller sändaren beroende på hur mycket excess våran receiver har. Om mottagarens överflöde är tom så gå vi vidare
 		if(receiverWasEmpty && receiver != source && receiver != tink) {
 			next_work_phase(graph, receiver);
 		}
-
+		// Om vi har fortfarande excess från sändaren kan vi också gå vidare
 		if(sender-> e > 0) {
 			next_work_phase(graph, sender);
 		}
@@ -597,16 +600,10 @@ static void apply_decision(graph_t* graph, decision_t* decision) {
 }
 
 
-static void phase2_run(graph_t* graph) {
-    for (int i = 0; i < currentCount; i++) {
-        apply_decision(graph, &decisionList[i]);
-    }
-}
-
 static void* createThreads(void* arg) {
 	thread_args_t* t = (thread_args_t*) arg;
-	graph_t* g = t->g; //hämta trådens graf
-	int thread_id = t->thread_id;
+	graph_t* g = t->g; //hämta trådens graf eftersom varje tråd har sin graf och arbeta med
+	int thread_id = t->thread_id; // nytt unikt id 
 
 	while(currentCount > 0) {
 		pthread_barrier_wait(&barrier);
@@ -614,19 +611,19 @@ static void* createThreads(void* arg) {
 		for(int i = thread_id; i < currentCount; i+=N) { // Våran loadbalancing, varje tråd har sin egna uppgift, unik index
 			decide(g, i);
 		}
-		pthread_barrier_wait(&barrier);
+		pthread_barrier_wait(&barrier); //invänta alla trådar
 
 		if (pthread_barrier_wait(&barrier) == PTHREAD_BARRIER_SERIAL_THREAD) { // När alla trådar inväntar den sista, så får en av trådarna ett specialjobb och sedan låter vi den sista tråden jobba
             memset(queuedThisRound, 0, g->n * sizeof(int)); // Nollställ arrayen queuedThisRound i början av varje runda.
-            nextCount = 0; // initiera
+            nextCount = 0; // initiera nextCount som används för att beräkna hur mycket arbete till nästa runda
 
             for (int i = 0; i < currentCount; i++) {
                 apply_decision(g, &decisionList[i]);
-			}
+			} // applya våra val
 
-            node_t** temp = currentWorkload;
-            currentWorkload = nextWorkload;
-            nextWorkload = temp;
+            node_t** temp = currentWorkload; // spara undan current workload, en lista av noder till våran current work space
+            currentWorkload = nextWorkload; // Lägga till det i nästa arbete. Allt som byggdes upp i nextWorkload under förra fasen (de noder som skulle bearbetas näst) blir nu den nya aktiva listan att jobba med.
+            // nextWorkload = temp; //
 			currentCount = nextCount;
 
 			// fprintf(stderr, "=== round end: nextCount=%d, sink_e=%d ===\n", nextCount, g->t->e);
@@ -640,6 +637,17 @@ static void* createThreads(void* arg) {
     }
 	return NULL;
 }
+
+/*
+Om du vill ha en lista med referenser till redan existerande noder, snarare än att kopiera noderna själva, behöver varje "ruta" i listan vara en pekare. Och eftersom hela listan är en array, och man refererar till en array via en pekare till dess första element, blir typen pekare till (pekare till node_t) = node_t**.
+
+node_t* currentWorkload[10];   // en array av 10 pekare till noder
+node_t** p = currentWorkload;  // "sönderfaller" till node_t** när den skickas runt
+
+Om du istället bara hade node_t* currentWorkload (enkel *) skulle det betyda "en pekare till en enda nod" — du kan inte lagra flera nod-referenser i en sådan variabel, bara en.
+
+Så: * = en sak. ** = en array/lista av flera sådana saker (där varje sak är en pekare).
+*/
 	
 int preflow(graph_t* g)
 {
@@ -651,8 +659,8 @@ int preflow(graph_t* g)
 	int		b;
 
 
-	pthread_barrier_init(&barrier, NULL, N); // En pekare till klassen barrier så att vi kan utnyttja den
-	init_phase_lists(g);
+	pthread_barrier_init(&barrier, NULL, N); // En pekare till klassen barrier så att vi kan utnyttja den, initiera barriären
+	init_phase_lists(g); // initiera våra faslistor
     //initiera höjden och allt annat
 	s = g->s; // initiera källan
 	s->h = g->n; //initiera höjden med antalet noder

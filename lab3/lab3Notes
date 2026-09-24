@@ -69,3 +69,13 @@ Viktigt
     apply_decision
     create_threads
      
+
+Does the use of phases affect the possibility to do good load-balancing, and
+why, and if it does, to what extent is it significant?
+- Ja, färre rundor med många faser gör att barriären äter upp mycket tid:
+Mer specifikt:
+Ja. Varje runda kräver 3–4 barriärväntningar oavsett hur många noder som faktiskt bearbetas den rundan. På rundor med få aktiva noder (litet currentCount) blir denna fasta synkroniseringskostnad större än själva arbetet, vilket vi mätte konkret: på big/002.in, som ger många sådana små rundor, blev vår fasade version långsammare än den sekventiella Lab 0-versionen (18.4s vs 16.0s), trots att den var 2–5x snabbare på alla andra testfall med större rundor.
+
+
+Can you distribute the nodes in a fair way for load-balance?
+    - Not quite, it depends on how many tasks there is, if there are a lot of tasks så kan vissa trådar tilldelas 0 arbeten. Går ej att undvika när det finns färre uppgifter än trådar. Arbetskostnaden kan också så klart variera etc.
