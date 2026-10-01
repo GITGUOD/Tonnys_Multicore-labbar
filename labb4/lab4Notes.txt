@@ -1,0 +1,449 @@
+Kopierade alla filer
+Kopierade lab0 och la den i lab4
+
+root@LAPTOP-0ACSTN7H:~/lab0# make main
+gcc -o preflow preflow.c -g -O3
+time sh check-solution.sh ./preflow
+../data/tiny/0.in
+time: 4 ms
+PASS ../data/tiny/0.in
+../data/railwayplanning/sample/1.in
+time: 3 ms
+PASS ../data/railwayplanning/sample/1.in
+../data/railwayplanning/secret/0mini.in
+time: 3 ms
+PASS ../data/railwayplanning/secret/0mini.in
+../data/railwayplanning/secret/1small.in
+time: 3 ms
+PASS ../data/railwayplanning/secret/1small.in
+../data/railwayplanning/secret/2med.in
+time: 3 ms
+PASS ../data/railwayplanning/secret/2med.in
+../data/railwayplanning/secret/3large.in
+time: 23 ms
+PASS ../data/railwayplanning/secret/3large.in
+../data/railwayplanning/secret/4huge.in
+time: 70 ms
+PASS ../data/railwayplanning/secret/4huge.in
+../data/big/000.in
+time: 47 ms
+PASS ../data/big/000.in
+../data/big/001.in
+time: 58 ms
+PASS ../data/big/001.in
+../data/big/002.in
+time: 9884 ms
+PASS ../data/big/002.in
+../data/huge/001.in
+time: 839 ms
+PASS ../data/huge/001.in
+10.79user 0.14system 0:10.98elapsed 99%CPU (0avgtext+0avgdata 87708maxresident)k
+0inputs+88outputs (0major+34344minor)pagefaults 0swaps
+PASS all tests
+
+Nu till lab0 utan atomic variables
+
+
+
+root@LAPTOP-0ACSTN7H:~/lab0# make main
+gcc -o preflow preflow.c -g -O3
+time sh check-solution.sh ./preflow
+../data/tiny/0.in
+time: 3 ms
+PASS ../data/tiny/0.in
+../data/railwayplanning/sample/1.in
+time: 3 ms
+PASS ../data/railwayplanning/sample/1.in
+../data/railwayplanning/secret/0mini.in
+time: 2 ms
+PASS ../data/railwayplanning/secret/0mini.in
+../data/railwayplanning/secret/1small.in
+time: 2 ms
+PASS ../data/railwayplanning/secret/1small.in
+../data/railwayplanning/secret/2med.in
+time: 2 ms
+PASS ../data/railwayplanning/secret/2med.in
+../data/railwayplanning/secret/3large.in
+time: 17 ms
+PASS ../data/railwayplanning/secret/3large.in
+../data/railwayplanning/secret/4huge.in
+time: 46 ms
+PASS ../data/railwayplanning/secret/4huge.in
+../data/big/000.in
+time: 52 ms
+PASS ../data/big/000.in
+../data/big/001.in
+time: 46 ms
+PASS ../data/big/001.in
+../data/big/002.in
+time: 6802 ms
+PASS ../data/big/002.in
+../data/huge/001.in
+time: 897 ms
+PASS ../data/huge/001.in
+7.83user 0.11system 0:07.94elapsed 100%CPU (0avgtext+0avgdata 87772maxresident)k
+43432inputs+88outputs (15major+33801minor)pagefaults 0swaps
+PASS all tests
+
+Utan var snabbare.
+
+Nu till att ersätta labb 3 med labb 4
+
+Requirement 3 with Hello:
+labbar/lab0# make main
+gcc -o preflow2 preflow2.c -g -O3
+time sh check-solution.sh ./preflow
+../data/tiny/0.in
+time: 31 ms
+PASS ../data/tiny/0.in
+../data/railwayplanning/sample/1.in
+time: 24 ms
+PASS ../data/railwayplanning/sample/1.in
+../data/railwayplanning/secret/0mini.in
+time: 23 ms
+PASS ../data/railwayplanning/secret/0mini.in
+../data/railwayplanning/secret/1small.in
+time: 23 ms
+PASS ../data/railwayplanning/secret/1small.in
+../data/railwayplanning/secret/2med.in
+time: 25 ms
+PASS ../data/railwayplanning/secret/2med.in
+../data/railwayplanning/secret/3large.in
+time: 99 ms
+PASS ../data/railwayplanning/secret/3large.in
+../data/railwayplanning/secret/4huge.in
+time: 192 ms
+PASS ../data/railwayplanning/secret/4huge.in
+../data/big/000.in
+time: 208 ms
+PASS ../data/big/000.in
+../data/big/001.in
+time: 172 ms
+PASS ../data/big/001.in
+../data/big/002.in
+time: 5337 ms
+PASS ../data/big/002.in
+../data/huge/001.in
+time: 2960 ms
+PASS ../data/huge/001.in
+6.40user 0.34system 0:09.46elapsed 71%CPU (0avgtext+0avgdata 87848maxresident)k
+1616inputs+0outputs (37major+34208minor)pagefaults 0swaps
+PASS all tests
+
+Utan atomic¨
+
+root@LAPTOP-0ACSTN7H:/mnt/c/Users/tonny/OneDrive/Documents/MulticoreProgramming/Tonnys_Multicore-labbar/lab0# make main
+gcc -o preflow preflow.c -g -O3
+time sh check-solution.sh ./preflow
+../data/tiny/0.in
+time: 12 ms
+PASS ../data/tiny/0.in
+../data/railwayplanning/sample/1.in
+time: 15 ms
+PASS ../data/railwayplanning/sample/1.in
+../data/railwayplanning/secret/0mini.in
+time: 15 ms
+PASS ../data/railwayplanning/secret/0mini.in
+../data/railwayplanning/secret/1small.in
+time: 15 ms
+PASS ../data/railwayplanning/secret/1small.in
+../data/railwayplanning/secret/2med.in
+time: 40 ms
+PASS ../data/railwayplanning/secret/2med.in
+../data/railwayplanning/secret/3large.in
+time: 67 ms
+PASS ../data/railwayplanning/secret/3large.in
+../data/railwayplanning/secret/4huge.in
+time: 117 ms
+PASS ../data/railwayplanning/secret/4huge.in
+../data/big/000.in
+time: 145 ms
+PASS ../data/big/000.in
+../data/big/001.in
+time: 122 ms
+PASS ../data/big/001.in
+../data/big/002.in
+time: 8198 ms
+PASS ../data/big/002.in
+../data/huge/001.in
+time: 2181 ms
+PASS ../data/huge/001.in
+9.38user 0.23system 0:11.15elapsed 86%CPU (0avgtext+0avgdata 87788maxresident)k
+704inputs+0outputs (22major+34137minor)pagefaults 0swaps
+PASS all tests
+root@LAPTOP-0ACSTN7H:/mnt/c/Users/tonny/OneDrive/Documents/MulticoreProgramming/Tonnys_Multicore-labbar/lab0# 
+
+requirement 3:
+gcc -S -O3 preflow2.c -o preflow2.s
+grep -n '13107\|17476' preflow2.s
+
+
+gcc -S -O3 preflow.c -o preflow.s
+grep -n '13107\|17476' preflow.s
+
+
+labbar/lab0# grep -n '13107\|17476' preflow2.s
+24:     andl    $13107, %ecx
+42:     andl    $17476, %r9d
+
+root@LAPTOP-0ACSTN7H:/mnt/c/Users/tonny/OneDrive/Documents/MulticoreProgramming/Tonnys_Multicore-labbar/lab0# gcc -S -O3 preflow.c -o preflow.s
+grep -n '13107\|17476' preflow.s
+214:    andl    $13107, %edx
+226:    andl    $17476, %esi
+294:    andl    $13107, %edx
+311:    andl    $13107, %eax
+326:    andl    $17476, %edx
+
+
+sed -n '24,42p'   preflow2.s     # atomic (mellan 13107 och 17476)
+sed -n '214,226p' preflow.s      # plain, första kopian
+        andl    $13107, %ecx
+        cmpq    %rax, (%rdx)
+        movl    %ecx, hello(%rip)
+        movl    4(%rax), %r8d
+        movl    20(%rdx), %ecx
+        movl    16(%rdx), %r9d
+        je      .L15
+        addl    %r9d, %ecx
+        cmpl    %ecx, %r8d
+        jle     .L16
+        movl    20(%rdx), %r8d
+        movl    16(%rdx), %ecx
+        addl    %ecx, %r8d
+        movl    %r8d, %ecx
+.L7:
+        lock subl       %ecx, 16(%rdx)
+.L5:
+        movl    hello(%rip), %r9d
+        andl    $17476, %r9d
+        andl    $13107, %edx
+        movl    %edx, hello(%rip)
+        leal    (%r11,%rcx), %edx
+        cmpl    %eax, %edx
+        cmovg   %eax, %edx
+        subl    %edx, %ecx
+.L23:
+        subl    %edx, %eax
+        movl    %ecx, 16(%rsi)
+        movl    hello(%rip), %esi
+        movl    %eax, 4(%r8)
+        movl    4(%rdi), %ebx
+        andl    $17476, %esi
+root@LAPTOP-0ACSTN7H:/mnt/c/Users/tonny/OneDrive/Documents/MulticoreProgramming/Tonnys_Multicore-labbar/lab0# 
+
+På krav 3: Det tillkommer lite lock funktioner.
+
+Krav 4:
+Redigera lab3:
+
+Vad vi får göra:
+Eftersom atomic variabler är bra för thread saving o så, undvika dataraces så kan vi applya det i fas 2.
+
+Atomic exchange
+Tråd	Flagga före	Sätter till	Returnerar
+B	0	1	0
+A	1	1	1
+C	1	1	1
+
+root@LAPTOP-0ACSTN7H:~/lab4# make main
+gcc -o preflow preflow.c pthread_barrier.c -g -O3 -pthread
+time sh check-solution.sh ./preflow
+../data/tiny/0.in
+time: 3 ms
+PASS ../data/tiny/0.in
+../data/railwayplanning/sample/1.in
+time: 3 ms
+PASS ../data/railwayplanning/sample/1.in
+../data/railwayplanning/secret/0mini.in
+time: 4 ms
+PASS ../data/railwayplanning/secret/0mini.in
+../data/railwayplanning/secret/1small.in
+time: 6 ms
+PASS ../data/railwayplanning/secret/1small.in
+../data/railwayplanning/secret/2med.in
+time: 11 ms
+PASS ../data/railwayplanning/secret/2med.in
+../data/railwayplanning/secret/3large.in
+time: 25 ms
+PASS ../data/railwayplanning/secret/3large.in
+../data/railwayplanning/secret/4huge.in
+time: 47 ms
+PASS ../data/railwayplanning/secret/4huge.in
+../data/big/000.in
+time: 40 ms
+PASS ../data/big/000.in
+../data/big/001.in
+time: 48 ms
+PASS ../data/big/001.in
+../data/big/002.in
+time: 12620 ms
+PASS ../data/big/002.in
+../data/huge/001.in
+time: 694 ms
+PASS ../data/huge/001.in
+39.99user 14.16system 0:26.05elapsed 207%CPU (0avgtext+0avgdata 88100maxresident)k
+0inputs+176outputs (0major+64490minor)pagefaults 0swaps
+PASS all tests
+
+
+1. What is your explanation to requirement 3?
+Answer: Vi har extra lock operationer vilket leder till långsammare performance,
+särskilt när vi inte behöver de
+
+2. With only one thread doing work in phase 2 in Lab 3, can you move some
+of that work to phase 1 instead?
+Answer: Ja, eftersom vi använder atomic pattern så kan vi säkerställa att vi inte får dataraces
+och lockdowns.
+
+3. Which memoryorder is used by default for compound assignment operators
+(such as +=) ? (in case you don’t use C/C++, your answer may differ from
+these languages)
+answer: atomic_fetch_add
+
+4. Will you get a data-race if you switch to memory_order_relaxed in C/C++?
+Why or why not?
+Answer: Nej, testade. Den påverkar bara ordningen på operationerna, samt att barriärerna
+säkerställer att kolla trådar hinnerfatt och väntar på varandra.
+
+5. Can you notice any performance difference when using (1) sequential
+consistency memory order and (2) relaxed memory order? Why or why not
+do you think?
+Answer: Vi fick bättre performance
+
+Googlade:
+Dimension	Relaxed (memory_order_relaxed)	Atomic Ordering (e.g., acquire, release, seq_cst)
+Performance	Fastest. High execution speed. Allows maximum compiler and CPU optimizations.	Slower. Introduces memory fences/barriers that limit optimizations.
+Thread Safety	Lowest. No synchronization or ordering guarantees between different variables.	Highest. Synchronizes memory across threads so data changes are visible in order.
+Primary Use Case	Incremental counters, statistics, flags where other memory doesn't depend on it.	Lock-free data structures, mutexes, passing data between threads.
+
+6. Explain your source code.
+Answer: Ändringarna var att göra variablerna till atomic, dom som alla läser och skriver till
+Next_phase behövde säkerställa att vi inte får dubletter om vi har flera trådar som ska jobba och lägga till
+nästa fas
+ApplyDecision behöver också behandlas etc. Allt som har med phase 2 och göra
+
+7. Did you find a way to improve the performance of your program over the
+first correct version?
+
+relaxed vs consis:
+
+root@LAPTOP-0ACSTN7H:~/lab4# make main
+gcc -o preflow preflow.c pthread_barrier.c -g -O3 -pthread
+time sh check-solution.sh ./preflow
+../data/tiny/0.in
+time: 4 ms
+PASS ../data/tiny/0.in
+../data/railwayplanning/sample/1.in
+time: 3 ms
+PASS ../data/railwayplanning/sample/1.in
+../data/railwayplanning/secret/0mini.in
+time: 6 ms
+PASS ../data/railwayplanning/secret/0mini.in
+../data/railwayplanning/secret/1small.in
+time: 5 ms
+PASS ../data/railwayplanning/secret/1small.in
+../data/railwayplanning/secret/2med.in
+time: 9 ms
+PASS ../data/railwayplanning/secret/2med.in
+../data/railwayplanning/secret/3large.in
+time: 25 ms
+PASS ../data/railwayplanning/secret/3large.in
+../data/railwayplanning/secret/4huge.in
+time: 48 ms
+PASS ../data/railwayplanning/secret/4huge.in
+../data/big/000.in
+time: 44 ms
+PASS ../data/big/000.in
+../data/big/001.in
+time: 45 ms
+PASS ../data/big/001.in
+../data/big/002.in
+time: 11836 ms
+PASS ../data/big/002.in
+../data/huge/001.in
+time: 681 ms
+PASS ../data/huge/001.in
+37.78user 13.29system 0:24.96elapsed 204%CPU (0avgtext+0avgdata 88072maxresident)k
+0inputs+176outputs (1major+64152minor)pagefaults 0swaps
+PASS all tests
+root@LAPTOP-0ACSTN7H:~/lab4# make main
+gcc -o preflow preflow.c pthread_barrier.c -g -O3 -pthread
+time sh check-solution.sh ./preflow
+../data/tiny/0.in
+time: 3 ms
+PASS ../data/tiny/0.in
+../data/railwayplanning/sample/1.in
+time: 3 ms
+PASS ../data/railwayplanning/sample/1.in
+../data/railwayplanning/secret/0mini.in
+time: 4 ms
+PASS ../data/railwayplanning/secret/0mini.in
+../data/railwayplanning/secret/1small.in
+time: 6 ms
+PASS ../data/railwayplanning/secret/1small.in
+../data/railwayplanning/secret/2med.in
+time: 11 ms
+PASS ../data/railwayplanning/secret/2med.in
+../data/railwayplanning/secret/3large.in
+time: 37 ms
+PASS ../data/railwayplanning/secret/3large.in
+../data/railwayplanning/secret/4huge.in
+time: 40 ms
+PASS ../data/railwayplanning/secret/4huge.in
+../data/big/000.in
+time: 45 ms
+PASS ../data/big/000.in
+../data/big/001.in
+time: 46 ms
+PASS ../data/big/001.in
+../data/big/002.in
+time: 12197 ms
+PASS ../data/big/002.in
+../data/huge/001.in
+time: 716 ms
+PASS ../data/huge/001.in
+39.94user 13.15system 0:25.60elapsed 207%CPU (0avgtext+0avgdata 88220maxresident)k
+43184inputs+176outputs (14major+65126minor)pagefaults 0swaps
+PASS all tests
+
+// default utan relaxed
+root@LAPTOP-0ACSTN7H:~/lab4# make main
+gcc -o preflow preflow.c pthread_barrier.c -g -O3 -pthread
+time sh check-solution.sh ./preflow
+../data/tiny/0.in
+time: 4 ms
+PASS ../data/tiny/0.in
+../data/railwayplanning/sample/1.in
+time: 3 ms
+PASS ../data/railwayplanning/sample/1.in
+../data/railwayplanning/secret/0mini.in
+time: 5 ms
+PASS ../data/railwayplanning/secret/0mini.in
+../data/railwayplanning/secret/1small.in
+time: 6 ms
+PASS ../data/railwayplanning/secret/1small.in
+../data/railwayplanning/secret/2med.in
+time: 10 ms
+PASS ../data/railwayplanning/secret/2med.in
+../data/railwayplanning/secret/3large.in
+time: 23 ms
+PASS ../data/railwayplanning/secret/3large.in
+../data/railwayplanning/secret/4huge.in
+time: 43 ms
+PASS ../data/railwayplanning/secret/4huge.in
+../data/big/000.in
+time: 50 ms
+PASS ../data/big/000.in
+../data/big/001.in
+time: 45 ms
+PASS ../data/big/001.in
+../data/big/002.in
+time: 13321 ms
+PASS ../data/big/002.in
+../data/huge/001.in
+time: 735 ms
+PASS ../data/huge/001.in
+47.24user 13.46system 0:28.46elapsed 213%CPU (0avgtext+0avgdata 88044maxresident)k
+0inputs+176outputs (0major+64390minor)pagefaults 0swaps
+PASS all tests
+root@LAPTOP-0ACSTN7H:~/lab4# 
