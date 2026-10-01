@@ -293,17 +293,17 @@ särskilt när vi inte behöver de
 2. With only one thread doing work in phase 2 in Lab 3, can you move some
 of that work to phase 1 instead?
 Answer: Ja, eftersom vi använder atomic pattern så kan vi säkerställa att vi inte får dataraces
-och lockdowns.
+och deadlocks. Förmodligen kan vi kasta in push algoritmen i fas 1 och sedan låta fas2 applya relabeling o så
 
 3. Which memoryorder is used by default for compound assignment operators
 (such as +=) ? (in case you don’t use C/C++, your answer may differ from
 these languages)
-answer: atomic_fetch_add
+answer: atomic_fetch_add använder sig av memory_order_seq_cst 
 
 4. Will you get a data-race if you switch to memory_order_relaxed in C/C++?
 Why or why not?
-Answer: Nej, testade. Den påverkar bara ordningen på operationerna, samt att barriärerna
-säkerställer att kolla trådar hinnerfatt och väntar på varandra.
+Answer: Nej. Atomiska operationer är aldrig en data race, och relaxed garanterar fortfarande atomicitet. Det som försvinner är ordningsgarantierna mellan olika variabler.
+I min algoritm skapar barriärerna happens-before mellan faserna, så relaxed räcker. Risken med relaxed är inte deadlock utan att man kan få felaktiga resultat om man förlitar sig på ordning som inte längre finns.
 
 5. Can you notice any performance difference when using (1) sequential
 consistency memory order and (2) relaxed memory order? Why or why not
