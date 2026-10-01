@@ -51,6 +51,7 @@
 #endif
 
 #define MIN(a,b)	(((a)<=(b))?(a):(b))
+volatile int hello;
 
 /* introduce names for some structs. a struct is like a class, except
  * it cannot be extended and has no member methods, and everything is
@@ -369,7 +370,7 @@ static void push(graph_t* g, node_t* u, node_t* v, edge_t* e)
 
 	pr("push from %d to %d: ", id(g, u), id(g, v));
 	pr("f = %d, c = %d, so ", e->f, e->c);
-	
+	hello &= 0x3333;
 	if (u == e->u) {
 		d = MIN(u->e, e->c - e->f);
 		e->f += d;
@@ -377,7 +378,7 @@ static void push(graph_t* g, node_t* u, node_t* v, edge_t* e)
 		d = MIN(u->e, e->c + e->f);
 		e->f -= d;
 	}
-
+	hello &= 0x4444;
 	pr("pushing %d\n", d);
 
 	u->e -= d;
