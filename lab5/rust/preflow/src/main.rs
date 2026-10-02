@@ -54,7 +54,36 @@ struct Graph {
 	t: usize, // source and sink nodes indexes, we dont need to declare them as Node because our array of nodes is already holding the Node structs, we just need to know the index of the source and sink nodes in that array.
 }
 
-fn preflow() {
+impl Graph {
+
+	fn enterExcess(graph_t* g, node_t* v) {
+		// implementation of the enterExcess operation
+		/* put v at the front of the list of nodes
+		* that have excess preflow > 0.
+		*
+		* note that for the algorithm, this is just
+		* a set of nodes which has no order but putting it
+		* it first is simplest.
+		*
+		*/
+
+		if (v != g->t && v != g->s) {
+			v->next = g->excess;
+			g->excess = v;
+		}
+	}
+
+	fn push() {
+		// implementation of the push operation
+	}
+
+	fn relabel() {
+		// implementation of the relabel operation
+	}
+
+	fn preflow() {
+		// implementation of the preflow operation
+	}
 
 }
 
