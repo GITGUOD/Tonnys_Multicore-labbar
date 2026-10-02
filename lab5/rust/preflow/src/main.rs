@@ -67,7 +67,7 @@ impl Graph {
 		*
 		*/
 
-		if (v != g->t && v != g->s) {
+		if (v != g.t && v != g.s) {
 			v->next = g->excess;
 			g->excess = v;
 		}
