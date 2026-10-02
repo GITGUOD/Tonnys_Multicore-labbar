@@ -231,6 +231,7 @@ sed -n '214,226p' preflow.s      # plain, första kopian
         andl    $17476, %esi
 root@LAPTOP-0ACSTN7H:/mnt/c/Users/tonny/OneDrive/Documents/MulticoreProgramming/Tonnys_Multicore-labbar/lab0# 
 
+Glöm inte fråga om vi behöver lägga upp våra algoritmer någonstans
 På krav 3: Det tillkommer lite lock funktioner.
 
 Krav 4:
@@ -447,3 +448,6 @@ PASS ../data/huge/001.in
 0inputs+176outputs (0major+64390minor)pagefaults 0swaps
 PASS all tests
 root@LAPTOP-0ACSTN7H:~/lab4# 
+
+
+Kap 4 rust book ownership

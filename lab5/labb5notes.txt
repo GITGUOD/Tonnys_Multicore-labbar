@@ -1,0 +1,4 @@
+Första steget är:
+1. Make a sequential version of preflow-push in Rust
+
+Vi utgår från lab0
