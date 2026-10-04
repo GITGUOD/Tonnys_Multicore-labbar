@@ -2,12 +2,10 @@
 // #[macro_use] is basically attribute that allows us to use macros from the text_io crate without having to prefix them with the crate name. In this case, it allows us to use the read! macro directly.
 // macro is a way to define reusable code snippets that can be expanded at compile time. In this case, the read! macro is used to read input from stdin and parse it into the specified type.
 // Without #[macro_use], we would have to write text_io::read! instead of just read!. This is a convenience feature that makes the code cleaner and easier to read.
-// use std::sync::{Mutex,Arc}; // use statements for importing the Mutex and Arc types from the std::sync module. Arc is a thread-safe reference-counting pointer that allows multiple threads to share ownership of the same data. Mutex is a mutual exclusion primitive that allows only one thread to access the data at a time, preventing data races.
+use std::sync::{Mutex,Arc}; // use statements for importing the Mutex and Arc types from the std::sync module. Arc is a thread-safe reference-counting pointer that allows multiple threads to share ownership of the same data. Mutex is a mutual exclusion primitive that allows only one thread to access the data at a time, preventing data races.
 use std::cmp; // use statement for importing the cmp module from the std library. The cmp module provides functions for comparing values, such as min and max.
 use std::thread;
 use std::collections::VecDeque; // use statement for importing the VecDeque type from the std::collections module. VecDeque is a double-ended queue that allows efficient insertion and removal of elements from both ends.
-use std::collections::LinkedList;
-use std::process::id;
 
 struct Node { // struct is like a class in other programming languages. It is used to define a custom data type that can hold multiple values of different types. In this case, the Node struct is used to represent a node in a graph, with fields for its index, excess preflow, and height.
 	i:	usize,			/* index of itself for debugging.	*/
@@ -47,51 +45,18 @@ impl Edge {
 }
 
 struct Graph {
+	n: usize,
+	m: usize,
 	nodes: Vec<Node>,
 	edges: Vec<Edge>,
 	adj: Vec<LinkedList<usize>>,
-	excess: VecDeque<usize>,
-	
+	s: usize,
+	t: usize, // source and sink nodes indexes, we dont need to declare them as Node because our array of nodes is already holding the Node structs, we just need to know the index of the source and sink nodes in that array.
 }
-	
+
 impl Graph {
 
-	// Konstruktorn
-	fn new (u: Vec<Node>, e: Vec<Edge>, a: Vec<LinkedList<usize>>, ex: VecDeque<usize>) -> Graph {
-		Graph {
-			nodes: u,
-			edges: e,
-			adj: a,
-			excess: ex,
-		}
-	}
-
-	// se under
-	fn s(&self) -> usize {
-		0
-	}
-
-	// Get metoder för att hämta source och sink index.
-	fn t(&self) -> usize {
-		self.nodes.len() - 1
-	}
-
-	fn add_edge(&mut self, u: usize, v: usize, c: i32) {
-		let index = self.edges.len();
-		self.edges.push(Edge::new(u, v, c));
-		self.adj[u].push_back(index);
-		self.adj[v].push_back(index);
-	}
-
-	fn other(&self, u: usize, e: &Edge) -> usize {
-		if u == e.u {
-			e.v
-		} else {
-			e.u
-		}
-	}
-
-	fn enterExcess(&mut self, v: usize) {
+	fn enterExcess(&self, v: usize) {
 		// implementation of the enterExcess operation
 		/* put v at the front of the list of nodes
 		* that have excess preflow > 0.
@@ -102,141 +67,23 @@ impl Graph {
 		*
 		*/
 
-		let s = self.s();
-		let t = self.t();
-
-		if (v != t && v != s) {
-			self.excess.push_front(v);
+		if (v != self.t && v != self.s) {
+			v->next = g->excess;
+			g->excess = v;
 		}
 	}
 
-	fn leave_excess(&mut self)
-	{
-		self.excess.pop_front()
-	}
-
-	fn push(&self, g: &Graph, u: &Node, v: &Node, e: &Edge) {
+	fn push() {
 		// implementation of the push operation
-			
-		let mut d: i32;	/* remaining capacity of the edge. */
-
-		println!("push from {} to {}: ", id(g, u), id(g, v));
-		println!("f = {}, c = {}, so ", e.f, e.c);
-		
-		if (u == e.u) {
-			d = std::cmp::min(u.e, e.c - e.f);
-			e.f += d;
-		} else {
-			d = std::cmp::min(u.e, e.c + e.f);
-			e.f -= d;
-		}
-
-		println!("pushing {}\n", d);
-
-		u.e -= d;
-		v.e += d;
-
-		/* the following are always true. */
-
-		assert(d >= 0);
-		assert(u.e >= 0);
-		assert(abs(e.f) <= e.c);
-
-		if (u.e > 0) {
-
-			/* still some remaining so let u push more. */
-
-			self.enterExcess(u);
-		}
-
-		if (v.e == d) {
-
-			/* since v has d excess now it had zero before and
-			* can now push.
-			*
-			*/
-
-			self.enterExcess(v);
-		}
-		
 	}
-	// mut är en förkortning för mutable (muterbar), alltså att något får ändras.
-	fn relabel(&mut self, u: usize) {
+
+	fn relabel(self: &Self, u: usize) {
 		// implementation of the relabel operation
 		self.nodes[u].h += 1;
-		self.enterExcess(u);
 	}
 
-	fn preflow(&mut self) -> i32 {
+	fn preflow() {
 		// implementation of the preflow operation
-		let s = 0;
-		let t = self.nodes.len() - 1;
-		list_t*		p;
-		b: i32;
-
-		s = g->s;
-		s->h = g->n;
-
-		p = s->edge;
-
-		/* start by pushing as much as possible (limited by
-		* the edge capacity) from the source to its neighbors.
-		*
-		*/
-
-		while (p != NULL) {
-			e = p->edge;
-			p = p->next;
-
-			s->e += e->c;
-			push(g, s, other(s, e), e);
-		}
-		
-		/* then loop until only s and/or t have excess preflow. */
-
-		while ((u = leave_excess(g)) != NULL) {
-
-			/* u is any node with excess preflow. */
-
-			println!("selected u = {} with ", id(g, u));
-			println!("h = {} and e = {}", u->h, u->e);
-
-			/* if we can push we must push and only if we could
-			* not push anything, we are allowed to relabel.
-			*
-			* we can push to multiple nodes if we wish but
-			* here we just push once for simplicity.
-			*
-			*/
-
-			v = NULL;
-			p = u->edge;
-
-			while (p != NULL) {
-				e = p->edge;
-				p = p->next;
-
-				if (u == e->u) {
-					v = e->v;
-					b = 1;
-				} else {
-					v = e->u;
-					b = -1;
-				}
-
-				if (u->h > v->h && b * e->f < e->c)
-					break;
-				else
-					v = NULL;
-			}
-
-			if (v != NULL)
-				push(g, u, v, e);
-			else
-				relabel(g, u);
-		}
-
-		return g->t->e;
 	}
 
 }
