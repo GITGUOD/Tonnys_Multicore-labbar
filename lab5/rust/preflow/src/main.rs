@@ -110,46 +110,43 @@ impl Graph {
 		}
 	}
 
-	fn leave_excess(&mut self)
-	{
+	fn leave_excess(&mut self) -> Option<usize> {
 		self.excess.pop_front()
 	}
 
-	fn push(&self, g: &Graph, u: &Node, v: &Node, e: &Edge) {
+	fn push(&mut self, u: usize, v: usize, edge_index: usize) {
 		// implementation of the push operation
 			
 		let mut d: i32;	/* remaining capacity of the edge. */
 
-		println!("push from {} to {}: ", id(g, u), id(g, v));
-		println!("f = {}, c = {}, so ", e.f, e.c);
 		
-		if (u == e.u) {
-			d = std::cmp::min(u.e, e.c - e.f);
-			e.f += d;
+		if (u == self.edges[edge_index].u) {
+			d = std::cmp::min(self.nodes[u].e, self.edges[edge_index].c - self.edges[edge_index].f);
+			self.edges[edge_index].f += d;
 		} else {
-			d = std::cmp::min(u.e, e.c + e.f);
-			e.f -= d;
+			d = std::cmp::min(self.nodes[u].e, self.edges[edge_index].c + self.edges[edge_index].f);
+			self.edges[edge_index].f -= d;
 		}
 
 		println!("pushing {}\n", d);
 
-		u.e -= d;
-		v.e += d;
+		self.nodes[u].e -= d;
+		self.nodes[v].e += d;
 
 		/* the following are always true. */
 
-		assert(d >= 0);
-		assert(u.e >= 0);
-		assert(abs(e.f) <= e.c);
+		assert!(d >= 0);
+		assert!(self.nodes[u].e >= 0);
+		assert!(self.edges[edge_index].f.abs() <= self.edges[edge_index].c);
 
-		if (u.e > 0) {
+		if (self.nodes[u].e > 0) {
 
 			/* still some remaining so let u push more. */
 
 			self.enterExcess(u);
 		}
 
-		if (v.e == d) {
+		if (self.nodes[v].e == d) {
 
 			/* since v has d excess now it had zero before and
 			* can now push.
@@ -169,37 +166,28 @@ impl Graph {
 
 	fn preflow(&mut self) -> i32 {
 		// implementation of the preflow operation
-		let s = 0;
-		let t = self.nodes.len() - 1;
-		list_t*		p;
-		b: i32;
 
-		s = g->s;
-		s->h = g->n;
+		let s = self.s();
+		let t = self.t();
 
-		p = s->edge;
+		let mut p = self.adj[s]; // LinkedList<usize> of edge indices.
 
 		/* start by pushing as much as possible (limited by
 		* the edge capacity) from the source to its neighbors.
 		*
 		*/
 
-		while (p != NULL) {
-			e = p->edge;
-			p = p->next;
+		while let Some(e) = p.pop_front() { // same as: while (p != NULL) { e = p.edge; p = p.next; }
 
-			s->e += e->c;
-			push(g, s, other(s, e), e);
+			self.nodes[s].e += self.edges[e].c;
+			self.push(s, self.other(s, &self.edges[e]), e); // & is a reference operator, it allows us to pass a reference to the edge instead of moving the ownership of the edge into the function. This is important because we want to keep the edge in the graph and not lose it after the push operation.
 		}
 		
 		/* then loop until only s and/or t have excess preflow. */
 
-		while ((u = leave_excess(g)) != NULL) {
+		while let Some(u) = self.leave_excess() {
 
 			/* u is any node with excess preflow. */
-
-			println!("selected u = {} with ", id(g, u));
-			println!("h = {} and e = {}", u->h, u->e);
 
 			/* if we can push we must push and only if we could
 			* not push anything, we are allowed to relabel.
@@ -210,33 +198,36 @@ impl Graph {
 			*/
 
 			v = NULL;
-			p = u->edge;
+			p = self.nodes[u].e;
 
 			while (p != NULL) {
-				e = p->edge;
-				p = p->next;
+				e = p.edge;
+				p = p.next;
 
-				if (u == e->u) {
-					v = e->v;
+				if (u == self.edges[edge_index].u) {
+					v = self.edges[edge_index].v;
 					b = 1;
 				} else {
-					v = e->u;
+					v = self.edges[edge_index].u;
 					b = -1;
 				}
 
-				if (u->h > v->h && b * e->f < e->c)
+				if (self.nodes[u].h > self.nodes[v].h && b * self.edges[edge_index].f < self.edges[edge_index].c) {
 					break;
-				else
+				} else {
 					v = NULL;
+				}
+				
 			}
 
-			if (v != NULL)
-				push(g, u, v, e);
-			else
-				relabel(g, u);
+			if (v != NULL) {
+				self.push(u, v, e);
+			} else {				
+				self.relabel(u);
+			}
 		}
 
-		return g->t->e;
+		return self.nodes[t].e;
 	}
 
 }
