@@ -1,1 +1,1 @@
-/home/js/Tresors/edan26/labs/lab5/preflow/target/debug/preflow: /home/js/Tresors/edan26/labs/lab5/preflow/src/main.rs
+/mnt/c/Users/tonny/OneDrive/Documents/MulticoreProgramming/Tonnys_Multicore-labbar/lab5/rust/preflow/target/debug/preflow: /mnt/c/Users/tonny/OneDrive/Documents/MulticoreProgramming/Tonnys_Multicore-labbar/lab5/rust/preflow/src/main.rs

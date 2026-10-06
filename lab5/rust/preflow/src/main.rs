@@ -3,12 +3,8 @@
 // macro is a way to define reusable code snippets that can be expanded at compile time. In this case, the read! macro is used to read input from stdin and parse it into the specified type.
 // Without #[macro_use], we would have to write text_io::read! instead of just read!. This is a convenience feature that makes the code cleaner and easier to read.
 // use std::sync::{Mutex,Arc}; // use statements for importing the Mutex and Arc types from the std::sync module. Arc is a thread-safe reference-counting pointer that allows multiple threads to share ownership of the same data. Mutex is a mutual exclusion primitive that allows only one thread to access the data at a time, preventing data races.
-use std::cmp; // use statement for importing the cmp module from the std library. The cmp module provides functions for comparing values, such as min and max.
-use std::thread;
 use std::collections::VecDeque; // use statement for importing the VecDeque type from the std::collections module. VecDeque is a double-ended queue that allows efficient insertion and removal of elements from both ends.
 use std::collections::LinkedList;
-use std::process::id;
-
 struct Node { // struct is like a class in other programming languages. It is used to define a custom data type that can hold multiple values of different types. In this case, the Node struct is used to represent a node in a graph, with fields for its index, excess preflow, and height.
 	i:	usize,			/* index of itself for debugging.	*/
 	e:	i32,			/* excess preflow.			*/
@@ -91,7 +87,7 @@ impl Graph {
 		}
 	}
 
-	fn enterExcess(&mut self, v: usize) {
+	fn enter_excess(&mut self, v: usize) {
 		// implementation of the enterExcess operation
 		/* put v at the front of the list of nodes
 		* that have excess preflow > 0.
@@ -105,7 +101,7 @@ impl Graph {
 		let s = self.s();
 		let t = self.t();
 
-		if (v != t && v != s) {
+		if v != t && v != s {
 			self.excess.push_front(v);
 		}
 	}
@@ -117,10 +113,10 @@ impl Graph {
 	fn push(&mut self, u: usize, v: usize, edge_index: usize) {
 		// implementation of the push operation
 			
-		let mut d: i32;	/* remaining capacity of the edge. */
+		let d: i32;	/* remaining capacity of the edge. */
 
 		
-		if (u == self.edges[edge_index].u) {
+		if u == self.edges[edge_index].u {
 			d = std::cmp::min(self.nodes[u].e, self.edges[edge_index].c - self.edges[edge_index].f);
 			self.edges[edge_index].f += d;
 		} else {
@@ -139,21 +135,21 @@ impl Graph {
 		assert!(self.nodes[u].e >= 0);
 		assert!(self.edges[edge_index].f.abs() <= self.edges[edge_index].c);
 
-		if (self.nodes[u].e > 0) {
+		if self.nodes[u].e > 0 {
 
 			/* still some remaining so let u push more. */
 
-			self.enterExcess(u);
+			self.enter_excess(u);
 		}
 
-		if (self.nodes[v].e == d) {
+		if self.nodes[v].e == d {
 
 			/* since v has d excess now it had zero before and
 			* can now push.
 			*
 			*/
 
-			self.enterExcess(v);
+			self.enter_excess(v);
 		}
 		
 	}
@@ -161,7 +157,7 @@ impl Graph {
 	fn relabel(&mut self, u: usize) {
 		// implementation of the relabel operation
 		self.nodes[u].h += 1;
-		self.enterExcess(u);
+		self.enter_excess(u);
 	}
 
 	fn preflow(&mut self) -> i32 {
@@ -169,8 +165,9 @@ impl Graph {
 
 		let s = self.s();
 		let t = self.t();
+		self.nodes[s].h = self.nodes.len() as i32;
 
-		let mut p = self.adj[s]; // LinkedList<usize> of edge indices.
+		let p = &mut self.adj[s].clone(); // LinkedList<usize> of edge indices.
 
 		/* start by pushing as much as possible (limited by
 		* the edge capacity) from the source to its neighbors.
@@ -197,32 +194,33 @@ impl Graph {
 			*
 			*/
 
-			v = NULL;
-			p = self.nodes[u].e;
+			let p = &mut self.adj[u].clone(); // LinkedList<usize> of edge indices. We clone the adjacency list of u because we will be modifying it during the loop and we don't want to affect the original adjacency list.
+			let mut found: Option<(usize, usize)> = None; // Option<usize> is an enum that can either be Some(usize) or None. It is used to represent the possibility of a value being present or absent. In this case, it is used to represent the index of the neighbor node that we can push to. If we find a valid neighbor, we will set v to Some(neighbor_index), otherwise it will remain None.
+			let mut b: i32; // b is used to determine the direction of the edge. If u is the source node of the edge, b will be 1, otherwise it will be -1. This is used to determine whether
+			let mut v: usize; // v is the index of the neighbor node that we can push to. It will be set to the index of the neighbor node if we find a valid edge to push to.
 
-			while (p != NULL) {
-				e = p.edge;
-				p = p.next;
+			while let Some(e) = p.pop_front() { // same as: while (p != NULL) {
+				// e = p.edge; C kod, above does the same as this two rows.
+				// p = p.next;
 
-				if (u == self.edges[edge_index].u) {
-					v = self.edges[edge_index].v;
+				if u == self.edges[e].u {
+					v = self.edges[e].v;
 					b = 1;
 				} else {
-					v = self.edges[edge_index].u;
+					v = self.edges[e].u;
 					b = -1;
 				}
 
-				if (self.nodes[u].h > self.nodes[v].h && b * self.edges[edge_index].f < self.edges[edge_index].c) {
+				if self.nodes[u].h > self.nodes[v].h && b * self.edges[e].f < self.edges[e].c {
+					found = Some((v,e));
 					break;
-				} else {
-					v = NULL;
 				}
 				
 			}
 
-			if (v != NULL) {
+			if let Some((v, e)) = found {     // replaces: if (v != NULL)
 				self.push(u, v, e);
-			} else {				
+			} else {
 				self.relabel(u);
 			}
 		}
@@ -266,7 +264,7 @@ fn main() {
 		let e:Edge = Edge::new(u,v,c);
 		adj[u].push_back(i);
 		adj[v].push_back(i);
-		edge.push(Arc::new(Mutex::new(e))); 
+		edge.push(e); 
 	}
 
 	if debug {
@@ -285,12 +283,14 @@ fn main() {
 	let iter = adj[s].iter();
 
 	// but nothing is done here yet...
+	let mut g = Graph::new(node, edge, adj, excess.clone());
+	println!("f = {}", g.preflow());
 
 	while !excess.is_empty() {
-		let mut c = 0;
+		let c = 0;
 		let u = excess.pop_front().unwrap();
 	}
 
-	println!("f = {}", 0);
+	// println!("f = {}", 0);
 
 }
