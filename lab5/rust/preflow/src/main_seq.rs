@@ -2,15 +2,9 @@
 // #[macro_use] is basically attribute that allows us to use macros from the text_io crate without having to prefix them with the crate name. In this case, it allows us to use the read! macro directly.
 // macro is a way to define reusable code snippets that can be expanded at compile time. In this case, the read! macro is used to read input from stdin and parse it into the specified type.
 // Without #[macro_use], we would have to write text_io::read! instead of just read!. This is a convenience feature that makes the code cleaner and easier to read.
-use std::sync::{Mutex, Barrier}; // use statements for importing the Mutex and Arc types from the std::sync module. Arc is a thread-safe reference-counting pointer that allows multiple threads to share ownership of the same data. Mutex is a mutual exclusion primitive that allows only one thread to access the data at a time, preventing data races.
+// use std::sync::{Mutex,Arc}; // use statements for importing the Mutex and Arc types from the std::sync module. Arc is a thread-safe reference-counting pointer that allows multiple threads to share ownership of the same data. Mutex is a mutual exclusion primitive that allows only one thread to access the data at a time, preventing data races.
 use std::collections::VecDeque; // use statement for importing the VecDeque type from the std::collections module. VecDeque is a double-ended queue that allows efficient insertion and removal of elements from both ends.
 use std::collections::LinkedList;
-use std::thread;
-
-// RUst documentation: https://doc.rust-lang.org/beta/std/sync/struct.Barrier.html
-
-const N: usize = 4; // number of threads
-
 struct Node { // struct is like a class in other programming languages. It is used to define a custom data type that can hold multiple values of different types. In this case, the Node struct is used to represent a node in a graph, with fields for its index, excess preflow, and height.
 	i:	usize,			/* index of itself for debugging.	*/
 	e:	i32,			/* excess preflow.			*/
@@ -35,25 +29,6 @@ impl Node { // impl is short for implementation. It is used to define methods an
 		}
 	}
 
-}
-
-struct Decision {
-	sender: usize,
-	receiver: usize,
-	edge_index: usize,
-	amount: i32,
-	is_relabel: bool,
-}
-
-// motsvarar de globala variablerna i C-koden, man ska helst undvika de enligt min research
-struct Phase {
-    barrier: Barrier,
-    decision_list: Vec<Mutex<Decision>>,   // decisionList
-
-    workload: Vec<usize>,       // currentWorkload / nextWorkload
-    current_count: usize,
-    next_count: usize,
-    queued_this_round: Vec<bool>,
 }
 
 impl Edge {
@@ -145,35 +120,19 @@ impl Graph {
 		self.excess.pop_front()
 	}
 
-	fn push_amount(&self, u: usize, v: usize, edge_index: usize) -> i32 {
-		// implementation of the push_amount operation
-		let d: i32;	/* remaining capacity of the edge. */
-		
-		if u == self.edges[edge_index].u {
-			d = std::cmp::min(self.nodes[u].e, self.edges[edge_index].c - self.edges[edge_index].f);
-		} else {
-			d = std::cmp::min(self.nodes[u].e, self.edges[edge_index].c + self.edges[edge_index].f);
-		}
-
-		return d;
-	}
-
-	fn find_direction(&self, u: usize, v: usize, edge_index: usize) -> i32 {
-		// implementation of the find_direction operation
-		if u == self.edges[edge_index].u {
-			return 1;
-		} else {
-			return -1;
-		}
-	}
-
 	fn push(&mut self, u: usize, v: usize, edge_index: usize) {
 		// implementation of the push operation
 			
 		let d: i32;	/* remaining capacity of the edge. */
 
 		
-		d = self.push_amount(u, v, edge_index);
+		if u == self.edges[edge_index].u {
+			d = std::cmp::min(self.nodes[u].e, self.edges[edge_index].c - self.edges[edge_index].f);
+			self.edges[edge_index].f += d;
+		} else {
+			d = std::cmp::min(self.nodes[u].e, self.edges[edge_index].c + self.edges[edge_index].f);
+			self.edges[edge_index].f -= d;
+		}
 
 		println!("pushing {}\n", d);
 
@@ -281,73 +240,6 @@ impl Graph {
 
 }
 
-fn find_admissible_edge(graph: &Graph, u: usize) -> Option<(usize, usize)> {
-	// implementation of the find_admissible_edge operation
-	let p = &mut graph.adj[u].clone(); // LinkedList<usize> of edge indices.
-	let mut found: Option<(usize, usize)> = None; // Option<usize> is an enum that can either be Some(usize) or None. It is used to represent the possibility of a value being present or absent. In this case, it is used to represent the index of the neighbor node that we can push to. If we find a valid neighbor, we will set v to Some(neighbor_index), otherwise it will remain None.
-	let mut b: i32; // b is used to determine the direction of the edge. If u is the source node of the edge, b will be 1, otherwise it will be -1. This is used to determine whether
-	let mut v: usize; // v is the index of the neighbor node that we can push to. It will be set to the index of the neighbor node if we find a valid edge to push to.
-
-	while let Some(e) = p.pop_front() { // same as: while (p != NULL) {
-		if u == graph.edges[e].u {
-			v = graph.edges[e].v;
-			b = 1;
-		} else {
-			v = graph.edges[e].u;
-			b = -1;
-		}
-
-		if graph.nodes[u].h > graph.nodes[v].h && b * graph.edges[e].f < graph.edges[e].c {
-			found = Some((v,e));
-			break;
-		}
-		
-	}
-
-	return found;
-}
-
-fn record_decision(sender: usize, receiver: usize, edge_index: usize, amount: i32, is_relabel: bool) -> Decision {
-	Decision {
-		sender,
-		receiver,
-		edge_index,
-		amount,
-		is_relabel,
-	}
-}
-
-fn apply_decision(graph: &mut Graph, decision: Decision) {
-	if decision.is_relabel {
-		graph.relabel(decision.sender);
-	} else {
-		graph.push(decision.sender, decision.receiver, decision.edge_index);
-	}
-}
-
-
-fn decide(graph: &Graph, sender: usize, edge_index: usize) -> Decision {
-
-	let found = find_admissible_edge(graph, sender);
-	// implementation of the decide operation
-	if let Some((sender, edge_index)) = found {
-		Decision {
-			sender: sender,
-			receiver: graph.other(sender, &graph.edges[edge_index]), 
-			amount: graph.push_amount(sender, graph.other(sender, &graph.edges[edge_index]), &graph.edges[edge_index]), // amount is not used in this implementation, but it can be set to the amount of flow to push if needed.
-			is_relabel: false,
-		}
-	} else {
-		Decision {
-			sender,
-			receiver: 0, 
-			edge_index: 0,
-			amount: 0,
-			is_relabel: true,
-		}
-	}
-}
-
 
 fn main() {
 	// read!() is reading input
@@ -402,8 +294,6 @@ fn main() {
 
 	// but nothing is done here yet...
 	let mut g = Graph::new(node, edge, adj, excess.clone());
-	let d = decide(g, u);
-	apply_decision(&mut g, d);
 	println!("f = {}", g.preflow());
 
 	while !excess.is_empty() {
