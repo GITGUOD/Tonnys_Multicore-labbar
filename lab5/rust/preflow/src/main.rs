@@ -2,8 +2,7 @@
 // #[macro_use] is basically attribute that allows us to use macros from the text_io crate without having to prefix them with the crate name. In this case, it allows us to use the read! macro directly.
 // macro is a way to define reusable code snippets that can be expanded at compile time. In this case, the read! macro is used to read input from stdin and parse it into the specified type.
 // Without #[macro_use], we would have to write text_io::read! instead of just read!. This is a convenience feature that makes the code cleaner and easier to read.
-use std::sync::{Mutex, Barrier}; // use statements for importing the Mutex and Arc types from the std::sync module. Arc is a thread-safe reference-counting pointer that allows multiple threads to share ownership of the same data. Mutex is a mutual exclusion primitive that allows only one thread to access the data at a time, preventing data races.
-use std::collections::VecDeque; // use statement for importing the VecDeque type from the std::collections module. VecDeque is a double-ended queue that allows efficient insertion and removal of elements from both ends.
+use std::sync::{Mutex, Barrier, RwLock}; // use statements for importing the Mutex and Arc types from the std::sync module. Arc is a thread-safe reference-counting pointer that allows multiple threads to share ownership of the same data. Mutex is a mutual exclusion primitive that allows only one thread to access the data at a time, preventing data races.
 use std::collections::LinkedList;
 use std::thread;
 
@@ -36,7 +35,12 @@ impl Node { // impl is short for implementation. It is used to define methods an
 	}
 
 }
-
+// Vi måste ange manuellt hur kompilatorn ska tolka decision structen.
+// Copy -> kopiera instansen/
+// Clone -> skapa en ny instans med samma värden som den gamla.
+// Default -> skapa en ny instans/tom med default värden.
+// https://doc.rust-lang.org/rust-by-example/trait/derive.html
+#[derive(Clone, Copy, Default)]
 struct Decision {
 	sender: usize,
 	receiver: usize,
@@ -45,16 +49,6 @@ struct Decision {
 	is_relabel: bool,
 }
 
-// motsvarar de globala variablerna i C-koden, man ska helst undvika de enligt min research
-struct Phase {
-    barrier: Barrier,
-    decision_list: Vec<Mutex<Decision>>,   // decisionList
-
-    workload: Vec<usize>,       // currentWorkload / nextWorkload
-    current_count: usize,
-    next_count: usize,
-    queued_this_round: Vec<bool>,
-}
 
 impl Edge {
         fn new(uu:usize, vv:usize,cc:i32) -> Edge { //constructor
@@ -68,29 +62,35 @@ impl Edge {
 }
 
 /* Graph struct
-	- En graf har en lista med:
-		- noder
-		- kanter
-		- kanter för varje nod (adjacency list)
-		- excess preflow för varje nod
+	- Våran graf består av:
+		- Noder
+		- Kanter
+		- Adjacenslista (LinkedList<usize>) som innehåller indexen för kanterna som är kopplade till varje nod.
+		- Workload som innehåller indexen för noderna som har excess preflow och behöver bearbetas, vi hade bara excess i våran vanliga sequential implementation, men nu behöver vi en workload för att kunna parallellisera arbetet
+		- NextWorkload som innehåller indexen för noderna som har excess preflow och behöver bearbetas i nästa runda.
+		- queued_this_round som är en vektor av booleska värden som används för att hålla reda på vilka noder som redan har lagts till i nextWorkload under den aktuella rundan. Detta förhindrar att samma nod läggs till flera gånger i nextWorkload.
 */
 struct Graph {
 	nodes: Vec<Node>,
 	edges: Vec<Edge>,
 	adj: Vec<LinkedList<usize>>,
-	excess: VecDeque<usize>,
-	
+	currentWorkload: Vec<usize>,
+	nextWorkload: Vec<usize>,
+	queued_this_round: Vec<bool>,
 }
 	
 impl Graph {
 
 	// Konstruktorn
-	fn new (u: Vec<Node>, e: Vec<Edge>, a: Vec<LinkedList<usize>>, ex: VecDeque<usize>) -> Graph {
+	fn new(u: Vec<Node>, e: Vec<Edge>, a: Vec<LinkedList<usize>>) -> Graph {
+		let n = u.len(); // När vi skapar en graf, så vill vi veta hur många noder vi har, så vi kan skapa en vektor av booleska värden som håller reda på vilka noder som redan har lagts till i nextWorkload under den aktuella rundan. Detta förhindrar att samma nod läggs till flera gånger i nextWorkload.
 		Graph {
-			nodes: u,
-			edges: e,
-			adj: a,
-			excess: ex,
+			nodes: u, // Antalet noder i grafen, som vi får från vektorn u som vi skickar in i konstruktorn.
+			edges: e, // .. kanter
+			adj: a, // Adjacenslistan som vi får från vektorn a som vi skickar in i konstruktorn.
+			currentWorkload: Vec::with_capacity(n), // Workload som innehåller indexen för noderna som har excess preflow och behöver bearbetas, vi hade bara excess i våran vanliga sequential implementation, men nu behöver vi en workload för att kunna parallellisera arbetet
+			nextWorkload: Vec::with_capacity(n), // osv
+			queued_this_round: vec![false; n],
 		}
 	}
 
@@ -108,8 +108,8 @@ impl Graph {
 	fn add_edge(&mut self, u: usize, v: usize, c: i32) {
 		let index = self.edges.len(); // index of den nya eftersom vi lägger till en ny
 		self.edges.push(Edge::new(u, v, c)); // lägger till en ny kant i grafen
-		self.adj[u].push_back(index); // lägger till indexet för den nya kanten i adjacenslistan för noden u
-		self.adj[v].push_back(index); // lägger till indexet för den nya kanten i adjacenslistan för noden v
+		self.adj[u].push_back(index); // lägger till indexet för den nya kanten i adjacenslistan för noden u, push_back() lägger till elementet i slutet av listan, så att vi kan iterera över alla kanter som är kopplade till noden u.
+		self.adj[v].push_back(index); // samma v eftersom kanten består av två noder, u och v, och vi vill kunna iterera över alla kanter som är kopplade till dom noderna och därför måste de ha samma index i adjacenslistan
 	}
 
 	// Samma som other i C-koden, returnerar den andra noden i kanten e som inte är u. Om u är källan för kanten, returnerar den målet, annars returnerar den källan.
@@ -121,36 +121,12 @@ impl Graph {
 		}
 	}
 
-	// enter_excess och leave_excess är två funktioner som hanterar listan med noder som har överskott av flöde. enter_excess lägger till en nod i början av listan, medan leave_excess tar bort och returnerar den första noden i listan. Dessa funktioner används för att hålla reda på vilka noder som behöver bearbetas i preflow-algoritmen.
-	fn enter_excess(&mut self, v: usize) {
-		// implementation of the enterExcess operation
-		/* put v at the front of the list of nodes
-		* that have excess preflow > 0.
-		*
-		* note that for the algorithm, this is just
-		* a set of nodes which has no order but putting it
-		* it first is simplest.
-		*
-		*/
-
-		let s = self.source();
-		let t = self.sink();
-
-		if v != t && v != s {
-			self.excess.push_front(v);
-		}
-	}
-
-	fn leave_excess(&mut self) -> Option<usize> {
-		self.excess.pop_front()
-	}
-
-	fn push_amount(&self, u: usize, v: usize, edge_index: usize) -> i32 {
+	fn push_amount(&self, u: usize, edge_index: usize) -> i32 {
 		// implementation of the push_amount operation
 		let d: i32;	/* remaining capacity of the edge. */
 		
 		if u == self.edges[edge_index].u {
-			d = std::cmp::min(self.nodes[u].e, self.edges[edge_index].c - self.edges[edge_index].f);
+			d = std::cmp::min(self.nodes[u].e, self.edges[edge_index].c - self.edges[edge_index].f); // plussa eller minus beroende vilken riktning vi pushar till
 		} else {
 			d = std::cmp::min(self.nodes[u].e, self.edges[edge_index].c + self.edges[edge_index].f);
 		}
@@ -158,26 +134,25 @@ impl Graph {
 		return d;
 	}
 
-	fn find_direction(&self, u: usize, v: usize, edge_index: usize) -> i32 {
-		// implementation of the find_direction operation
-		if u == self.edges[edge_index].u {
-			return 1;
-		} else {
-			return -1;
-		}
-	}
-
 	fn push(&mut self, u: usize, v: usize, edge_index: usize) {
 		// implementation of the push operation
 			
-		let d: i32;	/* remaining capacity of the edge. */
-
-		
-		d = self.push_amount(u, v, edge_index);
+		let d = self.push_amount(u, edge_index); // bestämmer hur mycket vi kan pusha
 
 		println!("pushing {}\n", d);
 
-		self.nodes[u].e -= d;
+		// addera eller subtrahera beroende på vilket riktning
+
+		if u == self.edges[edge_index].u {
+			self.edges[edge_index].f += d; 
+		} else {
+			self.edges[edge_index].f -= d;
+		}
+
+		// Sen måste vi uppdatera excess preflow för noderna u och v. Vi subtraherar d från noden u:s excess preflow och adderar d till noden v:s excess preflow. Detta är viktigt eftersom vi har flyttat flöde från noden u till noden v, och därför måste vi uppdatera deras excess preflow för att återspegla detta.
+		// Anledningen till varför vi inte ha en if sats här är för att vi redan har bestämt riktningen på flödet i push_amount() och därför vet vi att d alltid kommer att vara positivt. Vi kan därför direkt subtrahera d från noden u:s excess preflow och addera d till noden v:s excess preflow utan att behöva kontrollera riktningen igen.
+		// d kan ju vara negativt vilket gör att d blir då plus för u och minus för v, men det är ju bara att vända på det, så vi behöver inte en if sats här.
+		self.nodes[u].e -= d; 
 		self.nodes[v].e += d;
 
 		/* the following are always true. */
@@ -186,127 +161,118 @@ impl Graph {
 		assert!(self.nodes[u].e >= 0);
 		assert!(self.edges[edge_index].f.abs() <= self.edges[edge_index].c);
 
-		if self.nodes[u].e > 0 {
-
-			/* still some remaining so let u push more. */
-
-			self.enter_excess(u);
-		}
-
-		if self.nodes[v].e == d {
-
-			/* since v has d excess now it had zero before and
-			* can now push.
-			*
-			*/
-
-			self.enter_excess(v);
-		}
-		
 	}
 	// mut är en förkortning för mutable (muterbar), alltså att något får ändras.
 	fn relabel(&mut self, u: usize) {
 		// implementation of the relabel operation
 		self.nodes[u].h += 1;
-		self.enter_excess(u);
 	}
 
-	fn preflow(&mut self) -> i32 {
+	fn preflow(mut self) -> i32 {
 		// implementation of the preflow operation
 
 		let s = self.source();
 		let t = self.sink();
 		self.nodes[s].h = self.nodes.len() as i32;
 
-		let p = &mut self.adj[s].clone(); // LinkedList<usize> of edge indices.
+		// LinkedList<usize> of edge indices. // Rust är strikt när det gäller att flera vill ändra mot samma referens till samma lista/object.
+		// Endast read only fås göra, därför måste vi klona listan vid ändringar o så *CLONE*
 
 		/* start by pushing as much as possible (limited by
 		* the edge capacity) from the source to its neighbors.
 		*
 		*/
-
-		while let Some(e) = p.pop_front() { // same as: while (p != NULL) { e = p.edge; p = p.next; }
-
-			self.nodes[s].e += self.edges[e].c;
-			self.push(s, self.other(s, &self.edges[e]), e); // & is a reference operator, it allows us to pass a reference to the edge instead of moving the ownership of the edge into the function. This is important because we want to keep the edge in the graph and not lose it after the push operation.
+		let source_edges = self.adj[s].clone(); 
+		for e in source_edges {
+			let c = self.edges[e].c;
+			self.nodes[s].e += c;
+			let r = self.other(s, &self.edges[e]);
+			self.push(s, r, e);
 		}
-		
-		/* then loop until only s and/or t have excess preflow. */
 
-		while let Some(u) = self.leave_excess() {
-
-			/* u is any node with excess preflow. */
-
-			/* if we can push we must push and only if we could
-			* not push anything, we are allowed to relabel.
-			*
-			* we can push to multiple nodes if we wish but
-			* here we just push once for simplicity.
-			*
-			*/
-
-			let p = &mut self.adj[u].clone(); // LinkedList<usize> of edge indices. We clone the adjacency list of u because we will be modifying it during the loop and we don't want to affect the original adjacency list.
-			let mut found: Option<(usize, usize)> = None; // Option<usize> is an enum that can either be Some(usize) or None. It is used to represent the possibility of a value being present or absent. In this case, it is used to represent the index of the neighbor node that we can push to. If we find a valid neighbor, we will set v to Some(neighbor_index), otherwise it will remain None.
-			let mut b: i32; // b is used to determine the direction of the edge. If u is the source node of the edge, b will be 1, otherwise it will be -1. This is used to determine whether
-			let mut v: usize; // v is the index of the neighbor node that we can push to. It will be set to the index of the neighbor node if we find a valid edge to push to.
-
-			while let Some(e) = p.pop_front() { // same as: while (p != NULL) {
-				// e = p.edge; C kod, above does the same as this two rows.
-				// p = p.next;
-
-				if u == self.edges[e].u {
-					v = self.edges[e].v;
-					b = 1;
-				} else {
-					v = self.edges[e].u;
-					b = -1;
-				}
-
-				if self.nodes[u].h > self.nodes[v].h && b * self.edges[e].f < self.edges[e].c {
-					found = Some((v,e));
-					break;
-				}
-				
+		let n = self.nodes.len();
+		// Om noderna vi inte ska jobba med är källan eller sänkan, då lägger vi i våran arbetslista
+		for i in 0..n {
+			if i != s && i != t && self.nodes[i].e > 0 {
+				self.currentWorkload.push(i);
 			}
+		}
 
-			if let Some((v, e)) = found {     // replaces: if (v != NULL)
-				self.push(u, v, e);
+		let shared = RwLock::new(self); // När en tråd skriver får ingen annan göra det
+		let barrier = Barrier::new(N); // creating a barrier that will be used to synchronize the threads. The barrier is initialized with a count of N, which is the number of threads that will be created.
+
+		let mut decision_list = Vec::new(); // Skapa en vektor med decisions
+		for _ in 0..n {
+			decision_list.push(Mutex::new(Decision::default())); // initiera decisions
+		}
+
+		let shared_ref = &shared; //skapa referensinstanser
+		let barrier_ref = &barrier;
+		let decision_list_ref = &decision_list;
+		/*Varför? Jo, En variabel i Rust kan bara ha en enda ägare. Du har bara en enda shared (RwLock).
+		När du startar flera trådar vill du att alla $N$ trådar ska peka på exakt samma.
+		Om du skickar shared direkt reagerar Rust med: "Jag kan inte skicka hela objektet till tråd 1 OCH tråd 2 OCH tråd 3."
+
+		Genom att skriva let shared_ref = &shared; skapar du en namngiven adresslapp (en referensinstans). 
+		Denna adresslapp går utmärkt att kopiera om och om igen till varje tråd. */
+
+		thread::scope(|scope| { // startar trådarna, thread::scope blockerar och väntar automatiskt tills alla $N$ trådar inuti blocket har kört klart.
+			for thread_id in 0..N {
+				scope.spawn(move || { // move, betyder "ta ägandeskap och flytta in variablerna", move tvingar Rust att kopiera och flytta över alla variabler som används inuti kodblocket till den nya trådens privata minne: så kallade: varje tråd i datorn har sitt eget privata minnesutrymme (en egen stack) att jobba med
+					create_threads(
+						shared_ref,
+						barrier_ref,
+						decision_list_ref,
+						thread_id,
+					);
+				});
+			}
+		});
+
+		let g = shared.into_inner().unwrap(); // Återställer och hämtar datan
+		/* .into_inner(): eftersom trådarna har slutat vet Rust att ingen annan längre använder trådlåset. Då "förstörs" RwLock-skalet och du får tillbaka det rena originalvärdet (din graf) utan något lås runt sig.
+		.unwrap(): Packar upp värdet ur Result.
+		let g = ...: g innehåller nu den slutgiltiga, uppdaterade grafen efter att alla trådar har gjort sina beräkningar, så att du kan läsa ut g.nodes[t].e på raden efter */
+		
+		g.nodes[t].e
+	}
+
+	fn find_admissible_edge(&self, u: usize) -> Option<(usize, usize)> {
+		// implementation of the find_admissible_edge operation
+		let p = &mut self.adj[u].clone(); // LinkedList<usize> of edge indices.
+		let mut found: Option<(usize, usize)> = None; // Option<usize> is an enum that can either be Some(usize) or None. It is used to represent the possibility of a value being present or absent. In this case, it is used to represent the index of the neighbor node that we can push to. If we find a valid neighbor, we will set v to Some(neighbor_index), otherwise it will remain None.
+		let mut b: i32; // b is used to determine the direction of the edge. If u is the source node of the edge, b will be 1, otherwise it will be -1. This is used to determine whether
+		let mut v: usize; // v is the index of the neighbor node that we can push to. It will be set to the index of the neighbor node if we find a valid edge to push to.
+
+		while let Some(e) = p.pop_front() { // same as: while (p != NULL) {
+			if u == self.edges[e].u {
+				v = self.edges[e].v;
+				b = 1;
 			} else {
-				self.relabel(u);
+				v = self.edges[e].u;
+				b = -1;
 			}
+
+			if self.nodes[u].h > self.nodes[v].h && b * self.edges[e].f < self.edges[e].c {
+				found = Some((v,e)); // Some är en del av datatypen Option i Rust.
+				break;
+			}
+			
 		}
 
-		return self.nodes[t].e;
+		return found;
+	}
+
+	fn next_work_phase(&mut self, u: usize) {
+		if !self.queued_this_round[u] {
+			self.queued_this_round[u] = true;
+			self.nextWorkload.push(u);
+		}
 	}
 
 }
 
-fn find_admissible_edge(graph: &Graph, u: usize) -> Option<(usize, usize)> {
-	// implementation of the find_admissible_edge operation
-	let p = &mut graph.adj[u].clone(); // LinkedList<usize> of edge indices.
-	let mut found: Option<(usize, usize)> = None; // Option<usize> is an enum that can either be Some(usize) or None. It is used to represent the possibility of a value being present or absent. In this case, it is used to represent the index of the neighbor node that we can push to. If we find a valid neighbor, we will set v to Some(neighbor_index), otherwise it will remain None.
-	let mut b: i32; // b is used to determine the direction of the edge. If u is the source node of the edge, b will be 1, otherwise it will be -1. This is used to determine whether
-	let mut v: usize; // v is the index of the neighbor node that we can push to. It will be set to the index of the neighbor node if we find a valid edge to push to.
-
-	while let Some(e) = p.pop_front() { // same as: while (p != NULL) {
-		if u == graph.edges[e].u {
-			v = graph.edges[e].v;
-			b = 1;
-		} else {
-			v = graph.edges[e].u;
-			b = -1;
-		}
-
-		if graph.nodes[u].h > graph.nodes[v].h && b * graph.edges[e].f < graph.edges[e].c {
-			found = Some((v,e));
-			break;
-		}
-		
-	}
-
-	return found;
-}
-
+// skapa en ny instans av decision vid varje beslut
 fn record_decision(sender: usize, receiver: usize, edge_index: usize, amount: i32, is_relabel: bool) -> Decision {
 	Decision {
 		sender,
@@ -317,37 +283,124 @@ fn record_decision(sender: usize, receiver: usize, edge_index: usize, amount: i3
 	}
 }
 
-fn apply_decision(graph: &mut Graph, decision: Decision) {
-	if decision.is_relabel {
-		graph.relabel(decision.sender);
-	} else {
-		graph.push(decision.sender, decision.receiver, decision.edge_index);
-	}
+fn apply_decision(graph: &mut Graph, d: Decision) {
+    let sender = d.sender;
+
+	// Om vi ska relabela, så gör vi det och gå vidare
+    if d.is_relabel {
+        graph.relabel(sender);
+        graph.next_work_phase(sender);
+    } else {
+        let receiver = d.receiver;
+        let amount = d.amount;
+
+		// Bestämmer riktning
+        if sender == graph.edges[d.edge_index].u {
+            graph.edges[d.edge_index].f += amount;
+        } else {
+            graph.edges[d.edge_index].f -= amount;
+        }
+
+		// Kollar om sändarens excess är tom
+        let receiver_was_empty = graph.nodes[receiver].e == 0;
+		// subtraherar/adderar excessen
+        graph.nodes[sender].e -= amount;
+        graph.nodes[receiver].e += amount;
+
+		// Kolla avslut
+        if receiver_was_empty
+            && receiver != graph.source()
+            && receiver != graph.sink()
+        {
+            graph.next_work_phase(receiver);
+        }
+
+        if graph.nodes[sender].e > 0 {
+            graph.next_work_phase(sender);
+        }
+    }
+	
 }
 
 
-fn decide(graph: &Graph, sender: usize, edge_index: usize) -> Decision {
+fn decide(graph: &Graph, sender: usize) -> Decision {
 
-	let found = find_admissible_edge(graph, sender);
+	let found = graph.find_admissible_edge(sender);
 	// implementation of the decide operation
-	if let Some((sender, edge_index)) = found {
-		Decision {
-			sender: sender,
-			receiver: graph.other(sender, &graph.edges[edge_index]), 
-			amount: graph.push_amount(sender, graph.other(sender, &graph.edges[edge_index]), &graph.edges[edge_index]), // amount is not used in this implementation, but it can be set to the amount of flow to push if needed.
-			is_relabel: false,
+	match found {
+		Some((receiver, edge_index)) => {
+			Decision {
+				sender: sender,
+				receiver,
+				edge_index: edge_index,
+				amount: graph.push_amount(sender, edge_index),
+				is_relabel: false,
+			}
 		}
-	} else {
-		Decision {
-			sender,
-			receiver: 0, 
-			edge_index: 0,
-			amount: 0,
-			is_relabel: true,
+		None => {
+			Decision {
+				sender,
+				receiver: 0,
+				edge_index: 0,
+				amount: 0,
+				is_relabel: true,
+			}
 		}
 	}
 }
 
+fn next_workload(graph: &Graph, current_workload: &Vec<usize>) -> Vec<usize> {
+	let mut next_workload = Vec::new();
+	for &u in current_workload {
+		if graph.nodes[u].e > 0 {
+			next_workload.push(u);
+		}
+	}
+	next_workload
+}
+
+fn create_threads(
+	shared: &RwLock<Graph>,
+	barrier: &Barrier,
+	decision_list: &[Mutex<Decision>],
+	thread_id: usize,
+) {
+	loop {
+		let count = shared.read().unwrap().currentWorkload.len();
+		if count == 0 {
+			break;
+		}
+ 
+		{
+			// shared read lock: all threads can hold it at once
+			let g = shared.read().unwrap();
+			for i in (thread_id..count).step_by(N) {
+				let d = decide(&g, g.currentWorkload[i]);
+				*decision_list[i].lock().unwrap() = d;
+			}
+		} // the read lock MUST be dropped before the barrier, or the leader's write() deadlocks
+ 
+		// is_leader() == PTHREAD_BARRIER_SERIAL_THREAD, basically kör en tråd
+		if barrier.wait().is_leader() {
+			let mut guard = shared.write().unwrap(); // Låser hela grafen för att vi bara har en tråd som ska jobba
+			let g = &mut *guard;
+ 
+			g.nextWorkload.clear();
+			for q in g.queued_this_round.iter_mut() { // Nollställer
+				*q = false;
+			}
+ 
+			for i in 0..count {
+				let d = *decision_list[i].lock().unwrap(); // wrappa upp det i våran decision lista
+				apply_decision(g, d);
+			}
+ 
+			std::mem::swap(&mut g.currentWorkload, &mut g.nextWorkload); // swappar det som vi har kvar tills nästa runda
+		}
+ 
+		barrier.wait(); // everyone sees the new work list
+	}
+}
 
 fn main() {
 	// read!() is reading input
@@ -358,7 +411,7 @@ fn main() {
 	let mut node = vec![]; // creating a vector to hold the nodes of the graph. The vector is initially empty and will be populated with Node structs as they are created.
 	let mut edge = vec![]; // same here with edges. creating a vector to hold the edges of the graph. The vector is initially empty and will be populated with Edge structs as they are created.
 	let mut adj: Vec<LinkedList<usize>> =Vec::with_capacity(n); // creating a vector of linked lists to hold the adjacency list representation of the graph. Each linked list will hold the indices of the edges that are adjacent to a given node. The vector is initialized with a capacity of n, which is the number of nodes in the graph.
-	let mut excess: VecDeque<usize> = VecDeque::new(); // creating a double-ended queue to hold the indices of the nodes that have excess preflow. The queue is initially empty and will be populated with the indices of the nodes as they are processed.
+	// let mut excess: VecDeque<usize> = VecDeque::new(); // creating a double-ended queue to hold the indices of the nodes that have excess preflow. The queue is initially empty and will be populated with the indices of the nodes as they are processed.
 	let debug = false;
 
 	let s = 0; // source node is always 0
@@ -397,20 +450,11 @@ fn main() {
 		}
 	}
 
-	println!("initial pushes");
-	let iter = adj[s].iter();
+	// println!("initial pushes");
+	// let iter = adj[s].iter();
 
-	// but nothing is done here yet...
-	let mut g = Graph::new(node, edge, adj, excess.clone());
-	let d = decide(g, u);
-	apply_decision(&mut g, d);
+	let mut g = Graph::new(node, edge, adj);
+
 	println!("f = {}", g.preflow());
-
-	while !excess.is_empty() {
-		let c = 0;
-		let u = excess.pop_front().unwrap();
-	}
-
-	// println!("f = {}", 0);
 
 }
