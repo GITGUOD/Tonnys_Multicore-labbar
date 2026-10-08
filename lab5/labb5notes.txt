@@ -8,4 +8,129 @@ Vi utgår från lab0
 Laddat ner rust extensions
 apt install rustup o så vidARE.
 
-cargo check för att checka syntax?
+cargo check för att checka syntax
+
+ANdra steget är parallelisera det,
+vi översätter labb 3
+
+
+
+1. Explain Rust’s rules about moving and borrowing objects.
+- A: Rust tillåter inte att man skriver och läser till samma object och är ganska strikt med det
+- Därför behöver man ange och berätta det till kompilatorn via t.ex att klona eller använda lås såsom RwLock
+- Klona för att man inte ska använda samma object men att man får samma innehåll.
+
+Reglerna:
+    Varje värde har en ägare. När ägaren går ur scope frigörs värdet.
+    Vid move (t.ex. let b = a; eller när du skickar något till en tråd) flyttas ägandet, och a får inte användas längre.
+    Vid borrowing lånar man en referens. Antingen flera &T (läs) eller exakt en &mut T (skriv), aldrig båda samtidigt.
+
+2. Explain atomic reference counters.
+- Jag använder inga atomic references, tittade upp det och jag tror i orginal koden används Arc, vilket kan vara bra att använda eftersom
+    enligt min undersökning används arc för att låta flera trådar att äga samma värde och och ingen vet vilken tråd som lever längst. Då räknar Arc ägarna och frigör värdet när den sista släpper det.
+
+- I mitt fall använder jag scope vilket garanterar att alla trådar hinner klara med sitt jobb och behöver inte äga utan endast låna
+3. Explain your source code for your two programs.
+- Yes
+4. What do you think about parallelizing Rust code as compared with Erlang,
+Java and C?
+- Det är mycket mer striktare jämfört med t.ex C. Man måste hålla koll på exakt och berätta det för kompilatorn
+    - C: inga skydd, data races är möjliga och upptäcks vid körning (eller aldrig).
+    - Java: delat minne med trådar och synchronized, men kompilatorn hjälper inte mot data races.
+    - Erlang: inget delat minne alls, processer skickar meddelanden. Enklare att resonera om, men kopiering av data.
+    - Rust: delat minne som i C/Java, men säkerheten bevisas vid kompilering. Priset är strängare kod. Fördelen är att det oftast går snabbt och att data races inte kompilerar.
+
+5. When would you recommend using parallel Haskell?
+- Den är ganska simpel skulle jag säga, särskilt när man använder mer renare och snabbare funktioner, dock är parallellisering mycket långsammare och därför bör man välja något annat vid prestandakrav
+
+
+
+
+Utskrift:
+
+Para
+
+
+time: 2.241985ms
+diff ../../../data/tiny/0.ans out
+
+time: 1.496194ms
+diff ../../../data/railwayplanning/sample/1.ans out
+
+time: 3.08547ms
+diff ../../../data/railwayplanning/secret/0mini.ans out
+
+time: 2.261291ms
+diff ../../../data/railwayplanning/secret/1small.ans out
+
+time: 8.893624ms
+diff ../../../data/railwayplanning/secret/2med.ans out
+
+time: 38.891025ms
+diff ../../../data/railwayplanning/secret/3large.ans out
+
+time: 60.602512ms
+diff ../../../data/railwayplanning/secret/4huge.ans out
+
+time: 75.072534ms
+diff ../../../data/big/000.ans out
+
+time: 57.907353ms
+diff ../../../data/big/001.ans out
+
+time: 24.392410426s
+diff ../../../data/big/002.ans out
+
+time: 856.811942ms
+diff ../../../data/huge/001.ans out
+PASS all tests
+root@LAPTOP-0ACSTN7H:/mnt/c/Users/tonny/OneDrive/Documents/MulticoreProgramming/Tonnys_Multicore-labbar/lab5/rust/preflow# 
+
+
+
+Serialized
+
+time: 1.403387ms
+diff ../../../data/railwayplanning/sample/1.ans out
+
+time: 3.452431ms
+diff ../../../data/railwayplanning/secret/0mini.ans out
+
+time: 2.824501ms
+diff ../../../data/railwayplanning/secret/1small.ans out
+
+time: 8.690791ms
+diff ../../../data/railwayplanning/secret/2med.ans out
+
+time: 37.323065ms
+diff ../../../data/railwayplanning/secret/3large.ans out
+
+time: 57.479944ms
+diff ../../../data/railwayplanning/secret/4huge.ans out
+
+time: 54.684266ms
+diff ../../../data/big/000.ans out
+
+time: 59.05365ms
+diff ../../../data/big/001.ans out
+c
+time: 26.588590605s
+diff ../../../data/big/002.ans out
+
+time: 926.604433ms
+diff ../../../data/huge/001.ans out
+PASS all tests
+root@LAPTOP-0ACSTN7H:/mnt/c/Users/tonny/OneDrive/Documents/MulticoreProgramming/Tonnys_Multicore-labbar/lab5/rust/preflow# 
+
+
+Test	Parallell	Sekventiell	Speedup
+0tiny   2.2 ms      1.4 ms      långsammare
+0mini   1.5 ms      3.4 ms      snabbare
+1small  2.3 ms      2.8ms       snabbare
+2med    8.9 ms      8.7ms       långsammare
+3large	38,9 ms	    37,3 ms	    0,96× snabbare
+4huge	60,6 ms	    57,5 ms	    0,95× snabbare
+big/000	75,1 ms	    54,7 ms	    0,73× snabbare
+big/001	57,9 ms	    59,1 ms	    1,0× snabbare
+big/002	24,39 s	    26,59 s	    1,09× snabbare
+huge/001    857 ms	927 ms	    1,08× snabbare
