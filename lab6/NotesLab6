@@ -1,0 +1,192 @@
+Modify your program to use hardware transactional memory
+
+Det va svårt att hitta en plats att lägga till HTM eftersom det inte känns som att det finns
+ett ställe, ett atomisk block där vi kan lägga till det. Så jag bestämde mig för att modifiera
+fas 2 delen där vi applya våra val/decisions till att vara fler trådad. Varje tråd gör då en transaction.
+
+Vad vi gjorde va att vi flyttade hela apply_decision in till transaction_atomic,
+
+flyttade ut for loopen
+
+for (int i = 0; i < currentCount; i++) {
+    apply_decision(g, &decisionList[i]);
+}
+
+ut från enkeltrådarbetet och bytte ut så att det ser ut så här:
+
+for (int i = thread_id; i < currentCount; i+=N) { 
+                apply_decision(g, &decisionList[i]);
+			} // applya våra val med transaction
+
+För att vi inte vill att varje tråd ska applya varje decision, det blir krock. (Load balancing får vi på köpet med.)
+
+Hur funkar transaction_atomic?
+
+__transaction_atomic { ... } gör att koden i blocket körs som en enda odelbar operation, så andra trådar ser antingen allt eller inget av det du gjort.
+Tråden kör blocket direkt utan att vänta på något lås, och körtiden håller reda på vad den läser och skriver. När blocket är klart kontrolleras om någon
+annan tråd har ändrat samma data under tiden. Om ingen har det görs skrivningarna synliga (commit), annars rullas allt tillbaka och blocket körs om. Trådar
+som rör olika data kan alltså köra parallellt, och bara de som krockar får göra om sitt arbete.
+
+Vad händer om det blir krock flera gånger då?
+Det blir långsammare, sämre prestandamässigt, men programmet fastnar inte.
+
+Garanterad framgång. GCC:s körtid (libitm) försöker bara ett begränsat antal gånger. Om en transaktion fortsätter misslyckas växlar den till ett serialiserat läge
+där en tråd får köra ensam med ett globalt lås, och då kan den inte konflikta med någon.
+
+Ingen import behövs för att: fgnu-tm: gör att GCC förstår __transaction_atomic och genererar transaktionskod för blocken.
+
+
+Hardware Transactional Memory (HTM)
+
+• Definition: A concurrency control mechanism built directly into the processor silicon (using CPU caches and multi-word synchronization instructions).
+• How it works: The CPU tracks read/write sets directly inside hardware caches. If another core touches the same cache line during a transaction, an automatic hardware abort and rollback occur.
+• Requirements: Requires explicit chip-level support (such as Intel TSX or IBM Power Architecture TM).
+• Pros: Delivers near-native speed and minimal runtime overhead compared to software tracking.
+• Cons: "Best-effort" hardware limits mean large transactions can overflow cache capacity and fail, and certain instructions (like I/O or system calls) cannot run inside a hardware transaction.
+
+
+Software Transactional Memory (STM)
+
+• Definition: A concurrency control scheme implemented entirely in software (through a programming language runtime library or specialized data structures).
+• How it works: It uses private read/write journals or logs to track memory accesses. If a conflict is detected when committing the transaction, it rolls back and automatically retries.
+• Requirements: Requires minimal hardware support—typically just a basic atomic instruction like Compare-and-Swap (CAS) or Load-Link/Store-Conditional (LL/SC).
+• Pros: Highly portable, flexible, and works across any CPU architecture without size or instruction set limits.
+• Cons: Incurs noticeable computational and memory overhead from tracking logs and managing validation in software.
+
+DIFF
+
+Feature:	Software Transactional Memory (STM) | Hardware Transazctional Memory (HTM)
+Implementation: 	Runtime library or language construct	|   CPU/processor extensions and cache tracking
+Performance:	Slower due to software logging overhead	| High speed near-zero baseline overhead
+Hardware Dependency:	Low (only needs basic atomic primitives like CAS)   |   High (requires specific CPU microarchitecture support)
+Transaction Size Limits:	Flexible (limited only by available memory) |   Rigid (restricted by CPU cache size or architecture rules)
+Abort Reasons:	Data conflicts or explicit retry logic	| Data conflicts, cache capacity overflow, or illegal instructions
+
+
+Del 2:
+
+Make a sequential program in closure.
+
+Vi la till discharge, can push, ändrade i push metoden, fixade till i initiate, relabel etc
+
+
+Del 3:
+Paralell:
+Ersatte den vanliga preflow loopen med en worker funktion
+Sedan gjorde vi en for loop för att aktivera varje sådan tråd
+
+
+Performance mellan Del 2 och Del 3:
+
+time sh check-solution.sh clojure preflow.clj
+../../data/tiny/0.in
+time: 1269 ms
+PASS ../../data/tiny/0.in
+../../data/railwayplanning/sample/1.in
+time: 1207 ms
+PASS ../../data/railwayplanning/sample/1.in
+../../data/railwayplanning/secret/0mini.in
+time: 1191 ms
+PASS ../../data/railwayplanning/secret/0mini.in
+../../data/railwayplanning/secret/1small.in
+time: 1173 ms
+PASS ../../data/railwayplanning/secret/1small.in
+../../data/railwayplanning/secret/2med.in
+time: 1246 ms
+PASS ../../data/railwayplanning/secret/2med.in
+../../data/railwayplanning/secret/3large.in
+time: 1933 ms
+PASS ../../data/railwayplanning/secret/3large.in
+../../data/railwayplanning/secret/4huge.in
+time: 2247 ms
+PASS ../../data/railwayplanning/secret/4huge.in
+../../data/big/000.in
+time: 784 ms
+PASS ../../data/big/000.in
+../../data/big/001.in
+time: 2368 ms
+PASS ../../data/big/001.in
+42.97user 6.00system 0:13.46elapsed 363%CPU (0avgtext+0avgdata 306480maxresident)k
+256inputs+648outputs (76major+252386minor)pagefaults 0swaps
+PASS all tests
+time sh check-solution.sh clojure preflowS.clj
+../../data/tiny/0.in
+time: 1139 ms
+PASS ../../data/tiny/0.in
+../../data/railwayplanning/sample/1.in
+time: 1165 ms
+PASS ../../data/railwayplanning/sample/1.in
+../../data/railwayplanning/secret/0mini.in
+time: 1135 ms
+PASS ../../data/railwayplanning/secret/0mini.in
+../../data/railwayplanning/secret/1small.in
+time: 1184 ms
+PASS ../../data/railwayplanning/secret/1small.in
+../../data/railwayplanning/secret/2med.in
+time: 1232 ms
+PASS ../../data/railwayplanning/secret/2med.in
+../../data/railwayplanning/secret/3large.in
+time: 1940 ms
+PASS ../../data/railwayplanning/secret/3large.in
+../../data/railwayplanning/secret/4huge.in
+time: 2339 ms
+PASS ../../data/railwayplanning/secret/4huge.in
+../../data/big/000.in
+time: 2249 ms
+PASS ../../data/big/000.in
+../../data/big/001.in
+time: 2291 ms
+PASS ../../data/big/001.in
+34.07user 4.82system 0:14.70elapsed 264%CPU (0avgtext+0avgdata 268220maxresident)k
+0inputs+648outputs (72major+207168minor)pagefaults 0swaps
+PASS all tests
+root@LAPTOP-0ACSTN7H:~/lab6/clojure# 
+
+
+Del 4:
+
+Kompilera:
+gcc -O2 mm.c -o mm
+gcc -O2 -fopenmp mm_omp.c -o mm_omp
+
+timea båda:
+
+time ./mm
+time ./mm_omp
+
+Resultat:
+
+sum = 2672835994823558168576.000000
+Time: 11464601.000000 seconds
+
+real    0m12.004s
+user    0m11.456s
+sys     0m0.010s
+sum = 2672835994823558168576.000000
+Time: 1.394986 seconds
+
+real    0m1.397s
+user    0m19.600s
+sys     0m0.076s
+
+
+1. Why is it more reasonable to use software transactional memory with
+Clojure than with C, C++ or Java?
+    - Förändringar kan bara ske i dosync vilket innebär att SFM behöver endast ha koll på vissa kodblock
+
+    - I C, C++ och Java är nästan allt föränderligt. En STM där måste instrumentera alla minnesaccesser,
+    vilket är dyrt, och kod utanför transaktioner kan röra samma data och bryta isolationen.
+
+2. How does Power detect conflicts between hardware transactions?
+    - Det sker via cache-koherensprotokollet: processorn håller reda på vilka cache-rader transaktionen läst och skrivit, och om en annan tråd rör en av dem avbryts transaktionen.
+Detta kan ge falska konflikter (två olika variabler på samma rad).
+Korrigering: det är inte operativsystemet som tar ett lås, utan programmet självt har en fallback-väg. Efter ett antal misslyckade försök tar koden ett vanligt lås i stället. Skriv “mjukvaran/programmet”, inte “operativsystemet”.
+
+3. Why can you not use I/O in a transaction, and which instructions can be
+used on Power if you need to print something?
+    - Jag är lite osäker vad frågan frågar efter, men vid collisioner så kan man väl inte ta tillbaka själva variabeln som man pushar ut.
+    - Vid collisioner kommer transaktionerna försöka köra igen och då får man dubletter.
+4. Explain your source codes.
+
+- Jag har skrivit push, relabel, discharge, can-push, find-edge-to-push
+Det som skiljer mellan programmen seq och par är worker och main.
